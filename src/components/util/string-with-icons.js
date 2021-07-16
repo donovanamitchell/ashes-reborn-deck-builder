@@ -3,6 +3,9 @@ import {Text} from 'react-native';
 import {AshesIcon} from './ashes-icon';
 
 function StringWithIcons(string, navigation) {
+  if (string === undefined) {
+    return string;
+  }
   return string.split(/(\[\[.*?\]\])/).flatMap((text, index) => {
     if (text.startsWith('[[')) {
       let trimmedText = text.slice(2, -2);
