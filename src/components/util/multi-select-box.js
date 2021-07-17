@@ -11,8 +11,13 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const SelectBox = props => {
+const MultiSelectBox = props => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [unsavedSelections, setUnsavedSelections] = useState([]);
+
+  function isChecked(item) {
+    return unsavedSelections.find(selection => selection.value === item.value);
+  }
 
   return (
     <View>
@@ -24,28 +29,60 @@ const SelectBox = props => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <FlatList
+              styles={styles.list}
               data={props.data}
               renderItem={({item}) => (
                 <Pressable
                   style={({pressed}) =>
-                    pressed ? styles.pressedItem : styles.unpressedItem
+                    pressed
+                      ? [styles.pressedItem, styles.pressableSelectItem]
+                      : styles.pressableSelectItem
                   }
                   onPress={() => {
-                    setModalVisible(!modalVisible);
-                    props.onChangeValue(item);
+                    if (isChecked(item)) {
+                      setUnsavedSelections(
+                        unsavedSelections.filter(
+                          selection => selection.value !== item.value,
+                        ),
+                      );
+                    } else {
+                      setUnsavedSelections(unsavedSelections.concat(item));
+                    }
                   }}>
+                  <Icon
+                    name={
+                      isChecked(item) ? 'check-box' : 'check-box-outline-blank'
+                    }
+                    size={20}
+                  />
                   <Text style={styles.listItem}>{item.text}</Text>
                 </Pressable>
               )}
               keyExtractor={(item, index) => index}
             />
+            <View style={styles.buttonWrapper}>
+              <Button
+                title="Done"
+                style={styles.button}
+                onPress={() => {
+                  props.onChangeValue(unsavedSelections);
+                  setModalVisible(!modalVisible);
+                }}
+              />
+            </View>
           </View>
         </View>
       </Modal>
       <Pressable
-        style={styles.button}
+        style={styles.openModalButton}
         onPress={() => setModalVisible(!modalVisible)}>
-        <Text style={styles.dropdownSelectedValue}>{props.value}</Text>
+        <Text style={styles.dropdownSelectedValue}>
+          {props.value
+            .reduce((string, item) => {
+              return string + item.text + ', ';
+            }, '')
+            .slice(0, -2)}
+        </Text>
         <Icon name="arrow-drop-down" size={25} />
       </Pressable>
     </View>
@@ -53,7 +90,11 @@ const SelectBox = props => {
 };
 
 const styles = StyleSheet.create({
-  button: {
+  buttonWrapper: {
+    alignSelf: 'stretch',
+    paddingTop: 10,
+  },
+  openModalButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -64,6 +105,10 @@ const styles = StyleSheet.create({
   dropdownSelectedValue: {
     paddingLeft: 10,
     flex: 1,
+  },
+  list: {
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   centeredView: {
     flex: 1,
@@ -76,7 +121,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -88,16 +132,17 @@ const styles = StyleSheet.create({
   },
   pressedItem: {
     backgroundColor: 'lightgrey',
-    borderRadius: 8,
-    padding: 6,
   },
-  unpressedItem: {
+  pressableSelectItem: {
     borderRadius: 8,
     padding: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   listItem: {
+    paddingLeft: 10,
     fontSize: 20,
   },
 });
 
-export default SelectBox;
+export default MultiSelectBox;
