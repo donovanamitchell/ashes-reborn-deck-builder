@@ -1,18 +1,18 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, FlatList, View} from 'react-native';
-import DeckContext from '../deck-context';
+import {DeckContext} from '../deck-context';
 import CardView from '../../card/card-view';
 import CardFilter from '../../util/card-filter';
 import {Context} from '../../../store/global-store';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const CardsScreen = () => {
-  const deck = useContext(DeckContext);
+  const {cards} = React.useContext(DeckContext);
   const [state, dispatch] = useContext(Context);
   const [showFilter, setShowFilter] = useState(false);
 
   function cardCount() {
-    return Object.entries(deck.cards).reduce(
+    return Object.entries(cards).reduce(
       (accumulator, value) => accumulator + value[1],
       0,
     );
@@ -36,7 +36,7 @@ const CardsScreen = () => {
       <FlatList
         data={state.cards}
         renderItem={({item}) => (
-          <CardView card={item} count={deck.cards[item.stub]} />
+          <CardView card={item} count={cards[item.stub]} />
         )}
         keyExtractor={item => item.stub}
       />

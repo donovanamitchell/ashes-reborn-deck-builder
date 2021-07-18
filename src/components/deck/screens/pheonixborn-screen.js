@@ -1,4 +1,4 @@
-import React, {Component, useState, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Button,
   SafeAreaView,
@@ -6,20 +6,48 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   FlatList,
   View,
 } from 'react-native';
-import DeckContext from '../deck-context';
+import SelectBox from '../../util/select-box';
+import {DeckContext} from '../deck-context';
+import {Context} from '../../../store/global-store';
 
 const PheonixBornScreen = ({navigation, route}) => {
-  const deck = useContext(DeckContext);
+  const [state, dispatch] = useContext(Context);
+  const [pheonixBornCards, setPheonixbornCards] = useState([]);
+  const {setPheonixborn, name, pheonixBorn, setName} = useContext(DeckContext);
+  useEffect(() => {
+    setPheonixbornCards(
+      state.cards.flatMap(card => {
+        if (card.type !== 'Phoenixborn') {
+          return [];
+        }
+
+        return {text: card.name, value: card.stub};
+      }),
+    );
+  }, [state.cards]);
 
   return (
     <View style={styles.container}>
-      <Text>Name: {deck.name}</Text>
-      <Text>Filename: {deck.filename}</Text>
-      <Text>Pheonixborn: {deck.pheonixBorn}</Text>
+      <View style={[styles.container, styles.editSection]}>
+        <Text>Deck Name:</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={text => setName(text)}
+          placeholder="Deck Name"
+          value={name}
+        />
+        <Text>Pheonixborn:</Text>
+        <SelectBox
+          value={pheonixBorn}
+          onChangeValue={item => setPheonixborn(item.text, item.value)}
+          data={pheonixBornCards}
+        />
+      </View>
     </View>
   );
 };
@@ -27,8 +55,15 @@ const PheonixBornScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  editSection: {
+    backgroundColor: 'white',
+    padding: 15,
+  },
+  textInput: {
+    borderRadius: 6,
+    borderColor: 'lightgrey',
+    borderWidth: 2,
   },
 });
 

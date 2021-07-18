@@ -1,4 +1,5 @@
 // https://codeburst.io/global-state-with-react-hooks-and-context-api-87019cc4f2cf
+// https://reactjs.org/docs/hooks-custom.html
 import React, {createContext, useReducer} from 'react';
 import Reducer from './reducer';
 

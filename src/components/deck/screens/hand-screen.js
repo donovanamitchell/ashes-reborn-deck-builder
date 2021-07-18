@@ -10,10 +10,10 @@ import {
   FlatList,
   View,
 } from 'react-native';
-import DeckContext from '../deck-context';
+import {DeckContext} from '../deck-context';
 
 const HandScreen = () => {
-  const deck = useContext(DeckContext);
+  // const [deck, setDeck] = useContext(DeckContext);
 
   return (
     <View style={styles.container}>
