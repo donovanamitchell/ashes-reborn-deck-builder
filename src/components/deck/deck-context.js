@@ -1,21 +1,35 @@
 import React, {createContext} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DeckContext = createContext({});
 
-export function initialState() {
+export function initialState(filename) {
   return {
-    filename: `${Date.now().toString(16)}.json`,
-    name: 'Testys Tasty Taco Truck',
-    pheonixBorn: 'Testy Testerson',
+    filename: filename,
+    name: '',
+    pheonixBorn: null,
     cards: {},
   };
 }
-export function deck(filename) {
-  return {
-    filename: filename,
-    name: 'Testys Tasty Taco Truck',
-    pheonixBorn: 'Testy Testerson',
-    cards: {'shatter-pulse': 1, encore: 3, 'summon-salamander-monk': 2},
-  };
+export async function getDeck(filename, newDeck) {
+  if (newDeck === true) {
+    return initialState(filename);
+  }
+
+  try {
+    let deck = JSON.parse(await AsyncStorage.getItem(filename));
+    if (deck === null) {
+      // TODO: error modal
+      console.log('Could not find deck');
+      deck = initialState(filename);
+    }
+
+    console.log(deck);
+    return deck;
+  } catch (e) {
+    // TODO: error modal
+    console.log(e);
+    return initialState(filename);
+  }
 }
 export default DeckContext;

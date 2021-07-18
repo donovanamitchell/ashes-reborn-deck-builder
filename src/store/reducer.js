@@ -4,6 +4,21 @@ import {resetReleases} from '../services/releases-service';
 const Reducer = (state, action) => {
   console.log(action.type, action.payload);
   switch (action.type) {
+    case 'ADD_DECK':
+      return {
+        ...state,
+        decks: state.decks.concat(action.payload),
+      };
+    case 'REMOVE_DECK':
+      return {
+        ...state,
+        decks: state.decks.filter(deck => deck.filename !== action.filename),
+      };
+    case 'RESET_RELEASES':
+      return {
+        ...state,
+        releases: resetReleases(),
+      };
     case 'SET_CARDS':
       return {
         ...state,
@@ -14,20 +29,15 @@ const Reducer = (state, action) => {
         ...state,
         decks: action.payload,
       };
-    case 'RESET_RELEASES':
+    case 'SET_RELEASES':
       return {
         ...state,
-        releases: resetReleases(),
+        releases: action.payload,
       };
-    case 'ADD_DECK':
+    case 'UPDATE_DECK':
       return {
         ...state,
-        decks: state.decks.concat(action.payload),
-      };
-    case 'REMOVE_DECK':
-      return {
-        ...state,
-        decks: state.decks.filter(deck => deck.filename !== action.filename),
+        decks: state.decks,
       };
     default:
       return state;

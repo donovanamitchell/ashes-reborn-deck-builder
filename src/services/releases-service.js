@@ -9,7 +9,6 @@ export async function getReleases() {
       console.log('TODO: Fetching via API, reading from file instead');
       AsyncStorage.setItem('ASHES_RELEASES', JSON.stringify(releases));
     }
-    console.log(releases);
     return releases;
   } catch (e) {
     // TODO: error modal
