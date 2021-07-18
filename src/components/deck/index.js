@@ -6,15 +6,23 @@ import DiceScreen from './screens/dice-screen';
 import HandScreen from './screens/hand-screen';
 import StatsScreen from './screens/stats-screen';
 import DeckContext, {getDeck, initialState} from './deck-context';
+import Loading from '../util/loading';
 
 const DeckScreen = ({navigation, route}) => {
   const [deck, setDeck] = useState(initialState(route.params.filename));
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDeck(route.params.filename, route.params.newDeck).then(gottenDeck => {
-      setDeck(gottenDeck);
-    });
+    getDeck(route.params.filename, route.params.newDeck)
+      .then(gottenDeck => {
+        setDeck(gottenDeck);
+      })
+      .finally(() => setLoading(false));
   }, [route.params.filename, route.params.newDeck]);
+
+  if (loading === true) {
+    return <Loading />;
+  }
 
   return (
     <DeckContext.Provider value={deck}>

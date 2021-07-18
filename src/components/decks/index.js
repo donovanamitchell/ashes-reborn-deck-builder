@@ -1,25 +1,33 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, FlatList, View} from 'react-native';
 import {Context} from '../../store/global-store';
 import DeckListItem from './deck-list-item';
 import {getReleases} from '../../services/releases-service';
 import {getCardsFromReleases} from '../../services/cards-service';
 import {getDeckFilenames} from '../../services/decks-service';
+import Loading from '../util/loading';
 
 const DecksScreen = ({navigation}) => {
   const [state, dispatch] = useContext(Context);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getReleases().then(releases => {
-      dispatch({type: 'SET_RELEASES', payload: releases});
-      getCardsFromReleases(releases.flatMap(release => release.stub)).then(
-        cards => dispatch({type: 'SET_CARDS', payload: cards}),
-      );
-    });
-    getDeckFilenames().then(decks =>
-      dispatch({type: 'SET_DECKS', payload: decks}),
-    );
+    Promise.all([
+      getReleases().then(releases => {
+        dispatch({type: 'SET_RELEASES', payload: releases});
+        getCardsFromReleases(releases.flatMap(release => release.stub)).then(
+          cards => dispatch({type: 'SET_CARDS', payload: cards}),
+        );
+      }),
+      getDeckFilenames().then(decks =>
+        dispatch({type: 'SET_DECKS', payload: decks}),
+      ),
+    ]).finally(() => setLoading(false));
   }, []);
+
+  if (loading === true) {
+    return <Loading />;
+  }
 
   return (
     <View style={styles.container}>
