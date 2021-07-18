@@ -1,14 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {
-  Button,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  View,
-  Modal,
-  Text,
-  Pressable,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, FlatList, View, Modal, Text, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const SelectBox = props => {

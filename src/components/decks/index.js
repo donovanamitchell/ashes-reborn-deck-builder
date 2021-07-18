@@ -12,9 +12,9 @@ const DecksScreen = ({navigation}) => {
   // const [decks, setDecks] = useState(service.decks());
 
   useEffect(() => {
-    dispatch({type: 'SET_CARDS', payload: cardData.results});
+    // dispatch({type: 'SET_CARDS', payload: cardData.results});
     dispatch({type: 'SET_DECKS', payload: service.decks()});
-  }, [dispatch]);
+  }, []);
 
   return (
     <View style={styles.container}>

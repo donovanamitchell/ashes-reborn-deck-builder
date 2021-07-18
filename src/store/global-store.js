@@ -1,10 +1,20 @@
 // https://codeburst.io/global-state-with-react-hooks-and-context-api-87019cc4f2cf
 import React, {createContext, useReducer} from 'react';
 import Reducer from './reducer';
+import {getReleases} from '../services/releases-service';
+import {getAllCards, getCardsFromReleases} from '../services/cards-service';
 
+const initialReleases = getReleases();
+async function initialCards() {
+  let releases = await initialReleases;
+  return getCardsFromReleases(releases.flatMap(release => release.stub));
+}
+
+console.log(initialReleases);
 const initialState = {
-  cards: [],
   decks: [],
+  releases: initialReleases,
+  cards: initialCards(),
 };
 
 const GlobalStore = ({children}) => {

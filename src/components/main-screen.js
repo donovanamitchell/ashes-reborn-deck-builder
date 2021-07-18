@@ -14,7 +14,11 @@ const MainScreen = ({navigation, route}) => {
         component={DecksScreen}
         options={{title: 'Decks'}}
       />
-      <MainStack.Screen name="Settings" component={SettingsScreen} options={{}} />
+      <MainStack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{}}
+      />
       <MainStack.Screen
         name="Deck"
         component={DeckScreen}

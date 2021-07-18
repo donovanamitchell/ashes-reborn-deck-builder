@@ -1,9 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Button,
   StyleSheet,
   FlatList,
-  ScrollView,
   View,
   Modal,
   Text,
@@ -29,7 +28,6 @@ const MultiSelectBox = props => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <FlatList
-              styles={styles.list}
               data={props.data}
               renderItem={({item}) => (
                 <Pressable
@@ -105,10 +103,6 @@ const styles = StyleSheet.create({
   dropdownSelectedValue: {
     paddingLeft: 10,
     flex: 1,
-  },
-  list: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   centeredView: {
     flex: 1,

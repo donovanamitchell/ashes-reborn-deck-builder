@@ -1,4 +1,5 @@
 // https://codeburst.io/global-state-with-react-hooks-and-context-api-87019cc4f2cf
+import {resetReleases} from '../services/releases-service';
 
 const Reducer = (state, action) => {
   console.log(action.type, action.payload);
@@ -13,6 +14,11 @@ const Reducer = (state, action) => {
         ...state,
         decks: action.payload,
       };
+    case 'RESET_RELEASES':
+      return {
+        ...state,
+        releases: resetReleases(),
+      };
     case 'ADD_DECK':
       return {
         ...state,
@@ -21,7 +27,7 @@ const Reducer = (state, action) => {
     case 'REMOVE_DECK':
       return {
         ...state,
-        decks: state.decks.filter(deck => deck.filename !== action.payload),
+        decks: state.decks.filter(deck => deck.filename !== action.filename),
       };
     default:
       return state;
