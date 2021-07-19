@@ -2,13 +2,13 @@ import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, FlatList, View} from 'react-native';
 import {DeckContext} from '../deck-context';
 import CardFilter from '../../util/card-filter';
-import {Context} from '../../../store/global-store';
+import {GlobalContext} from '../../../store/global-store';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CardAdder from '../../card/card-adder';
 
 const CardsScreen = () => {
   const {cards} = React.useContext(DeckContext);
-  const [state, dispatch] = useContext(Context);
+  const state = useContext(GlobalContext);
   const [showFilter, setShowFilter] = useState(false);
 
   function cardCount() {

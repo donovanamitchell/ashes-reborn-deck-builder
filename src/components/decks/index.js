@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, FlatList, View} from 'react-native';
-import {Context} from '../../store/global-store';
+import {GlobalContext} from '../../store/global-store';
 import DeckListItem from './deck-list-item';
 import {getReleases} from '../../services/releases-service';
 import {getCardsFromReleases} from '../../services/cards-service';
@@ -8,20 +8,19 @@ import {getDeckFilenames} from '../../services/decks-service';
 import Loading from '../util/loading';
 
 const DecksScreen = ({navigation}) => {
-  const [state, dispatch] = useContext(Context);
+  const {decks, setCards, setDecks, setReleases, addDeck} =
+    useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     Promise.all([
       getReleases().then(releases => {
-        dispatch({type: 'SET_RELEASES', payload: releases});
+        setReleases(releases);
         getCardsFromReleases(releases.flatMap(release => release.stub)).then(
-          cards => dispatch({type: 'SET_CARDS', payload: cards}),
+          cards => setCards(cards),
         );
       }),
-      getDeckFilenames().then(decks =>
-        dispatch({type: 'SET_DECKS', payload: decks}),
-      ),
+      getDeckFilenames().then(loadedDecks => setDecks(loadedDecks)),
     ]).finally(() => setLoading(false));
   }, []);
 
@@ -36,7 +35,7 @@ const DecksScreen = ({navigation}) => {
         onPress={() => navigation.navigate('Settings')}
       />
       <FlatList
-        data={state.decks}
+        data={decks}
         renderItem={({item}) => (
           <DeckListItem
             name={item.name}
@@ -56,7 +55,7 @@ const DecksScreen = ({navigation}) => {
             pheonixBorn: null,
             cards: {},
           };
-          dispatch({type: 'ADD_DECK', payload: newDeck});
+          addDeck(newDeck);
           navigation.navigate('Deck', {
             filename: newDeck.filename,
             newDeck: true,

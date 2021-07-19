@@ -2,17 +2,24 @@ import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import SelectBox from '../../util/select-box';
 import {DeckContext} from '../deck-context';
-import {Context} from '../../../store/global-store';
+import {GlobalContext} from '../../../store/global-store';
 import CardView from '../../card/card-view';
 
 const PheonixBornScreen = ({navigation, route}) => {
-  const [state, dispatch] = useContext(Context);
+  const {cards, updateDeck} = useContext(GlobalContext);
   const [pheonixBornCards, setPheonixbornCards] = useState([]);
-  const {name, pheonixBorn, pheonixBornStub, setName, setPheonixborn} =
-    useContext(DeckContext);
+  const {
+    name,
+    pheonixBorn,
+    pheonixBornStub,
+    filename,
+    setName,
+    setPheonixborn,
+  } = useContext(DeckContext);
+
   useEffect(() => {
     setPheonixbornCards(
-      state.cards.flatMap(card => {
+      cards.flatMap(card => {
         if (card.type !== 'Phoenixborn') {
           return [];
         }
@@ -20,7 +27,16 @@ const PheonixBornScreen = ({navigation, route}) => {
         return {text: card.name, value: card.stub};
       }),
     );
-  }, [state.cards]);
+  }, [cards]);
+
+  function shortenedDeck() {
+    return {
+      name: name,
+      pheonixBorn: pheonixBorn,
+      pheonixBornStub: pheonixBornStub,
+      filename: filename,
+    };
+  }
 
   return (
     <View style={styles.container}>
@@ -28,7 +44,10 @@ const PheonixBornScreen = ({navigation, route}) => {
         <Text>Deck Name:</Text>
         <TextInput
           style={styles.textInput}
-          onChangeText={text => setName(text)}
+          onChangeText={text => {
+            setName(text);
+            updateDeck(shortenedDeck());
+          }}
           placeholder="Deck Name"
           value={name}
         />
@@ -41,7 +60,7 @@ const PheonixBornScreen = ({navigation, route}) => {
         {pheonixBornStub && (
           <CardView
             style={styles.cardView}
-            card={state.cards.find(card => card.stub === pheonixBornStub)}
+            card={cards.find(card => card.stub === pheonixBornStub)}
           />
         )}
         <Text>Dice:</Text>

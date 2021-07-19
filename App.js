@@ -4,12 +4,12 @@
  */
 
 import 'react-native-gesture-handler';
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-import GlobalStore from './src/store/global-store';
+import {GlobalContextProvider} from './src/store/global-store';
 
 import CardModal from './src/components/card/card-modal';
 import MainScreen from './src/components/main-screen';
@@ -19,7 +19,7 @@ const ModalStack = createStackNavigator();
 const App = () => {
   return (
     <SafeAreaProvider>
-      <GlobalStore>
+      <GlobalContextProvider>
         <NavigationContainer>
           <ModalStack.Navigator mode="modal">
             <ModalStack.Screen
@@ -34,7 +34,7 @@ const App = () => {
             />
           </ModalStack.Navigator>
         </NavigationContainer>
-      </GlobalStore>
+      </GlobalContextProvider>
     </SafeAreaProvider>
   );
 };

@@ -1,22 +1,52 @@
-// https://codeburst.io/global-state-with-react-hooks-and-context-api-87019cc4f2cf
 // https://reactjs.org/docs/hooks-custom.html
-import React, {createContext, useReducer} from 'react';
-import Reducer from './reducer';
+// https://wix.github.io/react-native-navigation/docs/third-party-react-context
+import React from 'react';
 
 const initialState = {
-  decks: [],
-  releases: [],
-  cards: [],
+  filename: '',
+  name: '',
+  pheonixBorn: null,
+  pheonixBornStub: null,
+  cards: {},
+  dice: {},
+  firstFive: [],
 };
 
-const GlobalStore = ({children}) => {
-  const [state, dispatch] = useReducer(Reducer, initialState);
+const globalContextWrapper = component => ({
+  ...initialState,
+  addDeck: deck => {
+    initialState.decks = initialState.decks.concat(deck);
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  setCards: cards => {
+    initialState.cards = cards;
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  setDecks: decks => {
+    initialState.decks = decks;
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  setReleases: releases => {
+    initialState.releases = releases;
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  updateDeck: newDeck => {
+    initialState.decks = initialState.decks.map(deck =>
+      deck.filename === newDeck.filename ? newDeck : deck,
+    );
+    component?.setState({context: globalContextWrapper(component)});
+  },
+});
 
-  return (
-    <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>
-  );
-};
+export const GlobalContext = React.createContext(globalContextWrapper());
 
-// Why does initialState have to be an array?
-export const Context = createContext([initialState]);
-export default GlobalStore;
+export class GlobalContextProvider extends React.Component {
+  state = {context: globalContextWrapper(this)};
+  render() {
+    return (
+      <GlobalContext.Provider value={this.state.context}>
+        {this.props.children}
+      </GlobalContext.Provider>
+    );
+  }
+}
