@@ -9,6 +9,8 @@ export function initialState(filename) {
     pheonixBorn: null,
     pheonixBornStub: null,
     cards: {},
+    dice: {},
+    firstFive: [],
   };
 }
 export async function getDeck(filename, newDeck) {
@@ -39,6 +41,8 @@ const initialDeckState = {
   pheonixBorn: null,
   pheonixBornStub: null,
   cards: {},
+  dice: {},
+  firstFive: [],
 };
 
 const deckContextWrapper = component => ({
@@ -60,6 +64,8 @@ const deckContextWrapper = component => ({
     initialDeckState.pheonixBorn = deck.pheonixBorn;
     initialDeckState.pheonixBornStub = deck.pheonixBornStub;
     initialDeckState.cards = deck.cards;
+    initialDeckState.dice = deck.dice;
+    initialDeckState.firstFive = deck.firstFive;
     component?.setState({context: deckContextWrapper(component)});
   },
 });

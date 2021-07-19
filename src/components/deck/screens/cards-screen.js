@@ -1,10 +1,10 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, FlatList, View} from 'react-native';
 import {DeckContext} from '../deck-context';
-import CardView from '../../card/card-view';
 import CardFilter from '../../util/card-filter';
 import {Context} from '../../../store/global-store';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import CardAdder from '../../card/card-adder';
 
 const CardsScreen = () => {
   const {cards} = React.useContext(DeckContext);
@@ -36,7 +36,7 @@ const CardsScreen = () => {
       <FlatList
         data={state.cards}
         renderItem={({item}) => (
-          <CardView card={item} count={cards[item.stub]} />
+          <CardAdder card={item} count={cards[item.stub]} />
         )}
         keyExtractor={item => item.stub}
       />

@@ -1,24 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  useColorScheme,
-  FlatList,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import SelectBox from '../../util/select-box';
 import {DeckContext} from '../deck-context';
 import {Context} from '../../../store/global-store';
+import CardView from '../../card/card-view';
 
 const PheonixBornScreen = ({navigation, route}) => {
   const [state, dispatch] = useContext(Context);
   const [pheonixBornCards, setPheonixbornCards] = useState([]);
-  const {setPheonixborn, name, pheonixBorn, setName} = useContext(DeckContext);
+  const {name, pheonixBorn, pheonixBornStub, setName, setPheonixborn} =
+    useContext(DeckContext);
   useEffect(() => {
     setPheonixbornCards(
       state.cards.flatMap(card => {
@@ -47,6 +38,15 @@ const PheonixBornScreen = ({navigation, route}) => {
           onChangeValue={item => setPheonixborn(item.text, item.value)}
           data={pheonixBornCards}
         />
+        {pheonixBornStub && (
+          <CardView
+            style={styles.cardView}
+            card={state.cards.find(card => card.stub === pheonixBornStub)}
+          />
+        )}
+        <Text>Dice:</Text>
+        <Text>First Five:</Text>
+        <Text>Cards:</Text>
       </View>
     </View>
   );
@@ -64,6 +64,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: 'lightgrey',
     borderWidth: 2,
+  },
+  cardView: {
+    paddingTop: 10,
   },
 });
 
