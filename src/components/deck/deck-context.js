@@ -47,6 +47,13 @@ const initialDeckState = {
 
 const deckContextWrapper = component => ({
   ...initialDeckState,
+  save: () => {
+    console.log('SAVING DECK', initialDeckState);
+    AsyncStorage.setItem(
+      initialDeckState.filename,
+      JSON.stringify(initialDeckState),
+    );
+  },
   setName: text => {
     initialDeckState.name = text;
     component?.setState({context: deckContextWrapper(component)});

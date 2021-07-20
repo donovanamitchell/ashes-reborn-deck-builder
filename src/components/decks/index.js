@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, FlatList, View} from 'react-native';
+
 import {GlobalContext} from '../../store/global-store';
 import DeckListItem from './deck-list-item';
 import {getReleases} from '../../services/releases-service';
@@ -8,7 +9,7 @@ import {getDeckFilenames} from '../../services/decks-service';
 import Loading from '../util/loading';
 
 const DecksScreen = ({navigation}) => {
-  const {decks, setCards, setDecks, setReleases, addDeck} =
+  const {decks, setCards, setDecks, setReleases, addDeck, saveDecks} =
     useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +23,10 @@ const DecksScreen = ({navigation}) => {
       }),
       getDeckFilenames().then(loadedDecks => setDecks(loadedDecks)),
     ]).finally(() => setLoading(false));
+
+    return () => {
+      saveDecks();
+    };
   }, []);
 
   if (loading === true) {

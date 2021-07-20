@@ -29,13 +29,16 @@ const PheonixBornScreen = ({navigation, route}) => {
     );
   }, [cards]);
 
-  function shortenedDeck() {
-    return {
-      name: name,
-      pheonixBorn: pheonixBorn,
-      pheonixBornStub: pheonixBornStub,
-      filename: filename,
-    };
+  function shortenedDeck(overrides) {
+    return Object.assign(
+      {
+        name: name,
+        pheonixBorn: pheonixBorn,
+        pheonixBornStub: pheonixBornStub,
+        filename: filename,
+      },
+      overrides,
+    );
   }
 
   return (
@@ -46,7 +49,7 @@ const PheonixBornScreen = ({navigation, route}) => {
           style={styles.textInput}
           onChangeText={text => {
             setName(text);
-            updateDeck(shortenedDeck());
+            updateDeck(shortenedDeck({name: text}));
           }}
           placeholder="Deck Name"
           value={name}
@@ -54,7 +57,15 @@ const PheonixBornScreen = ({navigation, route}) => {
         <Text>Pheonixborn:</Text>
         <SelectBox
           value={pheonixBorn}
-          onChangeValue={item => setPheonixborn(item.text, item.value)}
+          onChangeValue={item => {
+            setPheonixborn(item.text, item.value);
+            updateDeck(
+              shortenedDeck({
+                pheonixBornStub: item.value,
+                pheonixBorn: item.text,
+              }),
+            );
+          }}
           data={pheonixBornCards}
         />
         {pheonixBornStub && (

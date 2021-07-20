@@ -9,7 +9,7 @@ import {DeckContextProvider, DeckContext, getDeck} from './deck-context';
 import Loading from '../util/loading';
 
 const IntermediateContextLoader = params => {
-  const {setDeck} = useContext(DeckContext);
+  const {setDeck, save} = useContext(DeckContext);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getDeck(params.filename, params.newDeck)
@@ -17,6 +17,9 @@ const IntermediateContextLoader = params => {
         setDeck(gottenDeck);
       })
       .finally(() => setLoading(false));
+    return () => {
+      save();
+    };
   }, [params.filename, params.newDeck]);
 
   if (loading === true) {
