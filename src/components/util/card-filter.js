@@ -1,41 +1,53 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import SelectBox from './select-box';
 import MultiSelectBox from './multi-select-box';
+import {GlobalContext} from '../../store/global-store';
+import {ADDABLE_CARD_TYPES} from './constants';
 
-const CardFilter = () => {
-  const [cardType, setCardType] = useState('All');
-  const [packStubs, setPackStubs] = useState([]);
-  const [searchText, setSearchText] = useState('');
+const CARD_TYPE_DATA = [{text: 'All', value: ''}].concat(
+  ADDABLE_CARD_TYPES.map(type => {
+    return {text: type, value: type};
+  }),
+);
+
+const CardFilter = ({
+  cardType,
+  packStubs,
+  searchText,
+  setCardType,
+  setPackStubs,
+  setSearchText,
+}) => {
+  const {releases} = useContext(GlobalContext);
+  const [releaseData, setReleaseData] = useState([]);
+
+  useEffect(() => {
+    setReleaseData(
+      [
+        {text: 'Owned Packs', value: 'OWNED_PACKS'},
+        {text: 'All', value: 'ALL_PACKS'},
+      ].concat(
+        releases.map(release => {
+          return {text: release.name, value: release.stub};
+        }),
+      ),
+    );
+  }, [releases]);
 
   return (
     <View style={styles.filter}>
       <Text>Packs</Text>
       <MultiSelectBox
-        data={[
-          {text: 'Owned Packs', value: 'OWNED_PACKS'},
-          {text: 'All Packs', value: 'ALL_PACKS'},
-          {text: 'Crabs for days', value: 'crabs-for-days'},
-          {text: 'Crabs for weeks', value: 'crabs-for-weeks'},
-          {text: 'Crabs for months', value: 'crabs-for-months'},
-          {text: 'Crabs for years', value: 'crabs-for-years'},
-          {text: 'An eternity of crabs', value: 'crabs-for-eternity'},
-        ]}
+        data={releaseData}
         value={packStubs}
         onChangeValue={items => setPackStubs(items)}
       />
       <Text>Type</Text>
       <SelectBox
-        data={[
-          {text: 'All', value: ''},
-          {text: 'Action Spell', value: 'Action Spell'},
-          {text: 'Ally', value: 'Ally'},
-          {text: 'Alteration Spell', value: 'Alteration Spell'},
-          {text: 'Reaction Spell', value: 'Reaction Spell'},
-          {text: 'Ready Spell', value: 'Ready Spell'},
-        ]}
+        data={CARD_TYPE_DATA}
         value={cardType}
-        onChangeValue={item => setCardType(item.text)}
+        onChangeValue={item => setCardType(item)}
       />
       <Text>Search</Text>
       <TextInput

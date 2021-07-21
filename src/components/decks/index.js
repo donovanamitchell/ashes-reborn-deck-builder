@@ -18,7 +18,18 @@ const DecksScreen = ({navigation}) => {
       getReleases().then(releases => {
         setReleases(releases);
         getCardsFromReleases(releases.flatMap(release => release.stub)).then(
-          cards => setCards(cards),
+          cards =>
+            setCards(
+              cards.sort((first, second) => {
+                if (first.name < second.name) {
+                  return -1;
+                }
+                if (first.name > second.name) {
+                  return 1;
+                }
+                return 0;
+              }),
+            ),
         );
       }),
       getDeckFilenames().then(loadedDecks => setDecks(loadedDecks)),
@@ -27,6 +38,7 @@ const DecksScreen = ({navigation}) => {
     return () => {
       saveDecks();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading === true) {

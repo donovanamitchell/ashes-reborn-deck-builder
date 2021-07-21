@@ -56,7 +56,7 @@ const PheonixBornScreen = ({navigation, route}) => {
         />
         <Text>Pheonixborn:</Text>
         <SelectBox
-          value={pheonixBorn}
+          value={{text: pheonixBorn, stub: pheonixBornStub}}
           onChangeValue={item => {
             setPheonixborn(item.text, item.value);
             updateDeck(

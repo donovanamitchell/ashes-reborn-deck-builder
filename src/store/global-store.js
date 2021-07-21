@@ -4,13 +4,9 @@ import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
-  filename: '',
-  name: '',
-  pheonixBorn: null,
-  pheonixBornStub: null,
-  cards: {},
-  dice: {},
-  firstFive: [],
+  cards: [],
+  releases: [],
+  decks: [],
 };
 
 const globalContextWrapper = component => ({
@@ -36,6 +32,7 @@ const globalContextWrapper = component => ({
     component?.setState({context: globalContextWrapper(component)});
   },
   setReleases: releases => {
+    console.log('SET RELEASES', releases);
     initialState.releases = releases;
     component?.setState({context: globalContextWrapper(component)});
   },

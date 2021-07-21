@@ -36,7 +36,7 @@ const SelectBox = props => {
       <Pressable
         style={styles.button}
         onPress={() => setModalVisible(!modalVisible)}>
-        <Text style={styles.dropdownSelectedValue}>{props.value}</Text>
+        <Text style={styles.dropdownSelectedValue}>{props.value.text}</Text>
         <Icon name="arrow-drop-down" size={25} />
       </Pressable>
     </View>

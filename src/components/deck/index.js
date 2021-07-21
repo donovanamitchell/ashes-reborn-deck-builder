@@ -20,6 +20,7 @@ const IntermediateContextLoader = params => {
     return () => {
       save();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.filename, params.newDeck]);
 
   if (loading === true) {

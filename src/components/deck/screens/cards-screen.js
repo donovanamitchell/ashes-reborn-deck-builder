@@ -5,12 +5,46 @@ import CardFilter from '../../util/card-filter';
 import {GlobalContext} from '../../../store/global-store';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CardAdder from '../../card/card-adder';
+import {ADDABLE_CARD_TYPES} from '../../util/constants';
+
+function hasType(filter, type) {
+  if (filter) {
+    return type === filter;
+  } else {
+    return ADDABLE_CARD_TYPES.includes(type);
+  }
+}
+
+function containsSearchString(searchText, name, text) {
+  if (searchText) {
+    let loweredText = searchText.toLowerCase();
+    return (
+      name.toLowerCase().includes(loweredText) ||
+      (text && text.toLowerCase().includes(loweredText))
+    );
+  }
+  return true;
+}
+
+function isFromPack(filterPackStubs, pack) {
+  if (filterPackStubs.length) {
+    return filterPackStubs.find(
+      stub => stub.value === pack.stub || stub.value === 'ALL_PACKS',
+    );
+  }
+  return true;
+}
 
 const CardsScreen = () => {
+  const [cardCount, setCardCount] = useState(0);
+  const [cardTypeFilter, setCardTypeFilter] = useState({});
+  const [filteredCards, setFilteredCards] = useState([]);
+  const [packStubsFilter, setPackStubsFilter] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
+
   const {cards} = useContext(DeckContext);
   const state = useContext(GlobalContext);
-  const [cardCount, setCardCount] = useState(0);
-  const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
     setCardCount(
@@ -20,6 +54,20 @@ const CardsScreen = () => {
       ),
     );
   }, [cards]);
+
+  useEffect(() => {
+    setFilteredCards(
+      state.cards.filter(card => {
+        // TODO: If I made each one of these into an effect would that be more
+        // efficient?
+        return (
+          hasType(cardTypeFilter.value, card.type) &&
+          containsSearchString(searchText, card.name, card.text) &&
+          isFromPack(packStubsFilter, card.release)
+        );
+      }),
+    );
+  }, [state.cards, cardTypeFilter, searchText, packStubsFilter]);
 
   return (
     <View style={styles.container}>
@@ -42,9 +90,18 @@ const CardsScreen = () => {
           />
         </View>
       </View>
-      {showFilter && <CardFilter />}
+      {showFilter && (
+        <CardFilter
+          cardType={cardTypeFilter}
+          packStubs={packStubsFilter}
+          searchText={searchText}
+          setCardType={setCardTypeFilter}
+          setPackStubs={setPackStubsFilter}
+          setSearchText={setSearchText}
+        />
+      )}
       <FlatList
-        data={state.cards}
+        data={filteredCards}
         renderItem={({item}) => (
           <CardAdder
             card={item}
