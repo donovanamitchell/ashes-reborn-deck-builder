@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {DeckContext} from '../deck/deck-context';
 import CardView from './card-view';
 
 const CardAdder = ({card, count}) => {
+  const {incrementCard, decrementCard} = useContext(DeckContext);
   return (
     <View style={styles.listItem}>
       <Text style={styles.cardName}>{card.name}</Text>
@@ -13,15 +15,23 @@ const CardAdder = ({card, count}) => {
           <Icon
             name="add"
             size={15}
-            onPress={() => console.log('Add pushed')}
+            onPress={() => {
+              if (count < 3 || !count) {
+                incrementCard(card);
+              }
+            }}
             style={styles.button}
           />
-          <Text>{card.count ? card.count.toString() : '0'} / 3</Text>
+          <Text>{count ? count.toString() : '0'} / 3</Text>
           <Icon
             raised
             name="remove"
             size={15}
-            onPress={() => console.log('Remove pushed')}
+            onPress={() => {
+              if (count > 0) {
+                decrementCard(card);
+              }
+            }}
             style={styles.button}
           />
         </View>

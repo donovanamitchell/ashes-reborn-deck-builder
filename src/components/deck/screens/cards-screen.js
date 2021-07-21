@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, FlatList, View} from 'react-native';
 import {DeckContext} from '../deck-context';
 import CardFilter from '../../util/card-filter';
@@ -7,21 +7,31 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import CardAdder from '../../card/card-adder';
 
 const CardsScreen = () => {
-  const {cards} = React.useContext(DeckContext);
+  const {cards} = useContext(DeckContext);
   const state = useContext(GlobalContext);
+  const [cardCount, setCardCount] = useState(0);
   const [showFilter, setShowFilter] = useState(false);
 
-  function cardCount() {
-    return Object.entries(cards).reduce(
-      (accumulator, value) => accumulator + value[1],
-      0,
+  useEffect(() => {
+    setCardCount(
+      Object.entries(cards).reduce(
+        (accumulator, value) => accumulator + value[1].count,
+        0,
+      ),
     );
-  }
+  }, [cards]);
 
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Text>Cards: {cardCount()} / 30</Text>
+        <Text>
+          {[
+            'Cards: ',
+            <Text key="2" style={cardCount > 30 ? styles.errorText : {}}>
+              {cardCount} / 30
+            </Text>,
+          ]}
+        </Text>
         <View style={styles.filter}>
           <Text style={styles.filterText}>Filters:</Text>
           <Icon
@@ -36,7 +46,10 @@ const CardsScreen = () => {
       <FlatList
         data={state.cards}
         renderItem={({item}) => (
-          <CardAdder card={item} count={cards[item.stub]} />
+          <CardAdder
+            card={item}
+            count={cards[item.stub] && cards[item.stub].count}
+          />
         )}
         keyExtractor={item => item.stub}
       />
@@ -47,6 +60,9 @@ const CardsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  errorText: {
+    color: 'red',
   },
   topBar: {
     flexDirection: 'row',

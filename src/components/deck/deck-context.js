@@ -47,21 +47,35 @@ const initialDeckState = {
 
 const deckContextWrapper = component => ({
   ...initialDeckState,
+  decrementCard: card => {
+    if (
+      initialDeckState.cards[card.stub] &&
+      initialDeckState.cards[card.stub].count > 1
+    ) {
+      initialDeckState.cards[card.stub].count -= 1;
+    } else {
+      delete initialDeckState.cards[card.stub];
+    }
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  incrementCard: card => {
+    if (initialDeckState.cards[card.stub]) {
+      initialDeckState.cards[card.stub].count += 1;
+    } else {
+      initialDeckState.cards[card.stub] = {
+        count: 1,
+        name: card.name,
+        stub: card.stub,
+      };
+    }
+    component?.setState({context: deckContextWrapper(component)});
+  },
   save: () => {
     console.log('SAVING DECK', initialDeckState);
     AsyncStorage.setItem(
       initialDeckState.filename,
       JSON.stringify(initialDeckState),
     );
-  },
-  setName: text => {
-    initialDeckState.name = text;
-    component?.setState({context: deckContextWrapper(component)});
-  },
-  setPheonixborn: (name, stub) => {
-    initialDeckState.pheonixBorn = name;
-    initialDeckState.pheonixBornStub = stub;
-    component?.setState({context: deckContextWrapper(component)});
   },
   setDeck: deck => {
     console.log('SET DECK', deck);
@@ -73,6 +87,15 @@ const deckContextWrapper = component => ({
     initialDeckState.cards = deck.cards;
     initialDeckState.dice = deck.dice;
     initialDeckState.firstFive = deck.firstFive;
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  setName: text => {
+    initialDeckState.name = text;
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  setPheonixborn: (name, stub) => {
+    initialDeckState.pheonixBorn = name;
+    initialDeckState.pheonixBornStub = stub;
     component?.setState({context: deckContextWrapper(component)});
   },
 });
