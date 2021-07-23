@@ -3,41 +3,41 @@
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const initialState = {
+export const globalState = {
   cards: [],
   releases: [],
   decks: [],
 };
 
 const globalContextWrapper = component => ({
-  ...initialState,
+  ...globalState,
   addDeck: deck => {
-    initialState.decks = initialState.decks.concat(deck);
+    globalState.decks = globalState.decks.concat(deck);
     component?.setState({context: globalContextWrapper(component)});
   },
   saveDecks: () => {
-    console.log('SAVING DECKS', initialState.decks);
+    console.log('SAVING DECKS', globalState.decks);
     AsyncStorage.setItem(
       'ASHES_DECKS_MAIN_SCREEN',
-      JSON.stringify(initialState.decks),
+      JSON.stringify(globalState.decks),
     );
   },
   setCards: cards => {
-    initialState.cards = cards;
+    globalState.cards = cards;
     component?.setState({context: globalContextWrapper(component)});
   },
   setDecks: decks => {
     console.log('SET DECKS', decks);
-    initialState.decks = decks;
+    globalState.decks = decks;
     component?.setState({context: globalContextWrapper(component)});
   },
   setReleases: releases => {
     console.log('SET RELEASES', releases);
-    initialState.releases = releases;
+    globalState.releases = releases;
     component?.setState({context: globalContextWrapper(component)});
   },
   updateDeck: updatedDeck => {
-    initialState.decks = initialState.decks.map(deck =>
+    globalState.decks = globalState.decks.map(deck =>
       deck.filename === updatedDeck.filename ? updatedDeck : deck,
     );
     component?.setState({context: globalContextWrapper(component)});

@@ -4,6 +4,7 @@ import SelectBox from '../../util/select-box';
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
 import CardView from '../../card/card-view';
+import FirstFive from './pheonixborn/first-five';
 
 const PheonixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
@@ -19,6 +20,7 @@ const PheonixBornScreen = ({navigation, route}) => {
 
   const [pheonixBornCards, setPheonixbornCards] = useState([]);
   const [sortedDeckCards, setSortedDeckCards] = useState([]);
+  const [sortedConjurations, setSortedConjurations] = useState([]);
 
   useEffect(() => {
     setPheonixbornCards(
@@ -33,16 +35,34 @@ const PheonixBornScreen = ({navigation, route}) => {
   }, [state.cards]);
 
   useEffect(() => {
-    setSortedDeckCards(
-      Object.entries(cards).sort((first, second) => {
-        if (first[1].name < second[1].name) {
-          return -1;
-        }
-        if (first[1].name > second[1].name) {
-          return 1;
-        }
-        return 0;
-      }),
+    let sortedCards = Object.entries(cards).sort((first, second) => {
+      if (first[1].name < second[1].name) {
+        return -1;
+      }
+      if (first[1].name > second[1].name) {
+        return 1;
+      }
+      return 0;
+    });
+    setSortedDeckCards(sortedCards);
+    setSortedConjurations(
+      sortedCards
+        .flatMap(item => {
+          if (item[1].conjurations) {
+            return item[1].conjurations;
+          } else {
+            return [];
+          }
+        })
+        .sort((first, second) => {
+          if (first.name < second.name) {
+            return -1;
+          }
+          if (first.name > second.name) {
+            return 1;
+          }
+          return 0;
+        }),
     );
   }, [cards]);
 
@@ -58,9 +78,10 @@ const PheonixBornScreen = ({navigation, route}) => {
     );
   }
 
+  // TODO: give component file
   function cardsList() {
     return sortedDeckCards.map(item => (
-      <View key={item.stub} style={styles.cardsList}>
+      <View key={item[1].stub} style={[styles.container, styles.cardsList]}>
         <Text>{item[1].count}</Text>
         <Text
           style={styles.linkText}
@@ -76,14 +97,30 @@ const PheonixBornScreen = ({navigation, route}) => {
     ));
   }
 
-  return (
-    <View style={styles.container}>
-      <ScrollView style={[styles.container, styles.editSection]}>
-        <Text style={styles.headerText} key="deckName">
-          Deck Name:
+  // TODO: give component file
+  function conjurationsList() {
+    return sortedConjurations.map(conjuration => (
+      <View key={conjuration.stub} style={[styles.container, styles.cardsList]}>
+        <Text>{conjuration.count}</Text>
+        <Text
+          style={styles.linkText}
+          onPress={() =>
+            navigation.navigate('CardModal', {
+              name: conjuration.name,
+              stub: conjuration.stub,
+            })
+          }>
+          {conjuration.name}
         </Text>
+      </View>
+    ));
+  }
+
+  return (
+    <ScrollView style={styles.container}>
+      <View key="main" style={[styles.container, styles.editSection]}>
+        <Text style={styles.headerText}>Deck Name:</Text>
         <TextInput
-          key="deckNameInput"
           style={styles.textInput}
           onChangeText={text => {
             setName(text);
@@ -92,11 +129,8 @@ const PheonixBornScreen = ({navigation, route}) => {
           placeholder="Deck Name"
           value={name}
         />
-        <Text style={styles.headerText} key="pheonix">
-          Pheonixborn:
-        </Text>
+        <Text style={styles.headerText}>Pheonixborn:</Text>
         <SelectBox
-          key="pheonixSelect"
           value={{text: pheonixBorn, stub: pheonixBornStub}}
           onChangeValue={item => {
             setPheonixborn(item.text, item.value);
@@ -111,26 +145,19 @@ const PheonixBornScreen = ({navigation, route}) => {
         />
         {pheonixBornStub && (
           <CardView
-            key="cardView"
             style={styles.cardView}
             card={state.cards.find(card => card.stub === pheonixBornStub)}
           />
         )}
-        <Text style={styles.headerText} key="dice">
-          Dice:
-        </Text>
-        <Text style={styles.headerText} key="firstFive">
-          First Five:
-        </Text>
-        <Text style={styles.headerText} key="cards">
-          Cards:
-        </Text>
+        <Text style={styles.headerText}>Dice:</Text>
+        <Text style={styles.headerText}>First Five:</Text>
+        <FirstFive />
+        <Text style={styles.headerText}>Cards:</Text>
         <View style={styles.cardsListContainer}>{cardsList()}</View>
-        <Text style={styles.headerText} key="conjurations">
-          Conjurations:
-        </Text>
-      </ScrollView>
-    </View>
+        <Text style={styles.headerText}>Conjurations:</Text>
+        <View style={styles.cardsListContainer}>{conjurationsList()}</View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -160,7 +187,6 @@ const styles = StyleSheet.create({
   linkText: {
     paddingLeft: 5,
     color: 'blue',
-    textDecorationLine: 'underline',
   },
   headerText: {
     fontWeight: 'bold',

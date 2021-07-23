@@ -75,7 +75,9 @@ const CardsScreen = () => {
         <Text>
           {[
             'Cards: ',
-            <Text key="2" style={cardCount > 30 ? styles.errorText : {}}>
+            <Text
+              key="2"
+              style={cardCount !== 30 ? styles.errorText : styles.text}>
               {cardCount} / 30
             </Text>,
           ]}
@@ -120,6 +122,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+  },
+  text: {
+    color: 'black',
   },
   topBar: {
     flexDirection: 'row',

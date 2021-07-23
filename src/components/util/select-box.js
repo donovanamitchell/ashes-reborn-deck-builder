@@ -6,13 +6,17 @@ const SelectBox = props => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <View>
+    <View style={props.style}>
       <Modal
         animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(!modalVisible)}>
-        <View style={styles.centeredView}>
+        <Pressable
+          style={styles.centeredView}
+          onPress={() => {
+            setModalVisible(!modalVisible);
+          }}>
           <View style={styles.modalView}>
             <FlatList
               data={props.data}
@@ -31,7 +35,7 @@ const SelectBox = props => {
               keyExtractor={(item, index) => index}
             />
           </View>
-        </View>
+        </Pressable>
       </Modal>
       <Pressable
         style={styles.button}

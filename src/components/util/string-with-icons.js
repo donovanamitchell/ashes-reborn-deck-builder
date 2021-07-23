@@ -15,7 +15,7 @@ function StringWithIcons(string, navigation) {
       return (
         <Text
           key={index}
-          style={{color: 'blue', textDecorationLine: 'underline'}}
+          style={{color: 'blue'}}
           onPress={() => navigation.navigate('CardModal', {name: trimmedText})}>
           {trimmedText}
         </Text>

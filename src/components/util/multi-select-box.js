@@ -25,7 +25,11 @@ const MultiSelectBox = props => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(!modalVisible)}>
-        <View style={styles.centeredView}>
+        <Pressable
+          style={styles.centeredView}
+          onPress={() => {
+            setModalVisible(!modalVisible);
+          }}>
           <View style={styles.modalView}>
             <FlatList
               data={props.data}
@@ -69,7 +73,7 @@ const MultiSelectBox = props => {
               />
             </View>
           </View>
-        </View>
+        </Pressable>
       </Modal>
       <Pressable
         style={styles.openModalButton}
