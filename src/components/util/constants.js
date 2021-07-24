@@ -5,3 +5,13 @@ export const ADDABLE_CARD_TYPES = [
   'Reaction Spell',
   'Ready Spell',
 ];
+
+export const DICE_TYPES = [
+  'ceremonial',
+  'charm',
+  'divine',
+  'illusion',
+  'natural',
+  'sympathy',
+  'time',
+];

@@ -5,11 +5,13 @@ import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
 import CardView from '../../card/card-view';
 import FirstFive from './pheonixborn/first-five';
+import DiceView from '../../dice/dice-view';
 
 const PheonixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
   const {
     cards,
+    dice,
     filename,
     name,
     pheonixBorn,
@@ -150,6 +152,7 @@ const PheonixBornScreen = ({navigation, route}) => {
           />
         )}
         <Text style={styles.headerText}>Dice:</Text>
+        <DiceView dice={dice} />
         <Text style={styles.headerText}>First Five:</Text>
         <FirstFive />
         <Text style={styles.headerText}>Cards:</Text>

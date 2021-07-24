@@ -4,7 +4,6 @@ import PheonixBornScreen from './screens/pheonixborn-screen';
 import CardsScreen from './screens/cards-screen';
 import DiceScreen from './screens/dice-screen';
 import HandScreen from './screens/hand-screen';
-import StatsScreen from './screens/stats-screen';
 import {DeckContextProvider, DeckContext, getDeck} from './deck-context';
 import Loading from '../util/loading';
 
@@ -32,7 +31,6 @@ const IntermediateContextLoader = params => {
       <TopNav.Screen name="Cards" component={CardsScreen} />
       <TopNav.Screen name="First Five" component={HandScreen} />
       <TopNav.Screen name="Dice" component={DiceScreen} />
-      <TopNav.Screen name="Stats" component={StatsScreen} />
     </TopNav.Navigator>
   );
 };

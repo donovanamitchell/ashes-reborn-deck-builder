@@ -63,6 +63,13 @@ const deckContextWrapper = component => ({
     initialDeckState.cards = Object.assign({}, initialDeckState.cards);
     component?.setState({context: deckContextWrapper(component)});
   },
+  decrementDice: diceType => {
+    if (initialDeckState.dice[diceType]) {
+      initialDeckState.dice[diceType]--;
+    }
+    initialDeckState.dice = Object.assign({}, initialDeckState.dice);
+    component?.setState({context: deckContextWrapper(component)});
+  },
   incrementCard: card => {
     if (initialDeckState.cards[card.stub]) {
       initialDeckState.cards[card.stub].count += 1;
@@ -88,6 +95,15 @@ const deckContextWrapper = component => ({
       initialDeckState.cards[card.stub] = cardContent;
     }
     initialDeckState.cards = Object.assign({}, initialDeckState.cards);
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  incrementDice: diceType => {
+    if (initialDeckState.dice[diceType]) {
+      initialDeckState.dice[diceType]++;
+    } else {
+      initialDeckState.dice[diceType] = 1;
+    }
+    initialDeckState.dice = Object.assign({}, initialDeckState.dice);
     component?.setState({context: deckContextWrapper(component)});
   },
   save: () => {
