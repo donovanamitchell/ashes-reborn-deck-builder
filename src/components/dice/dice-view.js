@@ -5,16 +5,16 @@ import {AshesIcon} from '../util/ashes-icon';
 
 function diceIcons(dice) {
   let basics = new Array(10).fill('basic');
-  let index = 0;
+  let basicsIndex = 0;
   DICE_TYPES.forEach(diceType => {
     if (dice[diceType]) {
       // Fills array with a number of diceType strings
       basics.splice(
-        index,
+        basicsIndex,
         dice[diceType],
         ...new Array(dice[diceType]).fill(diceType),
       );
-      index += dice[diceType];
+      basicsIndex += dice[diceType];
     }
   });
   return basics

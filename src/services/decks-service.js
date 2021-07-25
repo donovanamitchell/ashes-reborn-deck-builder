@@ -17,5 +17,5 @@ export async function getDeckFilenames() {
     return [];
   }
 
-  return decks;
+  return decks.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 }

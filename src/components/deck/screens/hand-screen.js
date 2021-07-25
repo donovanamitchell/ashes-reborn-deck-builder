@@ -30,6 +30,9 @@ const HandScreen = () => {
     let cardHash = {};
     let newErrors = [];
     firstFive.forEach((card, index) => {
+      if (!card) {
+        return;
+      }
       if (cardHash[card.stub]) {
         cardHash[card.stub].count++;
       } else {

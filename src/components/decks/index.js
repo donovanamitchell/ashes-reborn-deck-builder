@@ -9,8 +9,15 @@ import {getDeckFilenames} from '../../services/decks-service';
 import Loading from '../util/loading';
 
 const DecksScreen = ({navigation}) => {
-  const {decks, setCards, setDecks, setReleases, addDeck, saveDecks} =
-    useContext(GlobalContext);
+  const {
+    decks,
+    setCards,
+    setDecks,
+    setReleases,
+    addDeck,
+    saveDecks,
+    removeDeck,
+  } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -56,9 +63,12 @@ const DecksScreen = ({navigation}) => {
         renderItem={({item}) => (
           <DeckListItem
             name={item.name}
+            pheonixBorn={item.pheonixBorn}
+            pheonixBornStub={item.pheonixBornStub}
             onPress={() => {
               navigation.navigate('Deck', {filename: item.filename});
             }}
+            onDelete={() => removeDeck(item.filename)}
           />
         )}
         keyExtractor={item => item.filename}

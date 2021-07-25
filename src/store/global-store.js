@@ -15,6 +15,15 @@ const globalContextWrapper = component => ({
     globalState.decks = globalState.decks.concat(deck);
     component?.setState({context: globalContextWrapper(component)});
   },
+  removeDeck: filename => {
+    // we flatmap here in order to ensure effects are properly triggered with a
+    // new array
+    globalState.decks = globalState.decks.flatMap(deck =>
+      filename === deck.filename ? [] : deck,
+    );
+    component?.setState({context: globalContextWrapper(component)});
+    AsyncStorage.removeItem(filename);
+  },
   saveDecks: () => {
     console.log('SAVING DECKS', globalState.decks);
     AsyncStorage.setItem(
@@ -37,9 +46,12 @@ const globalContextWrapper = component => ({
     component?.setState({context: globalContextWrapper(component)});
   },
   updateDeck: updatedDeck => {
-    globalState.decks = globalState.decks.map(deck =>
-      deck.filename === updatedDeck.filename ? updatedDeck : deck,
-    );
+    globalState.decks = globalState.decks
+      .map(deck =>
+        deck.filename === updatedDeck.filename ? updatedDeck : deck,
+      )
+      .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+
     component?.setState({context: globalContextWrapper(component)});
   },
 });

@@ -6,6 +6,8 @@ import {GlobalContext} from '../../../store/global-store';
 import CardView from '../../card/card-view';
 import FirstFive from './pheonixborn/first-five';
 import DiceView from '../../dice/dice-view';
+import ConjurationsList from './pheonixborn/conjuration-list';
+import CardsList from './pheonixborn/cards-list';
 
 const PheonixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
@@ -80,44 +82,6 @@ const PheonixBornScreen = ({navigation, route}) => {
     );
   }
 
-  // TODO: give component file
-  function cardsList() {
-    return sortedDeckCards.map(item => (
-      <View key={item[1].stub} style={[styles.container, styles.cardsList]}>
-        <Text>{item[1].count}</Text>
-        <Text
-          style={styles.linkText}
-          onPress={() =>
-            navigation.navigate('CardModal', {
-              name: item[1].name,
-              stub: item[1].stub,
-            })
-          }>
-          {item[1].name}
-        </Text>
-      </View>
-    ));
-  }
-
-  // TODO: give component file
-  function conjurationsList() {
-    return sortedConjurations.map(conjuration => (
-      <View key={conjuration.stub} style={[styles.container, styles.cardsList]}>
-        <Text>{conjuration.count}</Text>
-        <Text
-          style={styles.linkText}
-          onPress={() =>
-            navigation.navigate('CardModal', {
-              name: conjuration.name,
-              stub: conjuration.stub,
-            })
-          }>
-          {conjuration.name}
-        </Text>
-      </View>
-    ));
-  }
-
   return (
     <ScrollView style={styles.container}>
       <View key="main" style={[styles.container, styles.editSection]}>
@@ -156,9 +120,19 @@ const PheonixBornScreen = ({navigation, route}) => {
         <Text style={styles.headerText}>First Five:</Text>
         <FirstFive />
         <Text style={styles.headerText}>Cards:</Text>
-        <View style={styles.cardsListContainer}>{cardsList()}</View>
+        <View style={styles.cardsListContainer}>
+          <CardsList
+            navigation={navigation}
+            sortedDeckCards={sortedDeckCards}
+          />
+        </View>
         <Text style={styles.headerText}>Conjurations:</Text>
-        <View style={styles.cardsListContainer}>{conjurationsList()}</View>
+        <View style={styles.cardsListContainer}>
+          <ConjurationsList
+            navigation={navigation}
+            sortedConjurations={sortedConjurations}
+          />
+        </View>
       </View>
     </ScrollView>
   );
