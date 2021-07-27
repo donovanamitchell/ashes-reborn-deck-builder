@@ -26,15 +26,6 @@ function containsSearchString(searchText, name, text) {
   return true;
 }
 
-function isFromPack(filterPackStubs, pack) {
-  if (filterPackStubs.length) {
-    return filterPackStubs.find(
-      stub => stub.value === pack.stub || stub.value === 'ALL_PACKS',
-    );
-  }
-  return true;
-}
-
 const CardsScreen = () => {
   const [cardCount, setCardCount] = useState(0);
   const [cardTypeFilter, setCardTypeFilter] = useState({});
@@ -42,6 +33,8 @@ const CardsScreen = () => {
   const [packStubsFilter, setPackStubsFilter] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [showFilter, setShowFilter] = useState(false);
+  const [useAllPacks, setUseAllPacks] = useState(false);
+  const [useOwnedPacks, setUseOwnedPacks] = useState(false);
 
   const {cards} = useContext(DeckContext);
   const state = useContext(GlobalContext);
@@ -56,6 +49,22 @@ const CardsScreen = () => {
   }, [cards]);
 
   useEffect(() => {
+    function isFromPack(pack) {
+      if (useAllPacks) {
+        return true;
+      }
+      if (
+        useOwnedPacks &&
+        state.ownedReleases.find(release => release.stub === pack.stub)
+      ) {
+        return true;
+      }
+      if (packStubsFilter.length) {
+        return packStubsFilter.find(stub => stub.value === pack.stub);
+      }
+      return true;
+    }
+
     setFilteredCards(
       state.cards.filter(card => {
         // TODO: If I made each one of these into an effect would that be more
@@ -63,11 +72,31 @@ const CardsScreen = () => {
         return (
           hasType(cardTypeFilter.value, card.type) &&
           containsSearchString(searchText, card.name, card.text) &&
-          isFromPack(packStubsFilter, card.release)
+          isFromPack(card.release)
         );
       }),
     );
-  }, [state.cards, cardTypeFilter, searchText, packStubsFilter]);
+  }, [
+    state.cards,
+    cardTypeFilter,
+    searchText,
+    packStubsFilter,
+    useOwnedPacks,
+    useAllPacks,
+    state.ownedReleases,
+  ]);
+
+  function onCardFilteredByPack(items) {
+    let owned = items.find(({value}) => value === 'OWNED_PACKS');
+    setUseOwnedPacks(owned && true);
+    setUseAllPacks(
+      (items.find(item => item.value === 'ALL_PACKS') ||
+        (owned &&
+          state.ownedReleases.find(release => release.stub === 'ALL_PACKS'))) &&
+        true,
+    );
+    setPackStubsFilter(items);
+  }
 
   return (
     <View style={styles.container}>
@@ -98,7 +127,7 @@ const CardsScreen = () => {
           packStubs={packStubsFilter}
           searchText={searchText}
           setCardType={setCardTypeFilter}
-          setPackStubs={setPackStubsFilter}
+          setPackStubs={onCardFilteredByPack}
           setSearchText={setSearchText}
         />
       )}

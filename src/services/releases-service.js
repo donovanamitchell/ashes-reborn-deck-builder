@@ -17,6 +17,14 @@ export async function getReleases() {
   }
 }
 
+export async function getOwnedReleases() {
+  let releases = JSON.parse(await AsyncStorage.getItem('ASHES_OWNED_RELEASES'));
+  if (releases === null) {
+    return [];
+  }
+  return releases;
+}
+
 export async function resetReleases() {
   try {
     await AsyncStorage.removeItem('ASHES_RELEASES');
@@ -26,4 +34,11 @@ export async function resetReleases() {
     console.log(e);
     return [];
   }
+}
+
+export async function saveOwnedReleases(ownedReleases) {
+  return await AsyncStorage.setItem(
+    'ASHES_OWNED_RELEASES',
+    JSON.stringify(ownedReleases),
+  );
 }

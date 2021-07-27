@@ -7,6 +7,7 @@ export const globalState = {
   cards: [],
   releases: [],
   decks: [],
+  ownedReleases: [],
 };
 
 const globalContextWrapper = component => ({
@@ -38,6 +39,11 @@ const globalContextWrapper = component => ({
   setDecks: decks => {
     console.log('SET DECKS', decks);
     globalState.decks = decks;
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  setOwnedReleases: releases => {
+    console.log('SET OWNED RELEASES', releases);
+    globalState.ownedReleases = releases;
     component?.setState({context: globalContextWrapper(component)});
   },
   setReleases: releases => {
