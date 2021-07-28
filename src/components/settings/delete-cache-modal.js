@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, StyleSheet, Text, View, Modal, Pressable} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MultiSelectBox from '../util/multi-select-box';
 
 const DeleteCacheModal = ({

@@ -30,6 +30,23 @@ export async function getCardsFromRelease(releaseStub) {
   }
 }
 
+export async function setCardsFromReleases(releases, setCards) {
+  const cards = await getCardsFromReleases(
+    releases.map(release => release.stub),
+  );
+  return setCards(
+    cards.sort((first, second) => {
+      if (first.name < second.name) {
+        return -1;
+      }
+      if (first.name > second.name) {
+        return 1;
+      }
+      return 0;
+    }),
+  );
+}
+
 export async function deleteCards(releaseStubs) {
   try {
     // TODO: delete card images

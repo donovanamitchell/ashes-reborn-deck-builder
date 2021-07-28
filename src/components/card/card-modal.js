@@ -1,5 +1,6 @@
 import React from 'react';
-import {ImageBackground, Pressable} from 'react-native';
+import {Pressable} from 'react-native';
+import CachingImage from './caching-image';
 
 // TODO: stub guesser from card name?
 const CardModal = ({route, navigation}) => {
@@ -11,10 +12,7 @@ const CardModal = ({route, navigation}) => {
         console.log(`Dismissed card with stub: ${cardName}`);
         navigation.goBack();
       }}>
-      <ImageBackground
-        style={{flex: 1}}
-        source={require('../../assets/loading-card.jpg')}
-      />
+      <CachingImage resizeMode="cover" />
     </Pressable>
   );
 };

@@ -1,18 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, StyleSheet, Text, View, Modal, Pressable} from 'react-native';
+import {Button, StyleSheet, Text, View, Modal} from 'react-native';
 import {GlobalContext} from '../store/global-store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MultiSelectBox from './util/multi-select-box';
-import {saveOwnedReleases} from '../services/releases-service';
+import {resetReleases, saveOwnedReleases} from '../services/releases-service';
 import DeleteCacheModal from './settings/delete-cache-modal';
 import {
   deleteAllCards,
   deleteCards,
-  getCardsFromReleases,
+  setCardsFromReleases,
 } from '../services/cards-service';
+import Loading from './util/loading';
 
 const SettingsScreen = () => {
-  const {releases, ownedReleases, setOwnedReleases, setCards} =
+  const {releases, ownedReleases, setOwnedReleases, setCards, setReleases} =
     useContext(GlobalContext);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -55,32 +55,29 @@ const SettingsScreen = () => {
       promise = deleteCards(releasesToDelete.map(({value}) => value));
     }
     promise
-      .then(() =>
-        getCardsFromReleases(releases.flatMap(release => release.stub)).then(
-          cards =>
-            setCards(
-              cards.sort((first, second) => {
-                if (first.name < second.name) {
-                  return -1;
-                }
-                if (first.name > second.name) {
-                  return 1;
-                }
-                return 0;
-              }),
-            ),
-        ),
-      )
+      .then(() => setCardsFromReleases(releases, setCards))
       .finally(() => setLoading(false));
   }
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={loading}
+        onRequestClose={() => {}}>
+        <View style={styles.container}>
+          <Loading />
+        </View>
+      </Modal>
       <View style={styles.button}>
         <Button
           title="Check for Updates"
           onPress={() => {
-            // AsyncStorage.clear();
+            resetReleases().then(newReleases => {
+              setReleases(newReleases);
+              setCardsFromReleases(newReleases, setCards);
+            });
           }}
         />
       </View>
@@ -131,30 +128,10 @@ const styles = StyleSheet.create({
     width: '50%',
     padding: 5,
   },
-  centeredView: {
-    flex: 1,
-    marginTop: 22,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     padding: 15,
     backgroundColor: 'white',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });
 
