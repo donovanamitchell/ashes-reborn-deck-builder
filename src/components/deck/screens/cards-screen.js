@@ -15,12 +15,13 @@ function hasType(filter, type) {
   }
 }
 
-function containsSearchString(searchText, name, text) {
+function containsSearchString(searchText, name, text, cost) {
   if (searchText) {
     let loweredText = searchText.toLowerCase();
     return (
       name.toLowerCase().includes(loweredText) ||
-      (text && text.toLowerCase().includes(loweredText))
+      (text && text.toLowerCase().includes(loweredText)) ||
+      (cost && cost.join().toLowerCase().includes(loweredText))
     );
   }
   return true;
@@ -71,7 +72,7 @@ const CardsScreen = () => {
         // efficient?
         return (
           hasType(cardTypeFilter.value, card.type) &&
-          containsSearchString(searchText, card.name, card.text) &&
+          containsSearchString(searchText, card.name, card.text, card.cost) &&
           isFromPack(card.release)
         );
       }),
