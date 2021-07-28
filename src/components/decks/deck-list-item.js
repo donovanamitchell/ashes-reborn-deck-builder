@@ -51,7 +51,7 @@ const DeckListItem = props => {
           </View>
         </Pressable>
       </Modal>
-      <View style={styles.thing}>
+      <View style={styles.deckContainer}>
         <CardImage
           styles={styles.image}
           stub={props.pheonixBornStub}
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     width: '50%',
     padding: 5,
   },
-  thing: {
+  deckContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },

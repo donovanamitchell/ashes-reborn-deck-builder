@@ -33,6 +33,7 @@ const globalContextWrapper = component => ({
     );
   },
   setCards: cards => {
+    console.log('SET CARDS', cards);
     globalState.cards = cards;
     component?.setState({context: globalContextWrapper(component)});
   },

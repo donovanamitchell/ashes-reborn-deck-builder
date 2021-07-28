@@ -30,10 +30,24 @@ export async function getCardsFromRelease(releaseStub) {
   }
 }
 
-export async function resetCards(releaseStub) {
+export async function deleteCards(releaseStubs) {
   try {
-    await AsyncStorage.removeItem(`${releaseStub}-cards`);
-    return getCardsFromRelease(releaseStub);
+    // TODO: delete card images
+    return Promise.all(
+      releaseStubs.map(stub => AsyncStorage.removeItem(`${stub}-cards`)),
+    );
+  } catch (e) {
+    // TODO: error modal
+    console.log(e);
+    return [];
+  }
+}
+
+export async function deleteAllCards() {
+  try {
+    // TODO: delete card images
+    let keys = await AsyncStorage.getAllKeys();
+    return AsyncStorage.multiRemove(keys.filter(key => key.endsWith('-cards')));
   } catch (e) {
     // TODO: error modal
     console.log(e);
