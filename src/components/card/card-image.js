@@ -11,7 +11,7 @@ const CardImage = props => {
       onPress={() => {
         navigation.navigate('CardModal', {stub: props.stub, name: props.name});
       }}>
-      <CachingImage />
+      <CachingImage stub={props.stub} />
     </Pressable>
   );
 };

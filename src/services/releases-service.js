@@ -4,9 +4,18 @@ export async function getReleases() {
   try {
     let releases = JSON.parse(await AsyncStorage.getItem('ASHES_RELEASES'));
     if (releases === null) {
-      // TODO: Fetch via API
-      releases = require('../assets/releases.json');
-      console.log('TODO: Fetching via API, reading from file instead');
+      let response = await fetch(
+        'https://api.ashes.live/v2/releases?show_legacy=false',
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      releases = await response.json();
+
       AsyncStorage.setItem('ASHES_RELEASES', JSON.stringify(releases));
     }
     return releases;
