@@ -1,7 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const cardData = require('../assets/cards.json');
-
 export function getCardsFromReleases(releaseStubs) {
   return Promise.all(releaseStubs.map(stub => getCardsFromRelease(stub))).then(
     cardPacks => cardPacks.flat(),
@@ -12,13 +10,45 @@ export async function getCardsFromRelease(releaseStub) {
   try {
     let cards = JSON.parse(await AsyncStorage.getItem(`${releaseStub}-cards`));
     if (cards === null) {
-      // TODO: Fetch via API
-      console.log(
-        `TODO: Fetch ${releaseStub} via API, reading from local file instead`,
+      let pageSize = 30;
+      let response = await fetch(
+        `https://api.ashes.live/v2/cards?mode=listing&releases=all&r=${releaseStub}&limit=${pageSize}&offset=0`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        },
       );
-      cards = cardData.results.filter(
-        card => card.release.stub === releaseStub,
-      );
+      let release = await response.json();
+      let totalCount = release.count;
+      cards = release.results;
+
+      if (totalCount > pageSize) {
+        let fetchedReleases = await Promise.all(
+          Array.from(
+            {length: Math.ceil(totalCount / pageSize) - 1},
+            (_value, index) =>
+              fetch(
+                `https://api.ashes.live/v2/cards?mode=listing&releases=all&r=${releaseStub}&limit=${pageSize}&offset=${
+                  (index + 1) * pageSize
+                }`,
+                {
+                  method: 'GET',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                },
+              ).then(response => response.json()),
+          ),
+        );
+        fetchedReleases.forEach(
+          fetchedRelease => (cards = cards.concat(fetchedRelease.results)),
+        );
+      }
+
       AsyncStorage.setItem(`${releaseStub}-cards`, JSON.stringify(cards));
     }
 
