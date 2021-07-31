@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View, Modal} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {Constants} from 'react-native-unimodules';
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
