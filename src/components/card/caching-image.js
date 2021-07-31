@@ -1,24 +1,28 @@
-import React from 'react';
-import {StyleSheet, ImageBackground} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Image, ImageBackground} from 'react-native';
+import {getCardUri} from '../../services/cards-service';
 
 const loadingImage = require('../../assets/loading-card.jpg');
 
 const CachingImage = ({resizeMode, stub}) => {
-  // TODO: solve stubless problem
-  if (stub) {
+  const [uri, setUri] = useState('');
+
+  useEffect(() => {
+    if (stub) {
+      getCardUri(stub).then(newUri => setUri(newUri));
+    }
+  }, [stub]);
+
+  if (stub && uri) {
     return (
       <ImageBackground
         style={styles.image}
         resizeMode={resizeMode || 'center'}
         source={loadingImage}>
-        <FastImage
+        <Image
+          source={{uri: uri}}
           style={styles.image}
-          resizeMode={resizeMode || FastImage.resizeMode.center}
-          source={{
-            uri: `https://cdn.ashes.live/images/cards/${stub}.jpg`,
-            cache: FastImage.cacheControl.immutable,
-          }}
+          resizeMode={resizeMode || 'center'}
         />
       </ImageBackground>
     );

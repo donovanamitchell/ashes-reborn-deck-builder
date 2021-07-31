@@ -7,13 +7,20 @@ import DeleteCacheModal from './settings/delete-cache-modal';
 import {
   deleteAllCards,
   deleteCards,
+  preloadImages,
   setCardsFromReleases,
 } from '../services/cards-service';
 import Loading from './util/loading';
 
 const SettingsScreen = () => {
-  const {releases, ownedReleases, setOwnedReleases, setCards, setReleases} =
-    useContext(GlobalContext);
+  const {
+    cards,
+    releases,
+    ownedReleases,
+    setOwnedReleases,
+    setCards,
+    setReleases,
+  } = useContext(GlobalContext);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -92,9 +99,12 @@ const SettingsScreen = () => {
       <Text>Cache</Text>
       <View style={styles.button}>
         <Button
-          title="Download All Card Images"
+          title="Cache All Card Images"
           onPress={() => {
-            // AsyncStorage.clear();
+            setLoading(true);
+            preloadImages(cards.map(({stub}) => stub)).finally(() =>
+              setLoading(false),
+            );
           }}
         />
       </View>
