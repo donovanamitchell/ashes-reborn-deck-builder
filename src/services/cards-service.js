@@ -3,6 +3,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FileSystem} from 'react-native-unimodules';
 import {globalState} from '../store/global-store';
 
+function directory() {
+  return globalState.storeImagesInFileSystem
+    ? FileSystem.documentDirectory
+    : FileSystem.cacheDirectory;
+}
+
 export async function deleteCards(releaseStubs) {
   try {
     return Promise.all([
@@ -24,16 +30,15 @@ export async function deleteCards(releaseStubs) {
 
 export async function deleteAllCards() {
   try {
-    console.log(FileSystem.cacheDirectory);
     let cardFilenames = (
-      await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory)
+      await FileSystem.readDirectoryAsync(directory())
     ).filter(filename => filename.endsWith('-card.jpg'));
     let keys = await AsyncStorage.getAllKeys();
 
     return Promise.all([
       // I hate splats
       ...cardFilenames.map(filename =>
-        FileSystem.deleteAsync(`${FileSystem.cacheDirectory}${filename}`, {
+        FileSystem.deleteAsync(`${directory()}${filename}`, {
           idempotent: true,
         }),
       ),
@@ -47,7 +52,7 @@ export async function deleteAllCards() {
 }
 
 export async function getCardUri(stub) {
-  const cacheUri = `${FileSystem.cacheDirectory}${stub}-card.jpg`;
+  const cacheUri = `${directory()}${stub}-card.jpg`;
   try {
     let existingImage = await FileSystem.getInfoAsync(cacheUri);
     if (existingImage.exists) {
@@ -61,7 +66,6 @@ export async function getCardUri(stub) {
     ).downloadAsync();
 
     if (image.uri) {
-      console.log('Cache miss');
       return image.uri;
     }
     // TODO: error? what do?
@@ -157,7 +161,7 @@ export async function setCardsFromReleases(releases, setCards) {
 export function uncacheImages(stubs) {
   return Promise.all(
     stubs.map(stub =>
-      FileSystem.deleteAsync(`${FileSystem.cacheDirectory}${stub}-card.jpg`, {
+      FileSystem.deleteAsync(`${directory()}${stub}-card.jpg`, {
         idempotent: true,
       }),
     ),
