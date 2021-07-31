@@ -10,7 +10,7 @@ High Priority
 - [x] Fetch Card data via
   - [x] Cache invalidation by pack in settings screen
   - [ ] Error modal
-- [ ] Card image preload button in settings screen
+- [x] Card image preload button in settings screen
   - [ ] Card Loading image
 - [ ] Release 1.0
 
@@ -30,3 +30,5 @@ Low Priority
 - [ ] Improve ReadMe
 - [ ] Basic deck description field
 - [ ] Ashes.live deck integration
+- [ ] Replace AsyncStorage with FileSystem, because AsyncStorage doesn't support images and requiring both is redundant.
+- [ ] When returning to the Decks screen while loading images on the edit deck screen, react will complain when the image finshes downloading because the image component has unmounted.

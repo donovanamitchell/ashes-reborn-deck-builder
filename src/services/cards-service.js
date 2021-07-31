@@ -1,4 +1,77 @@
+// TODO: replace AsyncStorage with FileSystem? It feels redundant to have both
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {FileSystem} from 'react-native-unimodules';
+import {globalState} from '../store/global-store';
+
+export async function deleteCards(releaseStubs) {
+  try {
+    return Promise.all([
+      // I hate splats
+      ...releaseStubs.map(stub => AsyncStorage.removeItem(`${stub}-cards`)),
+      // I don't think this is how contexts are supposed to be used
+      uncacheImages(
+        globalState.cards.filter(
+          ({release}) => release && releaseStubs.includes(release.stub),
+        ),
+      ),
+    ]);
+  } catch (error) {
+    // TODO: error modal
+    console.log(error);
+    return [];
+  }
+}
+
+export async function deleteAllCards() {
+  try {
+    console.log(FileSystem.cacheDirectory);
+    let cardFilenames = (
+      await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory)
+    ).filter(filename => filename.endsWith('-card.jpg'));
+    let keys = await AsyncStorage.getAllKeys();
+
+    return Promise.all([
+      // I hate splats
+      ...cardFilenames.map(filename =>
+        FileSystem.deleteAsync(`${FileSystem.cacheDirectory}${filename}`, {
+          idempotent: true,
+        }),
+      ),
+      AsyncStorage.multiRemove(keys.filter(key => key.endsWith('-cards'))),
+    ]);
+  } catch (error) {
+    // TODO: error modal
+    console.log(error);
+    return Promise.new;
+  }
+}
+
+export async function getCardUri(stub) {
+  const cacheUri = `${FileSystem.cacheDirectory}${stub}-card.jpg`;
+  try {
+    let existingImage = await FileSystem.getInfoAsync(cacheUri);
+    if (existingImage.exists) {
+      return cacheUri;
+    }
+
+    let image = await FileSystem.createDownloadResumable(
+      `https://cdn.ashes.live/images/cards/${stub}.jpg`,
+      cacheUri,
+      {},
+    ).downloadAsync();
+
+    if (image.uri) {
+      console.log('Cache miss');
+      return image.uri;
+    }
+    // TODO: error? what do?
+    return '';
+  } catch (error) {
+    // TODO: error modal
+    console.log(error);
+    return '';
+  }
+}
 
 export function getCardsFromReleases(releaseStubs) {
   return Promise.all(releaseStubs.map(stub => getCardsFromRelease(stub))).then(
@@ -60,6 +133,10 @@ export async function getCardsFromRelease(releaseStub) {
   }
 }
 
+export function preloadImages(stubs) {
+  return Promise.all(stubs.map(stub => getCardUri(stub)));
+}
+
 export async function setCardsFromReleases(releases, setCards) {
   const cards = await getCardsFromReleases(
     releases.map(release => release.stub),
@@ -77,27 +154,12 @@ export async function setCardsFromReleases(releases, setCards) {
   );
 }
 
-export async function deleteCards(releaseStubs) {
-  try {
-    // TODO: delete card images
-    return Promise.all(
-      releaseStubs.map(stub => AsyncStorage.removeItem(`${stub}-cards`)),
-    );
-  } catch (e) {
-    // TODO: error modal
-    console.log(e);
-    return [];
-  }
-}
-
-export async function deleteAllCards() {
-  try {
-    // TODO: delete card images
-    let keys = await AsyncStorage.getAllKeys();
-    return AsyncStorage.multiRemove(keys.filter(key => key.endsWith('-cards')));
-  } catch (e) {
-    // TODO: error modal
-    console.log(e);
-    return [];
-  }
+export function uncacheImages(stubs) {
+  return Promise.all(
+    stubs.map(stub =>
+      FileSystem.deleteAsync(`${FileSystem.cacheDirectory}${stub}-card.jpg`, {
+        idempotent: true,
+      }),
+    ),
+  );
 }

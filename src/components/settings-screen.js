@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View, Modal} from 'react-native';
-import {Constants} from 'react-native-unimodules';
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
 import {resetReleases, saveOwnedReleases} from '../services/releases-service';
@@ -8,6 +7,7 @@ import DeleteCacheModal from './settings/delete-cache-modal';
 import {
   deleteAllCards,
   deleteCards,
+  preloadImages,
   setCardsFromReleases,
 } from '../services/cards-service';
 import Loading from './util/loading';
@@ -99,19 +99,12 @@ const SettingsScreen = () => {
       <Text>Cache</Text>
       <View style={styles.button}>
         <Button
-          title="Download All Card Images"
+          title="Cache All Card Images"
           onPress={() => {
-            // TODO: FastImage cannot mark expired items in the cache. Replace
-            // Library
-            // FastImage.preload(
-            //   cards.map(({stub}) => {
-            //     return {
-            //       uri: `https://cdn.ashes.live/images/cards/${stub}.jpg`,
-            //     };
-            //   }),
-            // );
-            // Test unimodules intallation
-            console.log(Constants.systemFonts);
+            setLoading(true);
+            preloadImages(cards.map(({stub}) => stub)).finally(() =>
+              setLoading(false),
+            );
           }}
         />
       </View>
