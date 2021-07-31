@@ -1,5 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View, Modal} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {Constants} from 'react-native-unimodules';
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
 import {resetReleases, saveOwnedReleases} from '../services/releases-service';
@@ -12,8 +14,14 @@ import {
 import Loading from './util/loading';
 
 const SettingsScreen = () => {
-  const {releases, ownedReleases, setOwnedReleases, setCards, setReleases} =
-    useContext(GlobalContext);
+  const {
+    cards,
+    releases,
+    ownedReleases,
+    setOwnedReleases,
+    setCards,
+    setReleases,
+  } = useContext(GlobalContext);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -94,7 +102,17 @@ const SettingsScreen = () => {
         <Button
           title="Download All Card Images"
           onPress={() => {
-            // AsyncStorage.clear();
+            // TODO: FastImage cannot mark expired items in the cache. Replace
+            // Library
+            // FastImage.preload(
+            //   cards.map(({stub}) => {
+            //     return {
+            //       uri: `https://cdn.ashes.live/images/cards/${stub}.jpg`,
+            //     };
+            //   }),
+            // );
+            // Test unimodules intallation
+            console.log(Constants.systemFonts);
           }}
         />
       </View>
