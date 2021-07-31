@@ -8,6 +8,7 @@ export const globalState = {
   releases: [],
   decks: [],
   ownedReleases: [],
+  storeImagesInFileSystem: false,
 };
 
 const globalContextWrapper = component => ({
@@ -50,6 +51,10 @@ const globalContextWrapper = component => ({
   setReleases: releases => {
     console.log('SET RELEASES', releases);
     globalState.releases = releases;
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  setStoreImagesInFileSystem: storeImagesInFileSystem => {
+    globalState.storeImagesInFileSystem = storeImagesInFileSystem;
     component?.setState({context: globalContextWrapper(component)});
   },
   updateDeck: updatedDeck => {

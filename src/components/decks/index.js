@@ -3,21 +3,23 @@ import {Button, StyleSheet, FlatList, View} from 'react-native';
 
 import {GlobalContext} from '../../store/global-store';
 import DeckListItem from './deck-list-item';
-import {getOwnedReleases, getReleases} from '../../services/releases-service';
+import {getReleases} from '../../services/releases-service';
+import {getSettings} from '../../services/settings-service';
 import {setCardsFromReleases} from '../../services/cards-service';
 import {getDeckFilenames} from '../../services/decks-service';
 import Loading from '../util/loading';
 
 const DecksScreen = ({navigation}) => {
   const {
+    addDeck,
     decks,
+    removeDeck,
+    saveDecks,
     setCards,
     setDecks,
-    setReleases,
     setOwnedReleases,
-    addDeck,
-    saveDecks,
-    removeDeck,
+    setReleases,
+    setStoreImagesInFileSystem,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +30,10 @@ const DecksScreen = ({navigation}) => {
         setCardsFromReleases(releases, setCards);
       }),
       getDeckFilenames().then(loadedDecks => setDecks(loadedDecks)),
-      getOwnedReleases().then(ownedReleases => setOwnedReleases(ownedReleases)),
+      getSettings().then(settings => {
+        setOwnedReleases(settings.ownedReleases);
+        setStoreImagesInFileSystem(settings.storeImagesInFileSystem);
+      }),
     ]).finally(() => setLoading(false));
 
     return () => {

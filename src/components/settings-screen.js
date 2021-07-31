@@ -1,8 +1,17 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, StyleSheet, Text, View, Modal} from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Modal,
+  Switch,
+  ScrollView,
+} from 'react-native';
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
-import {resetReleases, saveOwnedReleases} from '../services/releases-service';
+import {resetReleases} from '../services/releases-service';
+import {saveSettings} from '../services/settings-service';
 import DeleteCacheModal from './settings/delete-cache-modal';
 import {
   deleteAllCards,
@@ -15,11 +24,13 @@ import Loading from './util/loading';
 const SettingsScreen = () => {
   const {
     cards,
-    releases,
     ownedReleases,
-    setOwnedReleases,
+    releases,
     setCards,
+    setOwnedReleases,
     setReleases,
+    setStoreImagesInFileSystem,
+    storeImagesInFileSystem,
   } = useContext(GlobalContext);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -49,7 +60,10 @@ const SettingsScreen = () => {
     let packs = newOwnedReleases.map(release => {
       return {name: release.text, stub: release.value};
     });
-    saveOwnedReleases(packs);
+    saveSettings({
+      ownedReleases: packs,
+      storeImagesInFileSystem: storeImagesInFileSystem,
+    });
     setOwnedReleases(packs);
   }
 
@@ -67,7 +81,7 @@ const SettingsScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Modal
         animationType="fade"
         transparent={true}
@@ -88,6 +102,7 @@ const SettingsScreen = () => {
           }}
         />
       </View>
+      <View style={styles.separator} />
       <Text>Owned Packs</Text>
       <View style={styles.button}>
         <MultiSelectBox
@@ -96,10 +111,35 @@ const SettingsScreen = () => {
           onChangeValue={items => changeOwnedReleases(items)}
         />
       </View>
+      <View style={styles.separator} />
       <Text>Cache</Text>
+      <Text>
+        The card images can either be stored in a cache or document store.
+        Images stored in the cache may be deleted automatically by the system to
+        save storage space. Images in the document store will not be deleted
+        unless the card data is reset.
+      </Text>
+      <View style={styles.toggleSwitchGroup}>
+        <Text>
+          {storeImagesInFileSystem ? 'Document Storage' : 'Cache Storage'}
+        </Text>
+        <Switch
+          value={storeImagesInFileSystem}
+          trackColor={{false: 'lightgrey', true: 'lightgrey'}}
+          thumbColor={'grey'}
+          onValueChange={bool => {
+            setStoreImagesInFileSystem(bool);
+            saveSettings({
+              ownedReleases: ownedReleases,
+              storeImagesInFileSystem: bool,
+            });
+          }}
+        />
+      </View>
+      <View style={styles.separator} />
       <View style={styles.button}>
         <Button
-          title="Cache All Card Images"
+          title="Download All Card Images"
           onPress={() => {
             setLoading(true);
             preloadImages(cards.map(({stub}) => stub)).finally(() =>
@@ -122,7 +162,7 @@ const SettingsScreen = () => {
           }}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -142,6 +182,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: 'white',
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: 'grey',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  toggleSwitchGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 5,
   },
 });
 
