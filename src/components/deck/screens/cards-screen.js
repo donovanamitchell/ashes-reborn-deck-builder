@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, TextInput, FlatList, View} from 'react-native';
+import {StyleSheet, Text, FlatList, View} from 'react-native';
 import {DeckContext} from '../deck-context';
 import CardFilter from '../../util/card-filter';
 import {GlobalContext} from '../../../store/global-store';

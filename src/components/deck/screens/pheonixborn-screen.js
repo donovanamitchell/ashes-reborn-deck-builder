@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, Text, TextInput, View} from 'react-native';
+import {StyleSheet, ScrollView, Text, View} from 'react-native';
 import SelectBox from '../../util/select-box';
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
@@ -23,9 +23,24 @@ const PheonixBornScreen = ({navigation, route}) => {
     setPheonixborn,
   } = useContext(DeckContext);
 
+  const [pheonixBornCard, setPheonixbornCard] = useState({});
   const [pheonixBornCards, setPheonixbornCards] = useState([]);
   const [sortedDeckCards, setSortedDeckCards] = useState([]);
   const [sortedConjurations, setSortedConjurations] = useState([]);
+
+  useEffect(() => {
+    let card = state.cards.find(({stub}) => stub === pheonixBornStub) || {};
+    if (card.conjurations) {
+      card.conjurations = card.conjurations.map(conjuration => {
+        let conjurationCard = state.cards.find(
+          ({stub}) => stub === conjuration.stub,
+        );
+        conjuration.count = (conjurationCard && conjurationCard.copies) || 0;
+        return conjuration;
+      });
+    }
+    setPheonixbornCard(card);
+  }, [pheonixBornStub, state.cards]);
 
   useEffect(() => {
     setPheonixbornCards(
@@ -50,8 +65,10 @@ const PheonixBornScreen = ({navigation, route}) => {
       return 0;
     });
     setSortedDeckCards(sortedCards);
+    console.log([pheonixBornCard.stub, pheonixBornCard]);
     setSortedConjurations(
       sortedCards
+        .concat([[pheonixBornCard.stub, pheonixBornCard]])
         .flatMap(item => {
           if (item[1].conjurations) {
             return item[1].conjurations;
@@ -69,7 +86,7 @@ const PheonixBornScreen = ({navigation, route}) => {
           return 0;
         }),
     );
-  }, [cards]);
+  }, [cards, pheonixBornCard]);
 
   function shortenedDeck(overrides) {
     return Object.assign(
@@ -109,11 +126,8 @@ const PheonixBornScreen = ({navigation, route}) => {
           }}
           data={pheonixBornCards}
         />
-        {pheonixBornStub && (
-          <CardView
-            style={styles.cardView}
-            card={state.cards.find(card => card.stub === pheonixBornStub)}
-          />
+        {pheonixBornStub && pheonixBornCard && (
+          <CardView style={styles.cardView} card={pheonixBornCard} />
         )}
         <Text style={styles.headerText}>Dice:</Text>
         <DiceView dice={dice} />
