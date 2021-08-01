@@ -1,21 +1,25 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
-import SelectBox from '../../util/select-box';
+
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
-import CardView from '../../card/card-view';
-import FirstFive from './pheonixborn/first-five';
-import DiceView from '../../dice/dice-view';
-import ConjurationsList from './pheonixborn/conjuration-list';
 import CardsList from './pheonixborn/cards-list';
+import CardView from '../../card/card-view';
 import ClearableTextInput from '../../util/clearable-text-input';
+import ConjurationsList from './pheonixborn/conjuration-list';
+import DiceView from '../../dice/dice-view';
+import ErrorsList from './pheonixborn/errors-list';
+import FirstFive from './pheonixborn/first-five';
+import SelectBox from '../../util/select-box';
 
 const PheonixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
   const {
+    cardErrors,
     cards,
     dice,
     filename,
+    firstFiveErrors,
     name,
     pheonixBorn,
     pheonixBornStub,
@@ -114,7 +118,7 @@ const PheonixBornScreen = ({navigation, route}) => {
         />
         <Text style={styles.headerText}>Pheonixborn:</Text>
         <SelectBox
-          value={{text: pheonixBorn, stub: pheonixBornStub}}
+          value={{text: pheonixBorn, value: pheonixBornStub}}
           onChangeValue={item => {
             setPheonixborn(item.text, item.value);
             state.updateDeck(
@@ -129,6 +133,15 @@ const PheonixBornScreen = ({navigation, route}) => {
         {pheonixBornStub && pheonixBornCard && (
           <CardView style={styles.cardView} card={pheonixBornCard} />
         )}
+        <Text style={styles.headerText}>Legality:</Text>
+        <SelectBox
+          value={{text: 'Standard', value: 'standard'}}
+          onChangeValue={item => {
+            console.log(item);
+          }}
+          data={[{text: 'Standard', value: 'standard'}]}
+        />
+        <ErrorsList cardErrors={cardErrors} firstFiveErrors={firstFiveErrors} />
         <Text style={styles.headerText}>Dice:</Text>
         <DiceView dice={dice} />
         <Text style={styles.headerText}>First Five:</Text>

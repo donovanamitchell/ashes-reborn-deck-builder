@@ -5,9 +5,9 @@ import {DeckContext} from '../deck-context';
 import CardImage from '../../card/card-image';
 
 const HandScreen = () => {
-  const {firstFive, cards, setFirstFive} = useContext(DeckContext);
+  const {firstFive, cards, firstFiveErrors, setFirstFive, setFirstFiveErrors} =
+    useContext(DeckContext);
   const [sortedCards, setSortedCards] = useState([]);
-  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     let sorted = Object.entries(cards)
@@ -28,7 +28,7 @@ const HandScreen = () => {
 
   useEffect(() => {
     let cardHash = {};
-    let newErrors = [];
+    let errors = [];
     firstFive.forEach((card, index) => {
       if (!card) {
         return;
@@ -42,14 +42,16 @@ const HandScreen = () => {
         };
       }
       if (!cardHash[card.stub].copies) {
-        newErrors[index] = `There are no copies of ${card.name} in this deck`;
+        errors[index] = `There are no copies of ${card.name} in this deck`;
       } else if (cardHash[card.stub].count > cardHash[card.stub].copies) {
-        newErrors[
-          index
-        ] = `There are too few copies of ${card.name} in this deck`;
+        errors[index] = `There are too few copies of ${card.name} in this deck`;
       }
     });
-    setErrors(newErrors);
+    setFirstFiveErrors(errors);
+    // Adding setFirstFiveError to the dependancy list will cause infinite
+    // updates due to the stange things that the deck context needs for react
+    // navigation to work
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstFive, cards]);
 
   function cardSelector(index) {
@@ -66,7 +68,7 @@ const HandScreen = () => {
             }}
             data={sortedCards}
           />
-          <Text style={styles.errorText}>{errors[index]}</Text>
+          <Text style={styles.errorText}>{firstFiveErrors[index]}</Text>
         </View>
         <CardImage
           style={styles.image}

@@ -29,7 +29,7 @@ function containsSearchString(searchText, name, text, cost) {
 }
 
 const CardsScreen = () => {
-  const {cards} = useContext(DeckContext);
+  const {cards, pheonixBorn, setCardErrors} = useContext(DeckContext);
   const state = useContext(GlobalContext);
 
   const [cardCount, setCardCount] = useState(0);
@@ -46,13 +46,31 @@ const CardsScreen = () => {
   const [useOwnedPacks, setUseOwnedPacks] = useState(true);
 
   useEffect(() => {
-    setCardCount(
-      Object.entries(cards).reduce(
-        (accumulator, value) => accumulator + value[1].count,
-        0,
-      ),
+    let iterableCards = Object.entries(cards);
+    let newCardCound = iterableCards.reduce(
+      (accumulator, value) => accumulator + value[1].count,
+      0,
     );
-  }, [cards]);
+    setCardCount(newCardCound);
+
+    let errors = [];
+    if (newCardCound > 30) {
+      errors.push('There are too many cards in this deck');
+    } else if (newCardCound < 30) {
+      errors.push('There are too few cards in this deck');
+    }
+
+    iterableCards.forEach(card => {
+      if (card[1].phoenixborn && card[1].phoenixborn !== pheonixBorn) {
+        errors.push(
+          `"${card[1].name}" may only be included in ${card[1].phoenixborn} decks`,
+        );
+      }
+    });
+
+    setCardErrors(errors);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards, pheonixBorn]);
 
   useEffect(() => {
     function isFromPack(pack) {

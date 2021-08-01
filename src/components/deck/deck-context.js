@@ -44,6 +44,8 @@ const initialDeckState = {
   cards: {},
   dice: {},
   firstFive: [],
+  firstFiveErrors: [],
+  cardErrors: [],
 };
 
 // Object.assign is sprinkled throughout this somewhat horrible hack in itself
@@ -78,6 +80,7 @@ const deckContextWrapper = component => ({
         count: 1,
         name: card.name,
         stub: card.stub,
+        phoenixborn: card.phoenixborn,
       };
       if (card.conjurations) {
         cardContent.conjurations = card.conjurations.map(conjuration => {
@@ -113,6 +116,11 @@ const deckContextWrapper = component => ({
       JSON.stringify(initialDeckState),
     );
   },
+  setCardErrors: errors => {
+    console.log('SET CARD ERRORS', errors);
+    initialDeckState.cardErrors = errors;
+    component?.setState({context: deckContextWrapper(component)});
+  },
   setDeck: deck => {
     console.log('SET DECK', deck);
     initialDeckState.count = 0;
@@ -129,6 +137,11 @@ const deckContextWrapper = component => ({
     console.log('SET FFIVE', index, firstFive);
     initialDeckState.firstFive[index] = firstFive;
     initialDeckState.firstFive = Object.assign([], initialDeckState.firstFive);
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  setFirstFiveErrors: errors => {
+    console.log('SET FFIVE ERRORS', errors);
+    initialDeckState.firstFiveErrors = errors;
     component?.setState({context: deckContextWrapper(component)});
   },
   setName: text => {

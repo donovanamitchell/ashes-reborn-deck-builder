@@ -3,7 +3,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export async function getSettings() {
   let settings = JSON.parse(await AsyncStorage.getItem('ASHES_SETTINGS'));
   if (settings === null) {
-    return {ownedReleases: [], storeImagesInFileSystem: false};
+    return {
+      ownedReleases: [{name: 'All', stub: 'ALL_PACKS'}],
+      storeImagesInFileSystem: false,
+    };
   }
   return settings;
 }
