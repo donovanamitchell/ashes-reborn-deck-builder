@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, FlatList, View} from 'react-native';
+import {StyleSheet, Text, TextInput, FlatList, View} from 'react-native';
 import {DeckContext} from '../deck-context';
 import CardFilter from '../../util/card-filter';
 import {GlobalContext} from '../../../store/global-store';
@@ -102,7 +102,7 @@ const CardsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Text>
+        <Text style={styles.cardCounter}>
           {[
             'Cards: ',
             <Text
@@ -112,6 +112,12 @@ const CardsScreen = () => {
             </Text>,
           ]}
         </Text>
+        <TextInput
+          style={styles.searchBox}
+          onChangeText={text => setSearchText(text)}
+          placeholder="Search"
+          value={searchText}
+        />
         <View style={styles.filter}>
           <Text style={styles.filterText}>Filters:</Text>
           <Icon
@@ -147,20 +153,32 @@ const CardsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  cardCounter: {
+    paddingRight: 5,
+  },
   container: {
     flex: 1,
   },
   errorText: {
     color: 'red',
   },
+  searchBox: {
+    borderRadius: 6,
+    borderColor: 'lightgrey',
+    borderWidth: 2,
+    padding: 0,
+    paddingHorizontal: 4,
+    flex: 1,
+  },
   text: {
     color: 'black',
   },
   topBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 7,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
     backgroundColor: 'white',
   },
   filter: {
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   filterText: {
-    paddingRight: 5,
+    paddingHorizontal: 5,
   },
   button: {
     textAlign: 'center',

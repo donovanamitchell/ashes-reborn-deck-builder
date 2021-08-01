@@ -49,12 +49,6 @@ const CardFilter = ({
         value={cardType}
         onChangeValue={item => setCardType(item)}
       />
-      <Text>Search</Text>
-      <TextInput
-        style={styles.button}
-        onChangeText={text => setSearchText(text)}
-        value={searchText}
-      />
     </View>
   );
 };
@@ -63,11 +57,6 @@ const styles = StyleSheet.create({
   filter: {
     padding: 7,
     backgroundColor: 'white',
-  },
-  button: {
-    borderRadius: 6,
-    borderColor: 'lightgrey',
-    borderWidth: 2,
   },
 });
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Button,
   StyleSheet,
@@ -13,6 +13,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const MultiSelectBox = props => {
   const [modalVisible, setModalVisible] = useState(false);
   const [unsavedSelections, setUnsavedSelections] = useState([]);
+
+  useEffect(() => {
+    setUnsavedSelections(props.value);
+  }, [props.value]);
 
   function isChecked(item) {
     return unsavedSelections.find(selection => selection.value === item.value);
