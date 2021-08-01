@@ -29,7 +29,7 @@ function containsSearchString(searchText, name, text, cost) {
 }
 
 const CardsScreen = () => {
-  const {cards, pheonixBorn, setCardErrors} = useContext(DeckContext);
+  const {cards, phoenixBorn, setCardErrors} = useContext(DeckContext);
   const state = useContext(GlobalContext);
 
   const [cardCount, setCardCount] = useState(0);
@@ -61,7 +61,7 @@ const CardsScreen = () => {
     }
 
     iterableCards.forEach(card => {
-      if (card[1].phoenixborn && card[1].phoenixborn !== pheonixBorn) {
+      if (card[1].phoenixborn && card[1].phoenixborn !== phoenixBorn) {
         errors.push(
           `"${card[1].name}" may only be included in ${card[1].phoenixborn} decks`,
         );
@@ -70,7 +70,7 @@ const CardsScreen = () => {
 
     setCardErrors(errors);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cards, pheonixBorn]);
+  }, [cards, phoenixBorn]);
 
   useEffect(() => {
     function isFromPack(pack) {

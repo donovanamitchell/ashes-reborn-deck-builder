@@ -12,7 +12,7 @@ High Priority
   - [ ] Error modal
 - [x] Card image preload button in settings screen
   - [ ] Card Loading image
-- [ ] Pheonixborn unique card validation
+- [ ] Phoenixborn unique card validation
 - [ ] Chained/banned card lists
 - [ ] Release 1.0
 
