@@ -6,12 +6,15 @@ import {globalState} from '../../store/global-store';
 export function initialState(filename) {
   return {
     filename: filename,
-    name: '',
-    phoenixBorn: null,
-    phoenixBornStub: null,
+    cardErrors: [],
     cards: {},
     dice: {},
     firstFive: [],
+    firstFiveErrors: [],
+    format: 'Standard',
+    name: '',
+    phoenixBorn: null,
+    phoenixBornStub: null,
   };
 }
 export async function getDeck(filename, newDeck) {
@@ -37,15 +40,16 @@ export async function getDeck(filename, newDeck) {
 }
 
 const initialDeckState = {
+  cardErrors: [],
+  cards: {},
+  dice: {},
   filename: '',
+  firstFive: [],
+  firstFiveErrors: [],
+  format: 'Standard',
   name: '',
   phoenixBorn: null,
   phoenixBornStub: null,
-  cards: {},
-  dice: {},
-  firstFive: [],
-  firstFiveErrors: [],
-  cardErrors: [],
 };
 
 // Object.assign is sprinkled throughout this somewhat horrible hack in itself
@@ -131,6 +135,7 @@ const deckContextWrapper = component => ({
     initialDeckState.cards = deck.cards;
     initialDeckState.dice = deck.dice;
     initialDeckState.firstFive = deck.firstFive;
+    initialDeckState.format = deck.format;
     component?.setState({context: deckContextWrapper(component)});
   },
   setFirstFive: (index, firstFive) => {
@@ -142,6 +147,10 @@ const deckContextWrapper = component => ({
   setFirstFiveErrors: errors => {
     console.log('SET FFIVE ERRORS', errors);
     initialDeckState.firstFiveErrors = errors;
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  setFormat: format => {
+    initialDeckState.format = format;
     component?.setState({context: deckContextWrapper(component)});
   },
   setName: text => {

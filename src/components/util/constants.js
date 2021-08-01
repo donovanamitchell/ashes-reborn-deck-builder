@@ -15,3 +15,12 @@ export const DICE_TYPES = [
   'sympathy',
   'time',
 ];
+
+export const PLAY_FORMATS = ['Standard', 'Tournament'];
+
+export const TOURNAMENT_CHAINED_LIST = [
+  'exhortation',
+  'massive-growth',
+  'river-skald',
+  'summon-shining-hydra',
+];

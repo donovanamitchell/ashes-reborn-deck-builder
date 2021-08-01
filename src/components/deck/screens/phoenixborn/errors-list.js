@@ -1,10 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-// TODO: combine into cards-list
 const ErrorsList = ({cardErrors, firstFiveErrors}) => {
   let cardErrorTexts = cardErrors.map((error, index) => (
-    <Text id={'card' + index} style={styles.error}>
+    <Text key={`card${index}`} style={styles.error}>
       {error}
     </Text>
   ));
@@ -13,14 +12,20 @@ const ErrorsList = ({cardErrors, firstFiveErrors}) => {
   firstFiveErrors.forEach((error, index) => {
     if (error && firstFiveErrors.indexOf(error) === index) {
       firstFiveErrorTexts.push(
-        <Text style={styles.error} id={'firstFive' + index}>
+        <Text style={styles.error} key={`firstFive${index}`}>
           {error}
         </Text>,
       );
     }
   });
 
-  return <View>{cardErrorTexts.concat(firstFiveErrorTexts)}</View>;
+  let errors = cardErrorTexts.concat(firstFiveErrorTexts);
+
+  if (errors.length) {
+    return <View>{errors}</View>;
+  }
+
+  return null;
 };
 
 const styles = StyleSheet.create({

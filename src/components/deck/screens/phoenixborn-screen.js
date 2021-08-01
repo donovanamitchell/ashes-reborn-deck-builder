@@ -11,6 +11,11 @@ import DiceView from '../../dice/dice-view';
 import ErrorsList from './phoenixborn/errors-list';
 import FirstFive from './phoenixborn/first-five';
 import SelectBox from '../../util/select-box';
+import {PLAY_FORMATS} from '../../util/constants';
+
+const playFormatSelections = PLAY_FORMATS.map(format => {
+  return {text: format, value: format};
+});
 
 const PhoenixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
@@ -20,9 +25,11 @@ const PhoenixBornScreen = ({navigation, route}) => {
     dice,
     filename,
     firstFiveErrors,
+    format,
     name,
     phoenixBorn,
     phoenixBornStub,
+    setFormat,
     setName,
     setPhoenixborn,
   } = useContext(DeckContext);
@@ -132,13 +139,13 @@ const PhoenixBornScreen = ({navigation, route}) => {
         {phoenixBornStub && phoenixBornCard && (
           <CardView style={styles.cardView} card={phoenixBornCard} />
         )}
-        <Text style={styles.headerText}>Legality:</Text>
+        <Text style={styles.headerText}>Format:</Text>
         <SelectBox
-          value={{text: 'Standard', value: 'standard'}}
+          value={{text: format, value: format}}
           onChangeValue={item => {
-            console.log(item);
+            setFormat(item.value);
           }}
-          data={[{text: 'Standard', value: 'standard'}]}
+          data={playFormatSelections}
         />
         <ErrorsList cardErrors={cardErrors} firstFiveErrors={firstFiveErrors} />
         <Text style={styles.headerText}>Dice:</Text>
