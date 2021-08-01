@@ -8,6 +8,7 @@ import FirstFive from './pheonixborn/first-five';
 import DiceView from '../../dice/dice-view';
 import ConjurationsList from './pheonixborn/conjuration-list';
 import CardsList from './pheonixborn/cards-list';
+import ClearableTextInput from '../../util/clearable-text-input';
 
 const PheonixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
@@ -86,8 +87,7 @@ const PheonixBornScreen = ({navigation, route}) => {
     <ScrollView style={styles.container}>
       <View key="main" style={[styles.container, styles.editSection]}>
         <Text style={styles.headerText}>Deck Name:</Text>
-        <TextInput
-          style={styles.textInput}
+        <ClearableTextInput
           onChangeText={text => {
             setName(text);
             state.updateDeck(shortenedDeck({name: text}));

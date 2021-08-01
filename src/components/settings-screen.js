@@ -95,9 +95,11 @@ const SettingsScreen = () => {
         <Button
           title="Check for Updates"
           onPress={() => {
+            setLoading(true);
             resetReleases().then(newReleases => {
               setReleases(newReleases);
               setCardsFromReleases(newReleases, setCards);
+              setLoading(false);
             });
           }}
         />
