@@ -54,8 +54,8 @@ const DeckListItem = props => {
       <View style={styles.deckContainer}>
         <CardImage
           styles={styles.image}
-          stub={props.pheonixBornStub}
-          name={props.pheonixBorn}
+          stub={props.phoenixBornStub}
+          name={props.phoenixBorn}
         />
         <Text style={styles.listItem}>{props.name}</Text>
         <Icon

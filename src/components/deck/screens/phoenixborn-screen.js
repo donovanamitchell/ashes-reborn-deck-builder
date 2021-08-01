@@ -1,35 +1,46 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, ScrollView, Text, View} from 'react-native';
-import SelectBox from '../../util/select-box';
+
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
+import CardsList from './phoenixborn/cards-list';
 import CardView from '../../card/card-view';
-import FirstFive from './pheonixborn/first-five';
-import DiceView from '../../dice/dice-view';
-import ConjurationsList from './pheonixborn/conjuration-list';
-import CardsList from './pheonixborn/cards-list';
 import ClearableTextInput from '../../util/clearable-text-input';
+import ConjurationsList from './phoenixborn/conjuration-list';
+import DiceView from '../../dice/dice-view';
+import ErrorsList from './phoenixborn/errors-list';
+import FirstFive from './phoenixborn/first-five';
+import SelectBox from '../../util/select-box';
+import {PLAY_FORMATS} from '../../util/constants';
 
-const PheonixBornScreen = ({navigation, route}) => {
+const playFormatSelections = PLAY_FORMATS.map(format => {
+  return {text: format, value: format};
+});
+
+const PhoenixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
   const {
+    cardErrors,
     cards,
     dice,
     filename,
+    firstFiveErrors,
+    format,
     name,
-    pheonixBorn,
-    pheonixBornStub,
+    phoenixBorn,
+    phoenixBornStub,
+    setFormat,
     setName,
-    setPheonixborn,
+    setPhoenixborn,
   } = useContext(DeckContext);
 
-  const [pheonixBornCard, setPheonixbornCard] = useState({});
-  const [pheonixBornCards, setPheonixbornCards] = useState([]);
+  const [phoenixBornCard, setPhoenixbornCard] = useState({});
+  const [phoenixBornCards, setPhoenixbornCards] = useState([]);
   const [sortedDeckCards, setSortedDeckCards] = useState([]);
   const [sortedConjurations, setSortedConjurations] = useState([]);
 
   useEffect(() => {
-    let card = state.cards.find(({stub}) => stub === pheonixBornStub) || {};
+    let card = state.cards.find(({stub}) => stub === phoenixBornStub) || {};
     if (card.conjurations) {
       card.conjurations = card.conjurations.map(conjuration => {
         let conjurationCard = state.cards.find(
@@ -39,11 +50,11 @@ const PheonixBornScreen = ({navigation, route}) => {
         return conjuration;
       });
     }
-    setPheonixbornCard(card);
-  }, [pheonixBornStub, state.cards]);
+    setPhoenixbornCard(card);
+  }, [phoenixBornStub, state.cards]);
 
   useEffect(() => {
-    setPheonixbornCards(
+    setPhoenixbornCards(
       state.cards.flatMap(card => {
         if (card.type !== 'Phoenixborn') {
           return [];
@@ -65,10 +76,9 @@ const PheonixBornScreen = ({navigation, route}) => {
       return 0;
     });
     setSortedDeckCards(sortedCards);
-    console.log([pheonixBornCard.stub, pheonixBornCard]);
     setSortedConjurations(
       sortedCards
-        .concat([[pheonixBornCard.stub, pheonixBornCard]])
+        .concat([[phoenixBornCard.stub, phoenixBornCard]])
         .flatMap(item => {
           if (item[1].conjurations) {
             return item[1].conjurations;
@@ -86,14 +96,14 @@ const PheonixBornScreen = ({navigation, route}) => {
           return 0;
         }),
     );
-  }, [cards, pheonixBornCard]);
+  }, [cards, phoenixBornCard]);
 
   function shortenedDeck(overrides) {
     return Object.assign(
       {
         name: name,
-        pheonixBorn: pheonixBorn,
-        pheonixBornStub: pheonixBornStub,
+        phoenixBorn: phoenixBorn,
+        phoenixBornStub: phoenixBornStub,
         filename: filename,
       },
       overrides,
@@ -112,23 +122,32 @@ const PheonixBornScreen = ({navigation, route}) => {
           placeholder="Deck Name"
           value={name}
         />
-        <Text style={styles.headerText}>Pheonixborn:</Text>
+        <Text style={styles.headerText}>Phoenixborn:</Text>
         <SelectBox
-          value={{text: pheonixBorn, stub: pheonixBornStub}}
+          value={{text: phoenixBorn, value: phoenixBornStub}}
           onChangeValue={item => {
-            setPheonixborn(item.text, item.value);
+            setPhoenixborn(item.text, item.value);
             state.updateDeck(
               shortenedDeck({
-                pheonixBornStub: item.value,
-                pheonixBorn: item.text,
+                phoenixBornStub: item.value,
+                phoenixBorn: item.text,
               }),
             );
           }}
-          data={pheonixBornCards}
+          data={phoenixBornCards}
         />
-        {pheonixBornStub && pheonixBornCard && (
-          <CardView style={styles.cardView} card={pheonixBornCard} />
+        {phoenixBornStub && phoenixBornCard && (
+          <CardView style={styles.cardView} card={phoenixBornCard} />
         )}
+        <Text style={styles.headerText}>Format:</Text>
+        <SelectBox
+          value={{text: format, value: format}}
+          onChangeValue={item => {
+            setFormat(item.value);
+          }}
+          data={playFormatSelections}
+        />
+        <ErrorsList cardErrors={cardErrors} firstFiveErrors={firstFiveErrors} />
         <Text style={styles.headerText}>Dice:</Text>
         <DiceView dice={dice} />
         <Text style={styles.headerText}>First Five:</Text>
@@ -184,4 +203,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PheonixBornScreen;
+export default PhoenixBornScreen;

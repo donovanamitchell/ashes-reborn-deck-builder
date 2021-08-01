@@ -6,12 +6,15 @@ import {globalState} from '../../store/global-store';
 export function initialState(filename) {
   return {
     filename: filename,
-    name: '',
-    pheonixBorn: null,
-    pheonixBornStub: null,
+    cardErrors: [],
     cards: {},
     dice: {},
     firstFive: [],
+    firstFiveErrors: [],
+    format: 'Standard',
+    name: '',
+    phoenixBorn: null,
+    phoenixBornStub: null,
   };
 }
 export async function getDeck(filename, newDeck) {
@@ -37,13 +40,16 @@ export async function getDeck(filename, newDeck) {
 }
 
 const initialDeckState = {
-  filename: '',
-  name: '',
-  pheonixBorn: null,
-  pheonixBornStub: null,
+  cardErrors: [],
   cards: {},
   dice: {},
+  filename: '',
   firstFive: [],
+  firstFiveErrors: [],
+  format: 'Standard',
+  name: '',
+  phoenixBorn: null,
+  phoenixBornStub: null,
 };
 
 // Object.assign is sprinkled throughout this somewhat horrible hack in itself
@@ -78,6 +84,7 @@ const deckContextWrapper = component => ({
         count: 1,
         name: card.name,
         stub: card.stub,
+        phoenixborn: card.phoenixborn,
       };
       if (card.conjurations) {
         cardContent.conjurations = card.conjurations.map(conjuration => {
@@ -113,16 +120,22 @@ const deckContextWrapper = component => ({
       JSON.stringify(initialDeckState),
     );
   },
+  setCardErrors: errors => {
+    console.log('SET CARD ERRORS', errors);
+    initialDeckState.cardErrors = errors;
+    component?.setState({context: deckContextWrapper(component)});
+  },
   setDeck: deck => {
     console.log('SET DECK', deck);
     initialDeckState.count = 0;
     initialDeckState.filename = deck.filename;
     initialDeckState.name = deck.name;
-    initialDeckState.pheonixBorn = deck.pheonixBorn;
-    initialDeckState.pheonixBornStub = deck.pheonixBornStub;
+    initialDeckState.phoenixBorn = deck.phoenixBorn;
+    initialDeckState.phoenixBornStub = deck.phoenixBornStub;
     initialDeckState.cards = deck.cards;
     initialDeckState.dice = deck.dice;
     initialDeckState.firstFive = deck.firstFive;
+    initialDeckState.format = deck.format;
     component?.setState({context: deckContextWrapper(component)});
   },
   setFirstFive: (index, firstFive) => {
@@ -131,13 +144,22 @@ const deckContextWrapper = component => ({
     initialDeckState.firstFive = Object.assign([], initialDeckState.firstFive);
     component?.setState({context: deckContextWrapper(component)});
   },
+  setFirstFiveErrors: errors => {
+    console.log('SET FFIVE ERRORS', errors);
+    initialDeckState.firstFiveErrors = errors;
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  setFormat: format => {
+    initialDeckState.format = format;
+    component?.setState({context: deckContextWrapper(component)});
+  },
   setName: text => {
     initialDeckState.name = text;
     component?.setState({context: deckContextWrapper(component)});
   },
-  setPheonixborn: (name, stub) => {
-    initialDeckState.pheonixBorn = name;
-    initialDeckState.pheonixBornStub = stub;
+  setPhoenixborn: (name, stub) => {
+    initialDeckState.phoenixBorn = name;
+    initialDeckState.phoenixBornStub = stub;
     component?.setState({context: deckContextWrapper(component)});
   },
 });

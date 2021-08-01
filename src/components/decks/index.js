@@ -57,8 +57,8 @@ const DecksScreen = ({navigation}) => {
         renderItem={({item}) => (
           <DeckListItem
             name={item.name}
-            pheonixBorn={item.pheonixBorn}
-            pheonixBornStub={item.pheonixBornStub}
+            phoenixBorn={item.phoenixBorn}
+            phoenixBornStub={item.phoenixBornStub}
             onPress={() => {
               navigation.navigate('Deck', {filename: item.filename});
             }}
@@ -73,7 +73,7 @@ const DecksScreen = ({navigation}) => {
           let newDeck = {
             filename: `${Date.now().toString(16)}_ASHES_DECK`,
             name: '',
-            pheonixBorn: null,
+            phoenixBorn: null,
             cards: {},
           };
           addDeck(newDeck);
