@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, FlatList, View} from 'react-native';
+import {StyleSheet, Text, TextInput, FlatList, View} from 'react-native';
 import {DeckContext} from '../deck-context';
 import CardFilter from '../../util/card-filter';
 import {GlobalContext} from '../../../store/global-store';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CardAdder from '../../card/card-adder';
 import {ADDABLE_CARD_TYPES} from '../../util/constants';
+import ClearableTextInput from '../../util/clearable-text-input';
 
 function hasType(filter, type) {
   if (filter) {
@@ -28,17 +29,21 @@ function containsSearchString(searchText, name, text, cost) {
 }
 
 const CardsScreen = () => {
+  const {cards} = useContext(DeckContext);
+  const state = useContext(GlobalContext);
+
   const [cardCount, setCardCount] = useState(0);
   const [cardTypeFilter, setCardTypeFilter] = useState({});
   const [filteredCards, setFilteredCards] = useState([]);
-  const [packStubsFilter, setPackStubsFilter] = useState([]);
+  const [packStubsFilter, setPackStubsFilter] = useState([
+    {text: 'Owned Packs', value: 'OWNED_PACKS'},
+  ]);
   const [searchText, setSearchText] = useState('');
   const [showFilter, setShowFilter] = useState(false);
-  const [useAllPacks, setUseAllPacks] = useState(false);
-  const [useOwnedPacks, setUseOwnedPacks] = useState(false);
-
-  const {cards} = useContext(DeckContext);
-  const state = useContext(GlobalContext);
+  const [useAllPacks, setUseAllPacks] = useState(
+    state.ownedReleases.find(({stub}) => stub === 'ALL_PACKS'),
+  );
+  const [useOwnedPacks, setUseOwnedPacks] = useState(true);
 
   useEffect(() => {
     setCardCount(
@@ -102,7 +107,7 @@ const CardsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Text>
+        <Text style={styles.cardCounter}>
           {[
             'Cards: ',
             <Text
@@ -112,6 +117,11 @@ const CardsScreen = () => {
             </Text>,
           ]}
         </Text>
+        <ClearableTextInput
+          onChangeText={setSearchText}
+          value={searchText}
+          placeholder="Search"
+        />
         <View style={styles.filter}>
           <Text style={styles.filterText}>Filters:</Text>
           <Icon
@@ -147,20 +157,40 @@ const CardsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  cardCounter: {
+    paddingRight: 5,
+  },
   container: {
     flex: 1,
   },
+  deleteButtonIcon: {
+    color: 'grey',
+    paddingRight: 4,
+  },
   errorText: {
     color: 'red',
+  },
+  searchBox: {
+    padding: 0,
+    paddingHorizontal: 4,
+    flex: 1,
+  },
+  searchBoxContainer: {
+    borderRadius: 6,
+    borderColor: 'lightgrey',
+    borderWidth: 2,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   text: {
     color: 'black',
   },
   topBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 7,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
     backgroundColor: 'white',
   },
   filter: {
@@ -169,7 +199,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   filterText: {
-    paddingRight: 5,
+    paddingHorizontal: 5,
   },
   button: {
     textAlign: 'center',

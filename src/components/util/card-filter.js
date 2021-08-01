@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import SelectBox from './select-box';
 import MultiSelectBox from './multi-select-box';
 import {GlobalContext} from '../../store/global-store';
@@ -11,14 +11,7 @@ const CARD_TYPE_DATA = [{text: 'All', value: ''}].concat(
   }),
 );
 
-const CardFilter = ({
-  cardType,
-  packStubs,
-  searchText,
-  setCardType,
-  setPackStubs,
-  setSearchText,
-}) => {
+const CardFilter = ({cardType, packStubs, setCardType, setPackStubs}) => {
   const {releases} = useContext(GlobalContext);
   const [releaseData, setReleaseData] = useState([]);
 
@@ -49,12 +42,6 @@ const CardFilter = ({
         value={cardType}
         onChangeValue={item => setCardType(item)}
       />
-      <Text>Search</Text>
-      <TextInput
-        style={styles.button}
-        onChangeText={text => setSearchText(text)}
-        value={searchText}
-      />
     </View>
   );
 };
@@ -63,11 +50,6 @@ const styles = StyleSheet.create({
   filter: {
     padding: 7,
     backgroundColor: 'white',
-  },
-  button: {
-    borderRadius: 6,
-    borderColor: 'lightgrey',
-    borderWidth: 2,
   },
 });
 
