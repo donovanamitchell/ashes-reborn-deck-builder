@@ -10,6 +10,7 @@ High Priority
 - [x] Fetch Card data via
   - [x] Cache invalidation by pack in settings screen
   - [ ] Error modals
+- [ ] Replace AsyncStorage with FileSystem, because AsyncStorage doesn't support images and requiring both is redundant.
 - [ ] Release 1.0
 
 Medium Priority
@@ -18,12 +19,10 @@ Medium Priority
 - [ ] Check different device sizes still look reasonable
 
 Low Priority
-- [ ] Credits page
 - [ ] Squeeze pack name into card list
 - [ ] Configurable text size
 - [ ] Improve loading screen
 - [ ] Basic deck description field
-- [ ] Replace AsyncStorage with FileSystem, because AsyncStorage doesn't support images and requiring both is redundant.
 - [ ] When returning to the Decks screen while loading images on the edit deck screen, react will complain when the image finshes downloading because the image component has unmounted.
 - [ ] Add Deck Name to deck page header
 

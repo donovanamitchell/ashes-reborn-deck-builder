@@ -1,12 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
   Button,
+  Linking,
+  Modal,
+  ScrollView,
   StyleSheet,
+  Switch,
   Text,
   View,
-  Modal,
-  Switch,
-  ScrollView,
 } from 'react-native';
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
@@ -82,6 +83,29 @@ const SettingsScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
+      <Text>
+        Please submit any bugs or feature requests to our{' '}
+        <Text
+          style={styles.linkText}
+          onPress={() =>
+            Linking.openURL(
+              'https://github.com/donovanamitchell/ashes-reborn-deck-builder/issues',
+            )
+          }>
+          Issue Tracker
+        </Text>
+        .
+      </Text>
+      <Text>
+        Special thanks to the developers of{' '}
+        <Text
+          style={styles.linkText}
+          onPress={() => Linking.openURL('https://ashes.live/')}>
+          Ashes Live
+        </Text>{' '}
+        for graciously allowing the Ashes Reborn Deck Builder to use their API.
+      </Text>
+      <View style={styles.separator} />
       <Modal
         animationType="fade"
         transparent={true}
@@ -93,7 +117,7 @@ const SettingsScreen = () => {
       </Modal>
       <View style={styles.button}>
         <Button
-          title="Check for Updates"
+          title="Check for New Releases"
           onPress={() => {
             setLoading(true);
             resetReleases().then(newReleases => {
@@ -105,7 +129,7 @@ const SettingsScreen = () => {
         />
       </View>
       <View style={styles.separator} />
-      <Text>Owned Packs</Text>
+      <Text style={styles.headerText}>Owned Packs</Text>
       <View style={styles.button}>
         <MultiSelectBox
           data={releaseData}
@@ -114,7 +138,7 @@ const SettingsScreen = () => {
         />
       </View>
       <View style={styles.separator} />
-      <Text>Cache</Text>
+      <Text style={styles.headerText}>Cache</Text>
       <Text>
         The card images can either be stored in a cache or document store.
         Images stored in the cache may be deleted automatically by the system to
@@ -164,6 +188,7 @@ const SettingsScreen = () => {
           }}
         />
       </View>
+      <View style={styles.separator} />
     </ScrollView>
   );
 };
@@ -184,6 +209,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     backgroundColor: 'white',
+  },
+  headerText: {
+    fontWeight: 'bold',
+  },
+  linkText: {
+    paddingLeft: 5,
+    color: 'blue',
   },
   separator: {
     marginVertical: 8,
