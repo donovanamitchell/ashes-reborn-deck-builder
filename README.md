@@ -9,9 +9,7 @@ Run using `npx react-native run-android`
 High Priority
 - [x] Fetch Card data via
   - [x] Cache invalidation by pack in settings screen
-  - [ ] Error modal
-- [x] Card image preload button in settings screen
-  - [ ] Card Loading image
+  - [ ] Error modals
 - [ ] Release 1.0
 
 Medium Priority

@@ -30,7 +30,7 @@ const App = () => {
             <ModalStack.Screen
               component={CardModal}
               name="CardModal"
-              options={({route}) => ({title: route.params.name})}
+              options={({route}) => ({title: route.params.name || ''})}
             />
           </ModalStack.Navigator>
         </NavigationContainer>

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Image, ImageBackground} from 'react-native';
 import {getCardUri} from '../../services/cards-service';
 
-const loadingImage = require('../../assets/loading-card.jpg');
+const loadingImage = require('../../assets/loading-card.png');
 
 const CachingImage = ({resizeMode, stub}) => {
   const [uri, setUri] = useState('');
