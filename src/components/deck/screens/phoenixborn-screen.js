@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, Text, View} from 'react-native';
+import {StyleSheet, ScrollView, Text, TextInput, View} from 'react-native';
 
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
@@ -22,6 +22,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
   const {
     cardErrors,
     cards,
+    description,
     dice,
     filename,
     firstFiveErrors,
@@ -29,6 +30,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
     name,
     phoenixBorn,
     phoenixBornStub,
+    setDescription,
     setFormat,
     setName,
     setPhoenixborn,
@@ -139,6 +141,14 @@ const PhoenixBornScreen = ({navigation, route}) => {
         {phoenixBornStub && phoenixBornCard && (
           <CardView style={styles.cardView} card={phoenixBornCard} />
         )}
+        <Text style={styles.headerText}>Description:</Text>
+        <TextInput
+          style={styles.multilineTextInput}
+          multiline
+          value={description}
+          placeholder="Description"
+          onChangeText={text => setDescription(text)}
+        />
         <Text style={styles.headerText}>Format:</Text>
         <SelectBox
           value={{text: format, value: format}}
@@ -186,7 +196,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 15,
   },
-  textInput: {
+  multilineTextInput: {
+    paddingVertical: 0,
+    paddingHorizontal: 10,
     borderRadius: 6,
     borderColor: 'lightgrey',
     borderWidth: 2,

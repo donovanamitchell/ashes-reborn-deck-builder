@@ -6,7 +6,7 @@ import SettingsScreen from './settings-screen';
 
 const MainStack = createStackNavigator();
 
-const MainScreen = ({navigation, route}) => {
+const MainScreen = () => {
   return (
     <MainStack.Navigator>
       <MainStack.Screen
@@ -22,7 +22,7 @@ const MainScreen = ({navigation, route}) => {
       <MainStack.Screen
         name="Deck"
         component={DeckScreen}
-        options={{title: 'Deck'}}
+        options={({route}) => ({title: route.params.name || 'New Deck'})}
       />
     </MainStack.Navigator>
   );

@@ -6,6 +6,7 @@ import {saveDeck} from '../../services/decks-service';
 const initialDeckState = {
   cardErrors: [],
   cards: {},
+  description: '',
   dice: {},
   filename: '',
   firstFive: [],
@@ -94,9 +95,14 @@ const deckContextWrapper = component => ({
     initialDeckState.phoenixBorn = deck.phoenixBorn;
     initialDeckState.phoenixBornStub = deck.phoenixBornStub;
     initialDeckState.cards = deck.cards;
+    initialDeckState.description = deck.description;
     initialDeckState.dice = deck.dice;
     initialDeckState.firstFive = deck.firstFive;
     initialDeckState.format = deck.format;
+    component?.setState({context: deckContextWrapper(component)});
+  },
+  setDescription: description => {
+    initialDeckState.description = description;
     component?.setState({context: deckContextWrapper(component)});
   },
   setFirstFive: (index, firstFive) => {
