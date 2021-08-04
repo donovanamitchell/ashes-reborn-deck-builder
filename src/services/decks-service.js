@@ -4,10 +4,11 @@ export const DECKS_FILE = `${FileSystem.documentDirectory}ASHES_DECKS.json`;
 
 export function initialState(filename) {
   return {
-    filename: filename,
     cardErrors: [],
     cards: {},
+    description: '',
     dice: {},
+    filename: filename,
     firstFive: [],
     firstFiveErrors: [],
     format: 'Standard',

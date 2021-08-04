@@ -60,7 +60,10 @@ const DecksScreen = ({navigation}) => {
             phoenixBorn={item.phoenixBorn}
             phoenixBornStub={item.phoenixBornStub}
             onPress={() => {
-              navigation.navigate('Deck', {filename: item.filename});
+              navigation.navigate('Deck', {
+                filename: item.filename,
+                name: item.name,
+              });
             }}
             onDelete={() => removeDeck(item.filename)}
           />
