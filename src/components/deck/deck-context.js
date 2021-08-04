@@ -1,43 +1,7 @@
 // https://wix.github.io/react-native-navigation/docs/third-party-react-context
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {globalState} from '../../store/global-store';
-
-export function initialState(filename) {
-  return {
-    filename: filename,
-    cardErrors: [],
-    cards: {},
-    dice: {},
-    firstFive: [],
-    firstFiveErrors: [],
-    format: 'Standard',
-    name: '',
-    phoenixBorn: null,
-    phoenixBornStub: null,
-  };
-}
-export async function getDeck(filename, newDeck) {
-  if (newDeck === true) {
-    return initialState(filename);
-  }
-
-  try {
-    let deck = JSON.parse(await AsyncStorage.getItem(filename));
-    if (deck === null) {
-      // TODO: error modal
-      console.log('Could not find deck');
-      deck = initialState(filename);
-    }
-
-    console.log(deck);
-    return deck;
-  } catch (e) {
-    // TODO: error modal
-    console.log(e);
-    return initialState(filename);
-  }
-}
+import {saveDeck} from '../../services/decks-service';
 
 const initialDeckState = {
   cardErrors: [],
@@ -115,10 +79,7 @@ const deckContextWrapper = component => ({
   },
   save: () => {
     console.log('SAVING DECK', initialDeckState);
-    AsyncStorage.setItem(
-      initialDeckState.filename,
-      JSON.stringify(initialDeckState),
-    );
+    saveDeck(initialDeckState);
   },
   setCardErrors: errors => {
     console.log('SET CARD ERRORS', errors);

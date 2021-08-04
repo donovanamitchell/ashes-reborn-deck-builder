@@ -4,7 +4,8 @@ import PhoenixBornScreen from './screens/phoenixborn-screen';
 import CardsScreen from './screens/cards-screen';
 import DiceScreen from './screens/dice-screen';
 import HandScreen from './screens/hand-screen';
-import {DeckContextProvider, DeckContext, getDeck} from './deck-context';
+import {DeckContextProvider, DeckContext} from './deck-context';
+import {getDeck} from '../../services/decks-service';
 import Loading from '../util/loading';
 
 const IntermediateContextLoader = params => {

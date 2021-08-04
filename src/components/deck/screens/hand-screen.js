@@ -68,7 +68,7 @@ const HandScreen = () => {
     // updates due to the stange things that the deck context needs for react
     // navigation to work
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [firstFive, cards]);
+  }, [firstFive, cards, format]);
 
   function cardSelector(index) {
     return (
