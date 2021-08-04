@@ -1,7 +1,7 @@
 // https://reactjs.org/docs/hooks-custom.html
 // https://wix.github.io/react-native-navigation/docs/third-party-react-context
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {deleteDeck, saveDecks} from '../services/decks-service';
 
 export const globalState = {
   cards: [],
@@ -24,14 +24,11 @@ const globalContextWrapper = component => ({
       filename === deck.filename ? [] : deck,
     );
     component?.setState({context: globalContextWrapper(component)});
-    AsyncStorage.removeItem(filename);
+    deleteDeck(filename);
   },
   saveDecks: () => {
     console.log('SAVING DECKS', globalState.decks);
-    AsyncStorage.setItem(
-      'ASHES_DECKS_MAIN_SCREEN',
-      JSON.stringify(globalState.decks),
-    );
+    saveDecks(globalState.decks);
   },
   setCards: cards => {
     console.log('SET CARDS', cards);

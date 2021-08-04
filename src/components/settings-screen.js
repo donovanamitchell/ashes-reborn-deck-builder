@@ -83,6 +83,7 @@ const SettingsScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.separator} />
       <Text>
         Please submit any bugs or feature requests to our{' '}
         <Text

@@ -10,7 +10,6 @@ High Priority
 - [x] Fetch Card data via
   - [x] Cache invalidation by pack in settings screen
   - [ ] Error modals
-- [ ] Replace AsyncStorage with FileSystem, because AsyncStorage doesn't support images and requiring both is redundant.
 - [ ] Release 1.0
 
 Medium Priority
