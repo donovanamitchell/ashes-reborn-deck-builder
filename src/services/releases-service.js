@@ -1,9 +1,14 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {FileSystem} from 'react-native-unimodules';
+
+export const RELEASES_FILE = `${FileSystem.documentDirectory}ASHES_RELEASES.json`;
 
 export async function getReleases() {
   try {
-    let releases = JSON.parse(await AsyncStorage.getItem('ASHES_RELEASES'));
-    if (releases === null) {
+    let releases = [];
+    let fileInfo = await FileSystem.getInfoAsync(RELEASES_FILE);
+    if (fileInfo.exists) {
+      releases = JSON.parse(await FileSystem.readAsStringAsync(fileInfo.uri));
+    } else {
       let response = await fetch(
         'https://api.ashes.live/v2/releases?show_legacy=false',
         {
@@ -15,8 +20,7 @@ export async function getReleases() {
         },
       );
       releases = await response.json();
-
-      AsyncStorage.setItem('ASHES_RELEASES', JSON.stringify(releases));
+      FileSystem.writeAsStringAsync(RELEASES_FILE, JSON.stringify(releases));
     }
     return releases;
   } catch (e) {
@@ -28,7 +32,9 @@ export async function getReleases() {
 
 export async function resetReleases() {
   try {
-    await AsyncStorage.removeItem('ASHES_RELEASES');
+    await FileSystem.deleteAsync(RELEASES_FILE, {
+      idempotent: true,
+    });
     return getReleases();
   } catch (e) {
     // TODO: error modal
