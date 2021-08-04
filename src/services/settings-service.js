@@ -1,16 +1,22 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {FileSystem} from 'react-native-unimodules';
+
+export const ASHES_SETTINGS_FILE = `${FileSystem.documentDirectory}ASHES_SETTINGS.json`;
 
 export async function getSettings() {
-  let settings = JSON.parse(await AsyncStorage.getItem('ASHES_SETTINGS'));
-  if (settings === null) {
+  let fileInfo = await FileSystem.getInfoAsync(ASHES_SETTINGS_FILE);
+  if (fileInfo.exists) {
+    return JSON.parse(await FileSystem.readAsStringAsync(fileInfo.uri));
+  } else {
     return {
       ownedReleases: [{name: 'All', stub: 'ALL_PACKS'}],
       storeImagesInFileSystem: false,
     };
   }
-  return settings;
 }
 
 export async function saveSettings(settings) {
-  return await AsyncStorage.setItem('ASHES_SETTINGS', JSON.stringify(settings));
+  return FileSystem.writeAsStringAsync(
+    ASHES_SETTINGS_FILE,
+    JSON.stringify(settings),
+  );
 }
