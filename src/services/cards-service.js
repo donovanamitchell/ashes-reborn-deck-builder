@@ -1,7 +1,7 @@
-// TODO: replace AsyncStorage with FileSystem? It feels redundant to have both
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FileSystem} from 'react-native-unimodules';
 import {globalState} from '../store/global-store';
+
+export const CARD_DATA_DIRECTORY = FileSystem.documentDirectory;
 
 function directory() {
   return globalState.storeImagesInFileSystem
@@ -9,11 +9,17 @@ function directory() {
     : FileSystem.cacheDirectory;
 }
 
+function cardDataPath(releaseStub) {
+  return `${CARD_DATA_DIRECTORY}${releaseStub}-cards.json`;
+}
+
 export async function deleteCards(releaseStubs) {
   try {
     return Promise.all([
       // I hate splats
-      ...releaseStubs.map(stub => AsyncStorage.removeItem(`${stub}-cards`)),
+      ...releaseStubs.map(stub =>
+        FileSystem.deleteAsync(cardDataPath(stub), {idempotent: true}),
+      ),
       // I don't think this is how contexts are supposed to be used
       uncacheImages(
         globalState.cards.filter(
@@ -33,7 +39,12 @@ export async function deleteAllCards() {
     let cardFilenames = (
       await FileSystem.readDirectoryAsync(directory())
     ).filter(filename => filename.endsWith('-card.jpg'));
-    let keys = await AsyncStorage.getAllKeys();
+
+    let cardDataFilenames = (
+      await FileSystem.readDirectoryAsync(CARD_DATA_DIRECTORY)
+    ).filter(filename => filename.endsWith('-cards.json'));
+
+    console.log(cardFilenames, cardDataFilenames);
 
     return Promise.all([
       // I hate splats
@@ -42,7 +53,11 @@ export async function deleteAllCards() {
           idempotent: true,
         }),
       ),
-      AsyncStorage.multiRemove(keys.filter(key => key.endsWith('-cards'))),
+      ...cardDataFilenames.map(filename =>
+        FileSystem.deleteAsync(`${CARD_DATA_DIRECTORY}${filename}`, {
+          idempotent: true,
+        }),
+      ),
     ]);
   } catch (error) {
     // TODO: error modal
@@ -85,8 +100,12 @@ export function getCardsFromReleases(releaseStubs) {
 
 export async function getCardsFromRelease(releaseStub) {
   try {
-    let cards = JSON.parse(await AsyncStorage.getItem(`${releaseStub}-cards`));
-    if (cards === null) {
+    let cards = [];
+    let fileInfo = await FileSystem.getInfoAsync(cardDataPath(releaseStub));
+
+    if (fileInfo.exists) {
+      cards = JSON.parse(await FileSystem.readAsStringAsync(fileInfo.uri));
+    } else {
       let pageSize = 30;
       let response = await fetch(
         `https://api.ashes.live/v2/cards?mode=listing&releases=all&r=${releaseStub}&limit=${pageSize}&offset=0`,
@@ -126,7 +145,10 @@ export async function getCardsFromRelease(releaseStub) {
         );
       }
 
-      AsyncStorage.setItem(`${releaseStub}-cards`, JSON.stringify(cards));
+      FileSystem.writeAsStringAsync(
+        cardDataPath(releaseStub),
+        JSON.stringify(cards),
+      );
     }
 
     return cards;
