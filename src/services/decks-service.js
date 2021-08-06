@@ -33,24 +33,15 @@ export async function getDeck(filename, newDeck) {
     return initialState(filename);
   }
 
-  try {
-    let deck = {};
-    let fileInfo = await FileSystem.getInfoAsync(deckFilePath(filename));
-    if (fileInfo.exists) {
-      deck = JSON.parse(await FileSystem.readAsStringAsync(fileInfo.uri));
-    } else {
-      // TODO: error modal
-      console.log('Could not find deck');
-      deck = initialState(filename);
-    }
-
-    console.log(deck);
-    return deck;
-  } catch (e) {
-    // TODO: error modal
-    console.log(e);
-    return initialState(filename);
+  let deck = {};
+  let fileInfo = await FileSystem.getInfoAsync(deckFilePath(filename));
+  if (fileInfo.exists) {
+    deck = JSON.parse(await FileSystem.readAsStringAsync(fileInfo.uri));
+  } else {
+    deck = initialState(filename);
   }
+
+  return deck;
 }
 
 export async function getDeckFilenames() {

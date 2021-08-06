@@ -79,16 +79,13 @@ const deckContextWrapper = component => ({
     component?.setState({context: deckContextWrapper(component)});
   },
   save: () => {
-    console.log('SAVING DECK', initialDeckState);
     saveDeck(initialDeckState);
   },
   setCardErrors: errors => {
-    console.log('SET CARD ERRORS', errors);
     initialDeckState.cardErrors = errors;
     component?.setState({context: deckContextWrapper(component)});
   },
   setDeck: deck => {
-    console.log('SET DECK', deck);
     initialDeckState.count = 0;
     initialDeckState.filename = deck.filename;
     initialDeckState.name = deck.name;
@@ -106,13 +103,11 @@ const deckContextWrapper = component => ({
     component?.setState({context: deckContextWrapper(component)});
   },
   setFirstFive: (index, firstFive) => {
-    console.log('SET FFIVE', index, firstFive);
     initialDeckState.firstFive[index] = firstFive;
     initialDeckState.firstFive = Object.assign([], initialDeckState.firstFive);
     component?.setState({context: deckContextWrapper(component)});
   },
   setFirstFiveErrors: errors => {
-    console.log('SET FFIVE ERRORS', errors);
     initialDeckState.firstFiveErrors = errors;
     component?.setState({context: deckContextWrapper(component)});
   },
