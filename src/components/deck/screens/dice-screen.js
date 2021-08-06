@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DiceView from '../../dice/dice-view';
 import {DeckContext} from '../deck-context';
@@ -19,7 +19,7 @@ const DiceScreen = () => {
   }, [dice]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.diceViewContainer}>
         <DiceView dice={dice} />
       </View>
@@ -58,7 +58,7 @@ const DiceScreen = () => {
           );
         })}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

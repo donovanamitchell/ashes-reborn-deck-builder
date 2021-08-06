@@ -8,7 +8,6 @@ Run using `npx react-native run-android`
 ## TODO:
 High Priority
 - [ ] Release 1.0
-  - [ ] Check different device sizes still look reasonable
   - [ ] App Icon
 
 Medium Priority

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 
 import SelectBox from '../../util/select-box';
 import {DeckContext} from '../deck-context';
@@ -96,7 +96,7 @@ const HandScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {[
         cardSelector(0),
         cardSelector(1),
@@ -104,13 +104,12 @@ const HandScreen = () => {
         cardSelector(3),
         cardSelector(4),
       ]}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   cardView: {
-    flex: 1,
     flexDirection: 'row',
   },
   container: {

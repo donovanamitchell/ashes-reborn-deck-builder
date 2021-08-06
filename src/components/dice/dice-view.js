@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import {DICE_TYPES} from '../util/constants';
 import {AshesIcon} from '../util/ashes-icon';
 
-function diceIcons(dice) {
+function diceIcons(dice, iconSize) {
   let basics = new Array(10).fill('basic');
   let basicsIndex = 0;
   DICE_TYPES.forEach(diceType => {
@@ -24,13 +24,17 @@ function diceIcons(dice) {
         style={[styles[diceType], styles.dice]}
         key={index}
         name={diceType === 'basic' ? diceType : `${diceType}:power`}
-        size={25}
+        size={iconSize}
       />
     ));
 }
 
 const DiceView = ({dice}) => {
-  return <View style={styles.container}>{diceIcons(dice)}</View>;
+  return (
+    <View style={styles.container}>
+      {diceIcons(dice, Math.ceil(Dimensions.get('window').width / 10) - 15)}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
