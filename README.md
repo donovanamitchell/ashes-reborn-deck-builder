@@ -8,9 +8,6 @@ Run using `npx react-native run-android`
 ## TODO:
 High Priority
 - [ ] Release 1.0
-  - [x] Fetch Card data via
-    - [x] Cache invalidation by pack in settings screen
-    - [ ] Error modals
   - [ ] Check different device sizes still look reasonable
   - [ ] App Icon
 

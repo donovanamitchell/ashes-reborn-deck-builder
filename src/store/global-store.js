@@ -27,26 +27,21 @@ const globalContextWrapper = component => ({
     deleteDeck(filename);
   },
   saveDecks: () => {
-    console.log('SAVING DECKS', globalState.decks);
     saveDecks(globalState.decks);
   },
   setCards: cards => {
-    console.log('SET CARDS', cards);
     globalState.cards = cards;
     component?.setState({context: globalContextWrapper(component)});
   },
   setDecks: decks => {
-    console.log('SET DECKS', decks);
     globalState.decks = decks;
     component?.setState({context: globalContextWrapper(component)});
   },
   setOwnedReleases: releases => {
-    console.log('SET OWNED RELEASES', releases);
     globalState.ownedReleases = releases;
     component?.setState({context: globalContextWrapper(component)});
   },
   setReleases: releases => {
-    console.log('SET RELEASES', releases);
     globalState.releases = releases;
     component?.setState({context: globalContextWrapper(component)});
   },
