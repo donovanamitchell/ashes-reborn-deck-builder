@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View, useWindowDimensions} from 'react-native';
 import {DICE_TYPES} from '../util/constants';
 import {AshesIcon} from '../util/ashes-icon';
 
@@ -30,9 +30,11 @@ function diceIcons(dice, iconSize) {
 }
 
 const DiceView = ({dice}) => {
+  const window = useWindowDimensions();
+
   return (
     <View style={styles.container}>
-      {diceIcons(dice, Math.ceil(Dimensions.get('window').width / 10) - 15)}
+      {diceIcons(dice, Math.ceil(window.width / 10) - 15)}
     </View>
   );
 };
