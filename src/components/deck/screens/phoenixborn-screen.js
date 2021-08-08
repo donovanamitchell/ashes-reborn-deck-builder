@@ -1,5 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import {StyleSheet, ScrollView, Text, TextInput, View} from 'react-native';
+import {debounce} from 'lodash';
 
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
@@ -100,6 +101,8 @@ const PhoenixBornScreen = ({navigation, route}) => {
     );
   }, [cards, phoenixBornCard]);
 
+  const debouncedRef = useRef(debounce(func => func(), 1000)).current;
+
   function shortenedDeck(overrides) {
     return Object.assign(
       {
@@ -120,6 +123,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
           onChangeText={text => {
             setName(text);
             state.updateDeck(shortenedDeck({name: text}));
+            debouncedRef(state.saveDecks);
           }}
           placeholder="Deck Name"
           value={name}
@@ -135,6 +139,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
                 phoenixBorn: item.text,
               }),
             );
+            state.saveDecks();
           }}
           data={phoenixBornCards}
         />

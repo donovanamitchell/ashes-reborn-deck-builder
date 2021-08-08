@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
+import {AppState} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import PhoenixBornScreen from './screens/phoenixborn-screen';
 import CardsScreen from './screens/cards-screen';
@@ -22,6 +23,21 @@ const IntermediateContextLoader = params => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.filename, params.newDeck]);
+
+  useEffect(() => {
+    AppState.addEventListener('change', saveDeckWhenBackgrounded);
+
+    return () => {
+      AppState.removeEventListener('change', saveDeckWhenBackgrounded);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function saveDeckWhenBackgrounded(nextAppState) {
+    if (nextAppState === 'background') {
+      save();
+    }
+  }
 
   if (loading === true) {
     return <Loading />;

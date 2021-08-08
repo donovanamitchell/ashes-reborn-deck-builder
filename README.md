@@ -8,7 +8,6 @@ Run using `npx react-native run-android`
 ## TODO:
 High Priority
 - [ ] Release 1.0
-  - [ ] decks list caching bug
 
 Medium Priority
 - [ ] Card directory

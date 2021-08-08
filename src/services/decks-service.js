@@ -55,7 +55,7 @@ export async function getDeckFilenames() {
 }
 
 export async function saveDeck(deck) {
-  FileSystem.writeAsStringAsync(
+  return FileSystem.writeAsStringAsync(
     deckFilePath(deck.filename),
     JSON.stringify(deck),
   );

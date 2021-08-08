@@ -65,7 +65,10 @@ const DecksScreen = ({navigation}) => {
                 name: item.name,
               });
             }}
-            onDelete={() => removeDeck(item.filename)}
+            onDelete={() => {
+              removeDeck(item.filename);
+              saveDecks();
+            }}
           />
         )}
         keyExtractor={item => item.filename}
@@ -80,6 +83,7 @@ const DecksScreen = ({navigation}) => {
             cards: {},
           };
           addDeck(newDeck);
+          saveDecks();
           navigation.navigate('Deck', {
             filename: newDeck.filename,
             newDeck: true,
