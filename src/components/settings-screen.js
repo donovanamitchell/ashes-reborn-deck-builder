@@ -85,6 +85,10 @@ const SettingsScreen = () => {
     <ScrollView style={styles.container}>
       <View style={styles.separator} />
       <Text>
+        All images, graphics, textual and game contents © 2015-2021 Plaid Hat
+        Games. All rights reserved.
+      </Text>
+      <Text>
         Please submit any bugs or feature requests to our{' '}
         <Text
           style={styles.linkText}
@@ -104,7 +108,8 @@ const SettingsScreen = () => {
           onPress={() => Linking.openURL('https://ashes.live/')}>
           Ashes Live
         </Text>{' '}
-        for graciously allowing the Ashes Reborn Deck Builder to use their API.
+        for graciously allowing the Ashes Reborn Deck Builder to use their API
+        and the Ashes Font.
       </Text>
       <View style={styles.separator} />
       <Modal
