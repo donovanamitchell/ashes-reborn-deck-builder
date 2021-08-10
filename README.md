@@ -3,15 +3,23 @@ This is a mobile deckbuilder for Ashes: Reborn written in React Native.
 
 ## Development
 
+I followed this guide to set up my environment https://docs.microsoft.com/en-us/windows/dev-environment/javascript/react-native-for-android
+
 Run using `npx react-native run-android`
+
+## Deployment
+
+I followed this guide for building and deploying a release https://reactnative.dev/docs/signed-apk-android. It is now very high priority to get this into a CI process so I never have to remember this again.
 
 ## TODO:
 High Priority
 - [ ] Release 1.0
+- [ ] Github CI
 
 Medium Priority
 - [ ] Card directory
 - [ ] "Build" Tab? Some way of viewing the list of cards to add to the deck in grid form so that it is easier to constuct a deck (a checklist?).
+- [ ] Automated tests
 
 Low Priority
 - [ ] Squeeze pack name into card list
