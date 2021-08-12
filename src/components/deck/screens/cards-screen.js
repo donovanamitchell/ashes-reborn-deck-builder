@@ -28,6 +28,10 @@ function containsSearchString(searchText, name, text, cost) {
   return true;
 }
 
+function isInDeck(hideNonDeckCards, cards, stub) {
+  return hideNonDeckCards ? cards[stub] && cards[stub].count : true;
+}
+
 const CardsScreen = () => {
   const {cards, phoenixBorn, setCardErrors} = useContext(DeckContext);
   const state = useContext(GlobalContext);
@@ -35,6 +39,7 @@ const CardsScreen = () => {
   const [cardCount, setCardCount] = useState(0);
   const [cardTypeFilter, setCardTypeFilter] = useState({});
   const [filteredCards, setFilteredCards] = useState([]);
+  const [hideNonDeckCards, setHideNonDeckCards] = useState(false);
   const [packStubsFilter, setPackStubsFilter] = useState([
     {text: 'Owned Packs', value: 'OWNED_PACKS'},
   ]);
@@ -94,13 +99,18 @@ const CardsScreen = () => {
         // TODO: If I made each one of these into an effect would that be more
         // efficient?
         return (
+          isInDeck(hideNonDeckCards, cards, card.stub) &&
           hasType(cardTypeFilter.value, card.type) &&
           containsSearchString(searchText, card.name, card.text, card.cost) &&
           isFromPack(card.release)
         );
       }),
     );
+    // `cards` are not included here so that cards do not filter immediately on
+    // removal in case of a misclick.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    hideNonDeckCards,
     state.cards,
     cardTypeFilter,
     searchText,
@@ -153,11 +163,11 @@ const CardsScreen = () => {
       {showFilter && (
         <CardFilter
           cardType={cardTypeFilter}
+          hideNonDeckCards={hideNonDeckCards}
           packStubs={packStubsFilter}
-          searchText={searchText}
           setCardType={setCardTypeFilter}
+          setHideNonDeckCards={setHideNonDeckCards}
           setPackStubs={onCardFilteredByPack}
-          setSearchText={setSearchText}
         />
       )}
       <FlatList

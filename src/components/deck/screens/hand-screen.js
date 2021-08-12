@@ -57,7 +57,7 @@ const HandScreen = () => {
       }
       if (!cardHash[card.stub].copies) {
         errors[index] = `There are no copies of ${card.name} in this deck`;
-      } else if (cardHash[card.stub].count > cardHash[card.stub].copies) {
+      } else if (cardHash[card.stub].count > 1) {
         errors[
           index
         ] = `There are too many copies of ${card.name} in the first five`;

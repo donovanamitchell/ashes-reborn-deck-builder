@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Switch, Text, View} from 'react-native';
 import SelectBox from './select-box';
 import MultiSelectBox from './multi-select-box';
 import {GlobalContext} from '../../store/global-store';
@@ -11,7 +11,14 @@ const CARD_TYPE_DATA = [{text: 'All', value: ''}].concat(
   }),
 );
 
-const CardFilter = ({cardType, packStubs, setCardType, setPackStubs}) => {
+const CardFilter = ({
+  cardType,
+  hideNonDeckCards,
+  packStubs,
+  setCardType,
+  setHideNonDeckCards,
+  setPackStubs,
+}) => {
   const {releases} = useContext(GlobalContext);
   const [releaseData, setReleaseData] = useState([]);
 
@@ -42,6 +49,12 @@ const CardFilter = ({cardType, packStubs, setCardType, setPackStubs}) => {
         value={cardType}
         onChangeValue={item => setCardType(item)}
       />
+      <Text>Show Included Cards</Text>
+      <Switch
+        style={styles.switch}
+        value={hideNonDeckCards}
+        onValueChange={() => setHideNonDeckCards(!hideNonDeckCards)}
+      />
     </View>
   );
 };
@@ -50,6 +63,11 @@ const styles = StyleSheet.create({
   filter: {
     padding: 7,
     backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey',
+  },
+  switch: {
+    alignSelf: 'flex-start',
   },
 });
 

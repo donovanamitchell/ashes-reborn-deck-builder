@@ -1,13 +1,12 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {StyleSheet, ScrollView, Text, TextInput, View} from 'react-native';
-import {debounce} from 'lodash';
+import {debounce, sortedIndexBy} from 'lodash';
 
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
 import CardsList from './phoenixborn/cards-list';
 import CardView from '../../card/card-view';
 import ClearableTextInput from '../../util/clearable-text-input';
-import ConjurationsList from './phoenixborn/conjuration-list';
 import DiceView from '../../dice/dice-view';
 import ErrorsList from './phoenixborn/errors-list';
 import FirstFive from './phoenixborn/first-five';
@@ -40,7 +39,6 @@ const PhoenixBornScreen = ({navigation, route}) => {
   const [phoenixBornCard, setPhoenixbornCard] = useState({});
   const [phoenixBornCards, setPhoenixbornCards] = useState([]);
   const [sortedDeckCards, setSortedDeckCards] = useState([]);
-  const [sortedConjurations, setSortedConjurations] = useState([]);
 
   useEffect(() => {
     let card = state.cards.find(({stub}) => stub === phoenixBornStub) || {};
@@ -69,36 +67,37 @@ const PhoenixBornScreen = ({navigation, route}) => {
   }, [state.cards]);
 
   useEffect(() => {
-    let sortedCards = Object.entries(cards).sort((first, second) => {
-      if (first[1].name < second[1].name) {
-        return -1;
+    let sortedCards = {Conjuration: []};
+    if (phoenixBornCard.conjurations) {
+      phoenixBornCard.conjurations.forEach(card => {
+        sortedCards.Conjuration.splice(
+          sortedIndexBy(sortedCards.Conjuration, card, x => x.name),
+          0,
+          card,
+        );
+      });
+    }
+    Object.entries(cards).forEach(value => {
+      let card = value[1];
+      if (!sortedCards[card.type]) {
+        sortedCards[card.type] = [];
       }
-      if (first[1].name > second[1].name) {
-        return 1;
+      if (card.conjurations) {
+        card.conjurations.forEach(conjuration => {
+          sortedCards.Conjuration.splice(
+            sortedIndexBy(sortedCards.Conjuration, conjuration, x => x.name),
+            0,
+            conjuration,
+          );
+        });
       }
-      return 0;
+      sortedCards[card.type].splice(
+        sortedIndexBy(sortedCards[card.type], card, x => x.name),
+        0,
+        card,
+      );
     });
     setSortedDeckCards(sortedCards);
-    setSortedConjurations(
-      sortedCards
-        .concat([[phoenixBornCard.stub, phoenixBornCard]])
-        .flatMap(item => {
-          if (item[1].conjurations) {
-            return item[1].conjurations;
-          } else {
-            return [];
-          }
-        })
-        .sort((first, second) => {
-          if (first.name < second.name) {
-            return -1;
-          }
-          if (first.name > second.name) {
-            return 1;
-          }
-          return 0;
-        }),
-    );
   }, [cards, phoenixBornCard]);
 
   const debouncedRef = useRef(debounce(func => func(), 1000)).current;
@@ -172,13 +171,6 @@ const PhoenixBornScreen = ({navigation, route}) => {
           <CardsList
             navigation={navigation}
             sortedDeckCards={sortedDeckCards}
-          />
-        </View>
-        <Text style={styles.headerText}>Conjurations:</Text>
-        <View style={styles.cardsListContainer}>
-          <ConjurationsList
-            navigation={navigation}
-            sortedConjurations={sortedConjurations}
           />
         </View>
       </View>

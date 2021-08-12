@@ -1,20 +1,27 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {sortBy} from 'lodash';
 
 const CardsList = ({navigation, sortedDeckCards}) => {
-  return sortedDeckCards.map(item => (
-    <View key={item[1].stub} style={[styles.container, styles.cardsList]}>
-      <Text>{item[1].count}</Text>
-      <Text
-        style={styles.linkText}
-        onPress={() =>
-          navigation.navigate('CardModal', {
-            name: item[1].name,
-            stub: item[1].stub,
-          })
-        }>
-        {item[1].name}
-      </Text>
+  console.log(sortedDeckCards);
+  return sortBy(Object.entries(sortedDeckCards), ['0']).map(value => (
+    <View key={value[0]}>
+      <Text>{value[0]}</Text>
+      {value[1].map((card, index) => (
+        <View key={index} style={[styles.container, styles.cardsList]}>
+          <Text>{card.count}</Text>
+          <Text
+            style={styles.linkText}
+            onPress={() =>
+              navigation.navigate('CardModal', {
+                name: card.name,
+                stub: card.stub,
+              })
+            }>
+            {card.name}
+          </Text>
+        </View>
+      ))}
     </View>
   ));
 };

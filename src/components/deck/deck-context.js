@@ -45,12 +45,7 @@ const deckContextWrapper = component => ({
     if (initialDeckState.cards[card.stub]) {
       initialDeckState.cards[card.stub].count += 1;
     } else {
-      let cardContent = {
-        count: 1,
-        name: card.name,
-        stub: card.stub,
-        phoenixborn: card.phoenixborn,
-      };
+      let cardContent = Object.assign({count: 1}, card);
       if (card.conjurations) {
         cardContent.conjurations = card.conjurations.map(conjuration => {
           // This feels stupidly hacky.
