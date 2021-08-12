@@ -3,7 +3,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import {sortBy} from 'lodash';
 
 const CardsList = ({navigation, sortedDeckCards}) => {
-  console.log(sortedDeckCards);
   return sortBy(Object.entries(sortedDeckCards), ['0']).map(value => (
     <View key={value[0]}>
       <Text>{value[0]}</Text>

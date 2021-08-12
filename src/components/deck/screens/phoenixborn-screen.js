@@ -97,6 +97,9 @@ const PhoenixBornScreen = ({navigation, route}) => {
         card,
       );
     });
+    if (sortedCards.Conjuration.length <= 0) {
+      delete sortedCards.Conjuration;
+    }
     setSortedDeckCards(sortedCards);
   }, [cards, phoenixBornCard]);
 

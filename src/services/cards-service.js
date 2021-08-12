@@ -37,8 +37,6 @@ export async function deleteAllCards() {
     await FileSystem.readDirectoryAsync(CARD_DATA_DIRECTORY)
   ).filter(filename => filename.endsWith('-cards.json'));
 
-  console.log(cardFilenames, cardDataFilenames);
-
   return Promise.all([
     // I hate splats
     ...cardFilenames.map(filename =>
