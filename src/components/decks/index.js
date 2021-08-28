@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, FlatList, View} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 
 import {GlobalContext} from '../../store/global-store';
 import DeckListItem from './deck-list-item';
@@ -21,6 +22,7 @@ const DecksScreen = ({navigation}) => {
     setReleases,
     setStoreImagesInFileSystem,
   } = useContext(GlobalContext);
+  const {colors} = useTheme();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -49,6 +51,7 @@ const DecksScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Button
+        color={colors.primary}
         title="Settings"
         onPress={() => navigation.navigate('Settings')}
       />
@@ -75,6 +78,7 @@ const DecksScreen = ({navigation}) => {
       />
       <Button
         title="New Deck"
+        color={colors.primary}
         onPress={() => {
           let newDeck = {
             filename: `${Date.now().toString(16)}_ASHES_DECK`,
@@ -97,13 +101,6 @@ const DecksScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  listItem: {
-    margin: 10,
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-    backgroundColor: 'beige',
   },
 });
 

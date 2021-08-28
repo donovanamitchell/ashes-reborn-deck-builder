@@ -2,18 +2,22 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, Modal, Pressable, View, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CardImage from '../card/card-image';
+import {useTheme} from '@react-navigation/native';
 
 const DeckListItem = props => {
+  const {colors} = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <Pressable
-      style={({pressed}) => [
+      style={[
         {
-          backgroundColor: pressed ? 'lightgrey' : 'white',
+          backgroundColor: colors.card,
         },
         styles.container,
       ]}
+      //TODO: does this look good in both modes?
+      android_ripple={{color: colors.primary}}
       onPress={() => {
         props.onPress();
       }}>
@@ -27,14 +31,15 @@ const DeckListItem = props => {
           onPress={() => {
             setModalVisible(!modalVisible);
           }}>
-          <View style={styles.modalView}>
-            <Text>
+          <View style={[styles.modalView, {backgroundColor: colors.card}]}>
+            <Text style={{color: colors.text}}>
               Permanently delete this deck? This action cannot be undone.
             </Text>
             <View style={styles.buttonGroup}>
               <View style={styles.buttonView}>
                 <Button
                   title="Delete Deck"
+                  color={colors.primary}
                   onPress={() => {
                     props.onDelete();
                     setModalVisible(!modalVisible);
@@ -44,6 +49,7 @@ const DeckListItem = props => {
               <View style={styles.buttonView}>
                 <Button
                   title="Cancel"
+                  color={colors.primary}
                   onPress={() => setModalVisible(!modalVisible)}
                 />
               </View>
@@ -57,12 +63,14 @@ const DeckListItem = props => {
           stub={props.phoenixBornStub}
           name={props.phoenixBorn}
         />
-        <Text style={styles.listItem}>{props.name}</Text>
+        <Text style={[styles.listItem, {color: colors.text}]}>
+          {props.name}
+        </Text>
         <Icon
           raised
           name="delete-forever"
           size={25}
-          style={styles.delete}
+          style={[styles.delete, {color: colors.primary}]}
           onPress={() => setModalVisible(!modalVisible)}
         />
       </View>
@@ -83,7 +91,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   delete: {
-    color: 'grey',
     width: '10%',
   },
   listItem: {
@@ -109,7 +116,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',

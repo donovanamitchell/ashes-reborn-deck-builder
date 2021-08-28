@@ -5,10 +5,11 @@ import {deleteDeck, saveDecks} from '../services/decks-service';
 
 export const globalState = {
   cards: [],
-  releases: [],
   decks: [],
   ownedReleases: [],
+  releases: [],
   storeImagesInFileSystem: false,
+  theme: 'rightPhoenix',
 };
 
 const globalContextWrapper = component => ({

@@ -128,6 +128,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
             debouncedRef(state.saveDecks);
           }}
           placeholder="Deck Name"
+          placeholderTextColor="darkgrey"
           value={name}
         />
         <Text style={styles.headerText}>Phoenixborn:</Text>
@@ -154,6 +155,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
           multiline
           value={description}
           placeholder="Description"
+          placeholderTextColor="darkgrey"
           onChangeText={text => setDescription(text)}
         />
         <Text style={styles.headerText}>Format:</Text>
@@ -201,6 +203,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 6,
     borderColor: 'lightgrey',
+    color: 'black',
     borderWidth: 2,
   },
   cardView: {

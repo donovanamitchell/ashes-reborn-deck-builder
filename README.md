@@ -13,15 +13,23 @@ I followed this guide for building and deploying a release https://reactnative.d
 
 ## TODO:
 High Priority
-- [ ] Release 1.0
 - [ ] Github CI
+- [ ] Release 1.1.0
+  - [ ] Card directory
+  - [ ] Dark Mode bugfix
+  - [ ] Rotation bugfix
+  - [ ] Card List optimizations
+  - [ ] I18n options
 
 Medium Priority
-- [ ] Card directory
 - [ ] "Build" Tab? Some way of viewing the list of cards to add to the deck in grid form so that it is easier to constuct a deck (a checklist?).
 - [ ] Automated tests
+- [ ] Life, Spellboard, Battlefield list for Phoenixborn
+- [ ] Required packs list
+- [ ] Deck text export option
 
 Low Priority
+- [ ] Better Tablet support
 - [ ] Squeeze pack name into card list
 - [ ] Configurable text size
 - [ ] Improve loading screen

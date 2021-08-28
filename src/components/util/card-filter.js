@@ -51,6 +51,8 @@ const CardFilter = ({
       />
       <Text>Show Included Cards</Text>
       <Switch
+        trackColor={{false: 'lightgrey', true: 'lightgrey'}}
+        thumbColor={'grey'}
         style={styles.switch}
         value={hideNonDeckCards}
         onValueChange={() => setHideNonDeckCards(!hideNonDeckCards)}

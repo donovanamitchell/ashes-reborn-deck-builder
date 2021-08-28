@@ -1,10 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 
 const Loading = () => {
+  const {colors} = useTheme();
+
   return (
     <View style={styles.container}>
-      <Text>Loading...</Text>
+      <Text style={{color: colors.text}}>Loading...</Text>
     </View>
   );
 };

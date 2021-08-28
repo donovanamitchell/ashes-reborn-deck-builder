@@ -8,6 +8,7 @@ const ClearableTextInput = ({value, style, onChangeText, placeholder}) => {
       <TextInput
         style={styles.searchBox}
         onChangeText={text => onChangeText(text)}
+        placeholderTextColor="darkgrey"
         placeholder={placeholder}
         value={value}
       />
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
     paddingRight: 4,
   },
   searchBox: {
+    color: 'black',
     padding: 0,
     paddingHorizontal: 10,
     flex: 1,

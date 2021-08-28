@@ -6,16 +6,12 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {Alert} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {setJSExceptionHandler} from 'react-native-exception-handler';
 
 import {GlobalContextProvider} from './src/store/global-store';
-import CardModal from './src/components/card/card-modal';
-import MainScreen from './src/components/main-screen';
+import ModalStack from './src/components/modal-stack';
 
-const ModalStack = createStackNavigator();
 const errorHandler = error => {
   Alert.alert(
     error.name,
@@ -30,22 +26,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <GlobalContextProvider>
-        <NavigationContainer>
-          <ModalStack.Navigator mode="modal">
-            <ModalStack.Screen
-              component={MainScreen}
-              options={{headerShown: false}}
-              name="Main"
-            />
-            <ModalStack.Screen
-              component={CardModal}
-              name="CardModal"
-              options={({route}) => ({
-                title: route.params.name || '',
-              })}
-            />
-          </ModalStack.Navigator>
-        </NavigationContainer>
+        <ModalStack />
       </GlobalContextProvider>
     </SafeAreaProvider>
   );
