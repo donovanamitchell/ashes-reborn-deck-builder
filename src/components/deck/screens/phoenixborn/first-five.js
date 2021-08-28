@@ -8,7 +8,11 @@ const FirstFive = () => {
 
   function cardImage(index) {
     if (!firstFive[index]) {
-      return;
+      return (
+        <View style={styles.image} key={index}>
+          <CardImage stub="card-back" name="" />
+        </View>
+      );
     }
     return (
       <View style={styles.image} key={index}>

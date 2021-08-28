@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 
-const ErrorsList = ({cardErrors, firstFiveErrors}) => {
+const ErrorsList = ({cardErrors, firstFiveErrors, errorColor}) => {
   let cardErrorTexts = cardErrors.map((error, index) => (
-    <Text key={`card${index}`} style={styles.error}>
+    <Text key={`card${index}`} style={{color: errorColor}}>
       {error}
     </Text>
   ));
@@ -12,7 +12,7 @@ const ErrorsList = ({cardErrors, firstFiveErrors}) => {
   firstFiveErrors.forEach((error, index) => {
     if (error && firstFiveErrors.indexOf(error) === index) {
       firstFiveErrorTexts.push(
-        <Text style={styles.error} key={`firstFive${index}`}>
+        <Text style={{color: errorColor}} key={`firstFive${index}`}>
           {error}
         </Text>,
       );
@@ -27,11 +27,5 @@ const ErrorsList = ({cardErrors, firstFiveErrors}) => {
 
   return null;
 };
-
-const styles = StyleSheet.create({
-  error: {
-    color: 'red',
-  },
-});
 
 export default ErrorsList;

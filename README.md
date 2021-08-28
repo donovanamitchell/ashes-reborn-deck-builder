@@ -16,7 +16,6 @@ High Priority
 - [ ] Github CI
 - [ ] Release 1.1.0
   - [ ] Card directory
-  - [ ] Dark Mode bugfix
   - [ ] Rotation bugfix
   - [ ] Card List optimizations
   - [ ] I18n options

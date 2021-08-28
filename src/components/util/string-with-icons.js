@@ -1,8 +1,11 @@
 import React from 'react';
 import {Text} from 'react-native';
 import {AshesIcon} from './ashes-icon';
+import {useTheme} from '@react-navigation/native';
 
-function StringWithIcons(string, navigation) {
+const StringWithIcons = (string, navigation) => {
+  const {colors} = useTheme();
+
   if (string === undefined) {
     return string;
   }
@@ -15,7 +18,7 @@ function StringWithIcons(string, navigation) {
       return (
         <Text
           key={index}
-          style={{color: 'blue'}}
+          style={{color: colors.primary}}
           onPress={() => navigation.navigate('CardModal', {name: trimmedText})}>
           {trimmedText}
         </Text>
@@ -24,6 +27,6 @@ function StringWithIcons(string, navigation) {
       return text;
     }
   });
-}
+};
 
 export default StringWithIcons;

@@ -1,9 +1,11 @@
 import React from 'react';
 import {StyleSheet, View, useWindowDimensions} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+
 import {DICE_TYPES} from '../util/constants';
 import {AshesIcon} from '../util/ashes-icon';
 
-function diceIcons(dice, iconSize) {
+function diceIcons(dice, iconSize, borderColor) {
   let basics = new Array(10).fill('basic');
   let basicsIndex = 0;
   DICE_TYPES.forEach(diceType => {
@@ -21,7 +23,7 @@ function diceIcons(dice, iconSize) {
     .slice(0, 10)
     .map((diceType, index) => (
       <AshesIcon
-        style={[styles[diceType], styles.dice]}
+        style={[styles[diceType], styles.dice, {borderColor: borderColor}]}
         key={index}
         name={diceType === 'basic' ? diceType : `${diceType}:power`}
         size={iconSize}
@@ -31,10 +33,11 @@ function diceIcons(dice, iconSize) {
 
 const DiceView = ({dice}) => {
   const window = useWindowDimensions();
+  const {colors} = useTheme();
 
   return (
     <View style={styles.container}>
-      {diceIcons(dice, Math.ceil(window.width / 10) - 15)}
+      {diceIcons(dice, Math.ceil(window.width / 10.5) - 15, colors.border)}
     </View>
   );
 };
@@ -47,7 +50,6 @@ const styles = StyleSheet.create({
   dice: {
     padding: 2,
     borderRadius: 6,
-    borderColor: 'lightgrey',
     borderWidth: 2,
     textAlign: 'center',
     textAlignVertical: 'center',

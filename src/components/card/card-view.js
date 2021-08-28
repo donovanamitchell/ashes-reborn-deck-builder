@@ -17,7 +17,9 @@ const CardView = props => {
         {props.card.cost && (
           <Text>{StringWithIcons(props.card.cost.join(', '), navigation)}</Text>
         )}
-        <Text>{StringWithIcons(props.card.text, navigation)}</Text>
+        <Text style={props.style}>
+          {StringWithIcons(props.card.text, navigation)}
+        </Text>
         {props.card.phoenixborn && (
           <Text>{props.card.phoenixborn} Unique Card</Text>
         )}
