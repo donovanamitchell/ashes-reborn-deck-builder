@@ -15,17 +15,6 @@ const Stack = createStackNavigator();
 const themeMap = {
   dark: DarkTheme,
   light: DefaultTheme,
-  rightPhoenix: {
-    dark: false,
-    colors: {
-      primary: 'red',
-      background: 'yellow',
-      card: 'green',
-      text: 'blue',
-      border: 'purple',
-      notification: 'orange',
-    },
-  },
 };
 
 const ModalStack = () => {

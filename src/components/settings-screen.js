@@ -13,6 +13,7 @@ import {useTheme} from '@react-navigation/native';
 
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
+import SelectBox from './util/select-box';
 import {resetReleases} from '../services/releases-service';
 import {saveSettings} from '../services/settings-service';
 import DeleteCacheModal from './settings/delete-cache-modal';
@@ -29,10 +30,12 @@ const SettingsScreen = () => {
     cards,
     ownedReleases,
     releases,
+    theme,
     setCards,
     setOwnedReleases,
     setReleases,
     setStoreImagesInFileSystem,
+    setTheme,
     storeImagesInFileSystem,
   } = useContext(GlobalContext);
   const {colors} = useTheme();
@@ -84,10 +87,14 @@ const SettingsScreen = () => {
       .finally(() => setLoading(false));
   }
 
+  let separator = (
+    <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+  );
+
   return (
     <ScrollView
       style={[styles.container, {backgroundColor: colors.background}]}>
-      <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+      {separator}
       <Text style={{color: colors.text}}>
         All images, graphics, textual and game contents © 2015-2021 Plaid Hat
         Games. All rights reserved.
@@ -115,7 +122,7 @@ const SettingsScreen = () => {
         for graciously allowing the Ashes Reborn Deck Builder to use their API
         and the Ashes Font.
       </Text>
-      <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+      {separator}
       <Modal
         animationType="fade"
         transparent={true}
@@ -139,7 +146,7 @@ const SettingsScreen = () => {
           }}
         />
       </View>
-      <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+      {separator}
       <Text style={[styles.headerText, {color: colors.text}]}>Owned Packs</Text>
       <View style={styles.button}>
         <MultiSelectBox
@@ -148,7 +155,19 @@ const SettingsScreen = () => {
           onChangeValue={items => changeOwnedReleases(items)}
         />
       </View>
-      <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+      {separator}
+      <Text style={[styles.headerText, {color: colors.text}]}>Theme</Text>
+      <View style={styles.button}>
+        <SelectBox
+          data={[
+            {text: 'Dark', value: 'dark'},
+            {text: 'Light', value: 'light'},
+          ]}
+          value={{text: theme}}
+          onChangeValue={item => setTheme(item.value)}
+        />
+      </View>
+      {separator}
       <Text style={[styles.headerText, {color: colors.text}]}>Cache</Text>
       <Text style={{color: colors.text}}>
         The card images can either be stored in a cache or document store.
@@ -162,7 +181,6 @@ const SettingsScreen = () => {
         </Text>
         <Switch
           value={storeImagesInFileSystem}
-          // TODO: make sure this isn't wrong and dumb
           trackColor={{false: colors.border, true: colors.border}}
           thumbColor={colors.primary}
           onValueChange={bool => {
@@ -174,7 +192,7 @@ const SettingsScreen = () => {
           }}
         />
       </View>
-      <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+      {separator}
       <View style={styles.button}>
         <Button
           color={colors.primary}
@@ -202,7 +220,7 @@ const SettingsScreen = () => {
           }}
         />
       </View>
-      <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+      {separator}
     </ScrollView>
   );
 };

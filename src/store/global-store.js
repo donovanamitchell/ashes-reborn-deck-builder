@@ -9,7 +9,7 @@ export const globalState = {
   ownedReleases: [],
   releases: [],
   storeImagesInFileSystem: false,
-  theme: 'dark',
+  theme: 'light',
 };
 
 const globalContextWrapper = component => ({
@@ -48,6 +48,10 @@ const globalContextWrapper = component => ({
   },
   setStoreImagesInFileSystem: storeImagesInFileSystem => {
     globalState.storeImagesInFileSystem = storeImagesInFileSystem;
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  setTheme: theme => {
+    globalState.theme = theme;
     component?.setState({context: globalContextWrapper(component)});
   },
   updateDeck: updatedDeck => {

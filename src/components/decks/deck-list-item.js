@@ -16,7 +16,6 @@ const DeckListItem = props => {
         },
         styles.container,
       ]}
-      //TODO: does this look good in both modes?
       android_ripple={{color: colors.primary}}
       onPress={() => {
         props.onPress();
