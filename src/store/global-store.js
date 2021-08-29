@@ -9,7 +9,7 @@ export const globalState = {
   ownedReleases: [],
   releases: [],
   storeImagesInFileSystem: false,
-  theme: 'rightPhoenix',
+  theme: 'dark',
 };
 
 const globalContextWrapper = component => ({

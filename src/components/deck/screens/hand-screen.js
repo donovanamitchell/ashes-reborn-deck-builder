@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 
 import SelectBox from '../../util/select-box';
 import {DeckContext} from '../deck-context';
@@ -16,6 +17,7 @@ const HandScreen = () => {
     setFirstFiveErrors,
   } = useContext(DeckContext);
   const [sortedCards, setSortedCards] = useState([]);
+  const {colors} = useTheme();
 
   useEffect(() => {
     let sorted = Object.entries(cards)
@@ -84,7 +86,9 @@ const HandScreen = () => {
             }}
             data={sortedCards}
           />
-          <Text style={styles.errorText}>{firstFiveErrors[index]}</Text>
+          <Text style={{color: colors.notification}}>
+            {firstFiveErrors[index]}
+          </Text>
         </View>
         <CardImage
           style={styles.image}
@@ -114,11 +118,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
     padding: 15,
-  },
-  errorText: {
-    color: 'red',
   },
   image: {
     width: '20%',

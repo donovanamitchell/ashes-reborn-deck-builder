@@ -150,14 +150,14 @@ const SettingsScreen = () => {
       </View>
       <View style={[styles.separator, {borderBottomColor: colors.border}]} />
       <Text style={[styles.headerText, {color: colors.text}]}>Cache</Text>
-      <Text style={{color: colors.primary}}>
+      <Text style={{color: colors.text}}>
         The card images can either be stored in a cache or document store.
         Images stored in the cache may be deleted automatically by the system to
         save storage space. Images in the document store will not be deleted
         unless the card data is reset.
       </Text>
       <View style={styles.toggleSwitchGroup}>
-        <Text style={{color: colors.primary}}>
+        <Text style={{color: colors.text}}>
           {storeImagesInFileSystem ? 'Document Storage' : 'Cache Storage'}
         </Text>
         <Switch

@@ -24,7 +24,7 @@ const DeleteCacheModal = ({
         onPress={() => {
           setModalVisible(!modalVisible);
         }}>
-        <View style={[styles.modalView, {backgroundColor: colors.background}]}>
+        <View style={[styles.modalView, {backgroundColor: colors.card}]}>
           <Text style={{color: colors.text}}>
             All data for the selected packs, including images, will be deleted
             from the cache and re-downloaded.

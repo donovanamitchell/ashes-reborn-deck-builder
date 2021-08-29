@@ -19,8 +19,7 @@ const SelectBox = props => {
           onPress={() => {
             setModalVisible(!modalVisible);
           }}>
-          <View
-            style={[styles.modalView, {backgroundColor: colors.background}]}>
+          <View style={[styles.modalView, {backgroundColor: colors.card}]}>
             <FlatList
               data={props.data}
               renderItem={({item}) => (
