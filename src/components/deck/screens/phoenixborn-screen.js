@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
 import {StyleSheet, ScrollView, Text, TextInput, View} from 'react-native';
 import {debounce, sortedIndexBy} from 'lodash';
+import {useTheme} from '@react-navigation/native';
 
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
@@ -35,6 +36,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
     setName,
     setPhoenixborn,
   } = useContext(DeckContext);
+  const {colors} = useTheme();
 
   const [phoenixBornCard, setPhoenixbornCard] = useState({});
   const [phoenixBornCards, setPhoenixbornCards] = useState([]);
@@ -120,7 +122,9 @@ const PhoenixBornScreen = ({navigation, route}) => {
   return (
     <ScrollView style={styles.container}>
       <View key="main" style={[styles.container, styles.editSection]}>
-        <Text style={styles.headerText}>Deck Name:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>
+          Deck Name:
+        </Text>
         <ClearableTextInput
           onChangeText={text => {
             setName(text);
@@ -128,9 +132,12 @@ const PhoenixBornScreen = ({navigation, route}) => {
             debouncedRef(state.saveDecks);
           }}
           placeholder="Deck Name"
+          placeholderTextColor={colors.border}
           value={name}
         />
-        <Text style={styles.headerText}>Phoenixborn:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>
+          Phoenixborn:
+        </Text>
         <SelectBox
           value={{text: phoenixBorn, value: phoenixBornStub}}
           onChangeValue={item => {
@@ -146,17 +153,30 @@ const PhoenixBornScreen = ({navigation, route}) => {
           data={phoenixBornCards}
         />
         {phoenixBornStub && phoenixBornCard && (
-          <CardView style={styles.cardView} card={phoenixBornCard} />
+          <CardView
+            style={[styles.cardView, {color: colors.text}]}
+            card={phoenixBornCard}
+          />
         )}
-        <Text style={styles.headerText}>Description:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>
+          Description:
+        </Text>
         <TextInput
-          style={styles.multilineTextInput}
+          style={[
+            styles.multilineTextInput,
+            {
+              color: colors.text,
+              borderColor: colors.border,
+              backgroundColor: colors.card,
+            },
+          ]}
           multiline
           value={description}
           placeholder="Description"
+          placeholderTextColor={colors.border}
           onChangeText={text => setDescription(text)}
         />
-        <Text style={styles.headerText}>Format:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>Format:</Text>
         <SelectBox
           value={{text: format, value: format}}
           onChangeValue={item => {
@@ -164,14 +184,22 @@ const PhoenixBornScreen = ({navigation, route}) => {
           }}
           data={playFormatSelections}
         />
-        <ErrorsList cardErrors={cardErrors} firstFiveErrors={firstFiveErrors} />
-        <Text style={styles.headerText}>Dice:</Text>
+        <ErrorsList
+          cardErrors={cardErrors}
+          firstFiveErrors={firstFiveErrors}
+          errorColor={colors.notification}
+        />
+        <Text style={[styles.headerText, {color: colors.text}]}>Dice:</Text>
         <DiceView dice={dice} />
-        <Text style={styles.headerText}>First Five:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>
+          First Five:
+        </Text>
         <FirstFive />
-        <Text style={styles.headerText}>Cards:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>Cards:</Text>
         <View style={styles.cardsListContainer}>
           <CardsList
+            linkColor={colors.primary}
+            textColor={colors.text}
             navigation={navigation}
             sortedDeckCards={sortedDeckCards}
           />
@@ -193,22 +221,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   editSection: {
-    backgroundColor: 'white',
     padding: 15,
   },
   multilineTextInput: {
     paddingVertical: 0,
     paddingHorizontal: 10,
     borderRadius: 6,
-    borderColor: 'lightgrey',
     borderWidth: 2,
   },
   cardView: {
     paddingTop: 10,
-  },
-  linkText: {
-    paddingLeft: 5,
-    color: 'blue',
   },
   headerText: {
     fontWeight: 'bold',

@@ -5,10 +5,11 @@ import {deleteDeck, saveDecks} from '../services/decks-service';
 
 export const globalState = {
   cards: [],
-  releases: [],
   decks: [],
   ownedReleases: [],
+  releases: [],
   storeImagesInFileSystem: false,
+  theme: 'light',
 };
 
 const globalContextWrapper = component => ({
@@ -47,6 +48,10 @@ const globalContextWrapper = component => ({
   },
   setStoreImagesInFileSystem: storeImagesInFileSystem => {
     globalState.storeImagesInFileSystem = storeImagesInFileSystem;
+    component?.setState({context: globalContextWrapper(component)});
+  },
+  setTheme: theme => {
+    globalState.theme = theme;
     component?.setState({context: globalContextWrapper(component)});
   },
   updateDeck: updatedDeck => {

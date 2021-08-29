@@ -9,8 +9,11 @@ import {
   Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTheme} from '@react-navigation/native';
 
 const MultiSelectBox = props => {
+  const {colors} = useTheme();
+
   const [modalVisible, setModalVisible] = useState(false);
   const [unsavedSelections, setUnsavedSelections] = useState([]);
 
@@ -34,16 +37,13 @@ const MultiSelectBox = props => {
           onPress={() => {
             setModalVisible(!modalVisible);
           }}>
-          <View style={styles.modalView}>
+          <View style={[styles.modalView, {backgroundColor: colors.card}]}>
             <FlatList
               data={props.data}
               renderItem={({item}) => (
                 <Pressable
-                  style={({pressed}) =>
-                    pressed
-                      ? [styles.pressedItem, styles.pressableSelectItem]
-                      : styles.pressableSelectItem
-                  }
+                  style={[{color: colors.text}, styles.pressableSelectItem]}
+                  android_ripple={{color: colors.primary}}
                   onPress={() => {
                     if (isChecked(item)) {
                       setUnsavedSelections(
@@ -59,17 +59,21 @@ const MultiSelectBox = props => {
                     name={
                       isChecked(item) ? 'check-box' : 'check-box-outline-blank'
                     }
+                    style={{color: colors.primary}}
                     size={20}
                   />
-                  <Text style={styles.listItem}>{item.text}</Text>
+                  <Text style={[styles.listItem, {color: colors.text}]}>
+                    {item.text}
+                  </Text>
                 </Pressable>
               )}
-              keyExtractor={(item, index) => index}
+              keyExtractor={(_item, index) => index}
             />
             <View style={styles.buttonWrapper}>
               <Button
                 title="Done"
                 style={styles.button}
+                color={colors.primary}
                 onPress={() => {
                   props.onChangeValue(unsavedSelections);
                   setModalVisible(!modalVisible);
@@ -80,16 +84,23 @@ const MultiSelectBox = props => {
         </Pressable>
       </Modal>
       <Pressable
-        style={styles.openModalButton}
+        style={[
+          styles.openModalButton,
+          {borderColor: colors.border, backgroundColor: colors.card},
+        ]}
         onPress={() => setModalVisible(!modalVisible)}>
-        <Text style={styles.dropdownSelectedValue}>
+        <Text style={[styles.dropdownSelectedValue, {color: colors.text}]}>
           {props.value
             .reduce((string, item) => {
               return string + item.text + ', ';
             }, '')
             .slice(0, -2)}
         </Text>
-        <Icon name="arrow-drop-down" size={25} />
+        <Icon
+          style={{color: colors.primary}}
+          name="arrow-drop-down"
+          size={25}
+        />
       </Pressable>
     </View>
   );
@@ -105,7 +116,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 6,
-    borderColor: 'lightgrey',
     borderWidth: 2,
   },
   dropdownSelectedValue: {
@@ -120,7 +130,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     shadowColor: '#000',
@@ -131,9 +140,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  pressedItem: {
-    backgroundColor: 'lightgrey',
   },
   pressableSelectItem: {
     borderRadius: 8,

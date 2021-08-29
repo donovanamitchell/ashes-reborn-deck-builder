@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
+
 import {DeckContext} from '../../deck-context';
 import CardImage from '../../../card/card-image';
 
@@ -8,7 +9,11 @@ const FirstFive = () => {
 
   function cardImage(index) {
     if (!firstFive[index]) {
-      return;
+      return (
+        <View style={styles.image} key={index}>
+          <CardImage stub="card-back" name="" />
+        </View>
+      );
     }
     return (
       <View style={styles.image} key={index}>

@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import DiceView from '../../dice/dice-view';
 import {DeckContext} from '../deck-context';
 import {DICE_TYPES} from '../../util/constants';
@@ -8,6 +10,7 @@ import {DICE_TYPES} from '../../util/constants';
 const DiceScreen = () => {
   const {dice, incrementDice, decrementDice} = useContext(DeckContext);
   const [diceCount, setDiceCount] = useState(0);
+  const {colors} = useTheme();
 
   useEffect(() => {
     setDiceCount(
@@ -27,7 +30,7 @@ const DiceScreen = () => {
         {DICE_TYPES.map(diceType => {
           return (
             <View key={diceType} style={styles.diceCounter}>
-              <Text style={styles.diceText}>
+              <Text style={[styles.diceText, {color: colors.text}]}>
                 {diceType.charAt(0).toUpperCase() + diceType.slice(1)}:
               </Text>
               <View style={styles.counter}>
@@ -39,9 +42,18 @@ const DiceScreen = () => {
                       incrementDice(diceType);
                     }
                   }}
-                  style={styles.button}
+                  style={[
+                    styles.button,
+                    {
+                      color: colors.primary,
+                      borderColor: colors.border,
+                      backgroundColor: colors.card,
+                    },
+                  ]}
                 />
-                <Text>{dice[diceType] ? dice[diceType].toString() : '0'}</Text>
+                <Text style={{color: colors.text}}>
+                  {dice[diceType] ? dice[diceType].toString() : '0'}
+                </Text>
                 <Icon
                   raised
                   name="remove"
@@ -51,7 +63,14 @@ const DiceScreen = () => {
                       decrementDice(diceType);
                     }
                   }}
-                  style={styles.button}
+                  style={[
+                    styles.button,
+                    {
+                      color: colors.primary,
+                      borderColor: colors.border,
+                      backgroundColor: colors.card,
+                    },
+                  ]}
                 />
               </View>
             </View>
@@ -67,7 +86,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     borderRadius: 6,
-    borderColor: 'lightgrey',
     borderWidth: 2,
   },
   counter: {
@@ -79,7 +97,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   diceViewContainer: {
     paddingTop: 10,

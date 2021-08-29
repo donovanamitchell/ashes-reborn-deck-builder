@@ -9,8 +9,11 @@ import {
   Text,
   View,
 } from 'react-native';
+import {useTheme} from '@react-navigation/native';
+
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
+import SelectBox from './util/select-box';
 import {resetReleases} from '../services/releases-service';
 import {saveSettings} from '../services/settings-service';
 import DeleteCacheModal from './settings/delete-cache-modal';
@@ -27,12 +30,15 @@ const SettingsScreen = () => {
     cards,
     ownedReleases,
     releases,
+    theme,
     setCards,
     setOwnedReleases,
     setReleases,
     setStoreImagesInFileSystem,
+    setTheme,
     storeImagesInFileSystem,
   } = useContext(GlobalContext);
+  const {colors} = useTheme();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -81,17 +87,22 @@ const SettingsScreen = () => {
       .finally(() => setLoading(false));
   }
 
+  let separator = (
+    <View style={[styles.separator, {borderBottomColor: colors.border}]} />
+  );
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.separator} />
-      <Text>
+    <ScrollView
+      style={[styles.container, {backgroundColor: colors.background}]}>
+      {separator}
+      <Text style={{color: colors.text}}>
         All images, graphics, textual and game contents © 2015-2021 Plaid Hat
         Games. All rights reserved.
       </Text>
-      <Text>
+      <Text style={{color: colors.text}}>
         Please submit any bugs or feature requests to our{' '}
         <Text
-          style={styles.linkText}
+          style={{color: colors.primary}}
           onPress={() =>
             Linking.openURL(
               'https://github.com/donovanamitchell/ashes-reborn-deck-builder/issues',
@@ -101,29 +112,30 @@ const SettingsScreen = () => {
         </Text>
         .
       </Text>
-      <Text>
+      <Text style={{color: colors.text}}>
         Special thanks to the developers of{' '}
         <Text
-          style={styles.linkText}
+          style={{color: colors.primary}}
           onPress={() => Linking.openURL('https://ashes.live/')}>
           Ashes Live
         </Text>{' '}
         for graciously allowing the Ashes Reborn Deck Builder to use their API
         and the Ashes Font.
       </Text>
-      <View style={styles.separator} />
+      {separator}
       <Modal
         animationType="fade"
         transparent={true}
         visible={loading}
         onRequestClose={() => {}}>
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: colors.background}]}>
           <Loading />
         </View>
       </Modal>
       <View style={styles.button}>
         <Button
           title="Check for New Releases"
+          color={colors.primary}
           onPress={() => {
             setLoading(true);
             resetReleases().then(newReleases => {
@@ -134,8 +146,8 @@ const SettingsScreen = () => {
           }}
         />
       </View>
-      <View style={styles.separator} />
-      <Text style={styles.headerText}>Owned Packs</Text>
+      {separator}
+      <Text style={[styles.headerText, {color: colors.text}]}>Owned Packs</Text>
       <View style={styles.button}>
         <MultiSelectBox
           data={releaseData}
@@ -143,22 +155,34 @@ const SettingsScreen = () => {
           onChangeValue={items => changeOwnedReleases(items)}
         />
       </View>
-      <View style={styles.separator} />
-      <Text style={styles.headerText}>Cache</Text>
-      <Text>
+      {separator}
+      <Text style={[styles.headerText, {color: colors.text}]}>Theme</Text>
+      <View style={styles.button}>
+        <SelectBox
+          data={[
+            {text: 'Dark', value: 'dark'},
+            {text: 'Light', value: 'light'},
+          ]}
+          value={{text: theme}}
+          onChangeValue={item => setTheme(item.value)}
+        />
+      </View>
+      {separator}
+      <Text style={[styles.headerText, {color: colors.text}]}>Cache</Text>
+      <Text style={{color: colors.text}}>
         The card images can either be stored in a cache or document store.
         Images stored in the cache may be deleted automatically by the system to
         save storage space. Images in the document store will not be deleted
         unless the card data is reset.
       </Text>
       <View style={styles.toggleSwitchGroup}>
-        <Text>
+        <Text style={{color: colors.text}}>
           {storeImagesInFileSystem ? 'Document Storage' : 'Cache Storage'}
         </Text>
         <Switch
           value={storeImagesInFileSystem}
-          trackColor={{false: 'lightgrey', true: 'lightgrey'}}
-          thumbColor={'grey'}
+          trackColor={{false: colors.border, true: colors.border}}
+          thumbColor={colors.primary}
           onValueChange={bool => {
             setStoreImagesInFileSystem(bool);
             saveSettings({
@@ -168,9 +192,10 @@ const SettingsScreen = () => {
           }}
         />
       </View>
-      <View style={styles.separator} />
+      {separator}
       <View style={styles.button}>
         <Button
+          color={colors.primary}
           title="Download All Card Images"
           onPress={() => {
             setLoading(true);
@@ -188,13 +213,14 @@ const SettingsScreen = () => {
       />
       <View style={styles.button}>
         <Button
+          color={colors.primary}
           title="Reset Card Data"
           onPress={() => {
             setModalVisible(!modalVisible);
           }}
         />
       </View>
-      <View style={styles.separator} />
+      {separator}
     </ScrollView>
   );
 };
@@ -214,18 +240,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: 'white',
   },
   headerText: {
     fontWeight: 'bold',
   },
-  linkText: {
-    paddingLeft: 5,
-    color: 'blue',
-  },
   separator: {
     marginVertical: 8,
-    borderBottomColor: 'grey',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   toggleSwitchGroup: {

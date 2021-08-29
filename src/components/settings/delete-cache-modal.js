@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, Text, View, Modal, Pressable} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+
 import MultiSelectBox from '../util/multi-select-box';
 
 const DeleteCacheModal = ({
@@ -9,6 +11,7 @@ const DeleteCacheModal = ({
   deleteReleases,
 }) => {
   const [releasesToDelete, setReleasesToDelete] = useState([]);
+  const {colors} = useTheme();
 
   return (
     <Modal
@@ -21,8 +24,8 @@ const DeleteCacheModal = ({
         onPress={() => {
           setModalVisible(!modalVisible);
         }}>
-        <View style={styles.modalView}>
-          <Text>
+        <View style={[styles.modalView, {backgroundColor: colors.card}]}>
+          <Text style={{color: colors.text}}>
             All data for the selected packs, including images, will be deleted
             from the cache and re-downloaded.
           </Text>
@@ -36,6 +39,7 @@ const DeleteCacheModal = ({
           <View style={styles.buttonGroup}>
             <View style={styles.buttonView}>
               <Button
+                color={colors.primary}
                 title="Delete Data"
                 onPress={() => {
                   deleteReleases(releasesToDelete);
@@ -46,6 +50,7 @@ const DeleteCacheModal = ({
             </View>
             <View style={styles.buttonView}>
               <Button
+                color={colors.primary}
                 title="Cancel"
                 onPress={() => setModalVisible(!modalVisible)}
               />
@@ -78,11 +83,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: 'white',
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     shadowColor: '#000',

@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {StyleSheet, FlatList, View, Modal, Text, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTheme} from '@react-navigation/native';
 
 const SelectBox = props => {
   const [modalVisible, setModalVisible] = useState(false);
+  const {colors} = useTheme();
 
   return (
     <View style={props.style}>
@@ -17,19 +19,20 @@ const SelectBox = props => {
           onPress={() => {
             setModalVisible(!modalVisible);
           }}>
-          <View style={styles.modalView}>
+          <View style={[styles.modalView, {backgroundColor: colors.card}]}>
             <FlatList
               data={props.data}
               renderItem={({item}) => (
                 <Pressable
-                  style={({pressed}) =>
-                    pressed ? styles.pressedItem : styles.unpressedItem
-                  }
+                  android_ripple={{color: colors.primary}}
+                  style={styles.unpressedItem}
                   onPress={() => {
                     setModalVisible(!modalVisible);
                     props.onChangeValue(item);
                   }}>
-                  <Text style={styles.listItem}>{item.text}</Text>
+                  <Text style={[styles.listItem, {color: colors.text}]}>
+                    {item.text}
+                  </Text>
                 </Pressable>
               )}
               keyExtractor={(item, index) => index}
@@ -38,10 +41,19 @@ const SelectBox = props => {
         </Pressable>
       </Modal>
       <Pressable
-        style={styles.button}
+        style={[
+          styles.button,
+          {borderColor: colors.border, backgroundColor: colors.card},
+        ]}
         onPress={() => setModalVisible(!modalVisible)}>
-        <Text style={styles.dropdownSelectedValue}>{props.value.text}</Text>
-        <Icon name="arrow-drop-down" size={25} />
+        <Text style={[styles.dropdownSelectedValue, {color: colors.text}]}>
+          {props.value.text}
+        </Text>
+        <Icon
+          style={{color: colors.primary}}
+          name="arrow-drop-down"
+          size={25}
+        />
       </Pressable>
     </View>
   );
@@ -53,7 +65,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 6,
-    borderColor: 'lightgrey',
     borderWidth: 2,
   },
   dropdownSelectedValue: {
@@ -68,7 +79,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -80,11 +90,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  pressedItem: {
-    backgroundColor: 'lightgrey',
-    borderRadius: 8,
-    padding: 6,
   },
   unpressedItem: {
     borderRadius: 8,

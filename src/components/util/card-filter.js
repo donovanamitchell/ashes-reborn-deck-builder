@@ -1,5 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Switch, Text, View} from 'react-native';
+import {useTheme} from '@react-navigation/native';
+
 import SelectBox from './select-box';
 import MultiSelectBox from './multi-select-box';
 import {GlobalContext} from '../../store/global-store';
@@ -22,6 +24,8 @@ const CardFilter = ({
   const {releases} = useContext(GlobalContext);
   const [releaseData, setReleaseData] = useState([]);
 
+  const {colors} = useTheme();
+
   useEffect(() => {
     setReleaseData(
       [
@@ -36,21 +40,23 @@ const CardFilter = ({
   }, [releases]);
 
   return (
-    <View style={styles.filter}>
-      <Text>Packs</Text>
+    <View style={[styles.filter, {borderBottomColor: colors.border}]}>
+      <Text style={{color: colors.text}}>Packs</Text>
       <MultiSelectBox
         data={releaseData}
         value={packStubs}
         onChangeValue={items => setPackStubs(items)}
       />
-      <Text>Type</Text>
+      <Text style={{color: colors.text}}>Type</Text>
       <SelectBox
         data={CARD_TYPE_DATA}
         value={cardType}
         onChangeValue={item => setCardType(item)}
       />
-      <Text>Show Included Cards</Text>
+      <Text style={{color: colors.text}}>Show Included Cards</Text>
       <Switch
+        trackColor={{false: colors.border, true: colors.border}}
+        thumbColor={colors.primary}
         style={styles.switch}
         value={hideNonDeckCards}
         onValueChange={() => setHideNonDeckCards(!hideNonDeckCards)}
@@ -62,9 +68,7 @@ const CardFilter = ({
 const styles = StyleSheet.create({
   filter: {
     padding: 7,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: 'lightgrey',
   },
   switch: {
     alignSelf: 'flex-start',

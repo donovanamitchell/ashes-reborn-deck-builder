@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, FlatList, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTheme} from '@react-navigation/native';
+
 import {DeckContext} from '../deck-context';
 import CardFilter from '../../util/card-filter';
 import {GlobalContext} from '../../../store/global-store';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import CardAdder from '../../card/card-adder';
 import {ADDABLE_CARD_TYPES} from '../../util/constants';
 import ClearableTextInput from '../../util/clearable-text-input';
@@ -33,6 +35,8 @@ function isInDeck(hideNonDeckCards, cards, stub) {
 }
 
 const CardsScreen = () => {
+  const {colors} = useTheme();
+
   const {cards, phoenixBorn, setCardErrors} = useContext(DeckContext);
   const state = useContext(GlobalContext);
 
@@ -135,12 +139,14 @@ const CardsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.cardCounter}>
+        <Text style={[styles.cardCounter, {color: colors.text}]}>
           {[
             'Cards: ',
             <Text
               key="2"
-              style={cardCount !== 30 ? styles.errorText : styles.text}>
+              style={{
+                color: cardCount !== 30 ? colors.notification : colors.text,
+              }}>
               {cardCount} / 30
             </Text>,
           ]}
@@ -151,11 +157,20 @@ const CardsScreen = () => {
           placeholder="Search"
         />
         <View style={styles.filter}>
-          <Text style={styles.filterText}>Filters:</Text>
+          <Text style={[styles.filterText, {color: colors.text}]}>
+            Filters:
+          </Text>
           <Icon
             name="filter-list"
             size={25}
-            style={styles.button}
+            style={[
+              styles.button,
+              {
+                color: colors.primary,
+                borderColor: colors.border,
+                backgroundColor: colors.card,
+              },
+            ]}
             onPress={() => setShowFilter(!showFilter)}
           />
         </View>
@@ -191,35 +206,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  deleteButtonIcon: {
-    color: 'grey',
-    paddingRight: 4,
-  },
-  errorText: {
-    color: 'red',
-  },
-  searchBox: {
-    padding: 0,
-    paddingHorizontal: 4,
-    flex: 1,
-  },
-  searchBoxContainer: {
-    borderRadius: 6,
-    borderColor: 'lightgrey',
-    borderWidth: 2,
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    color: 'black',
-  },
   topBar: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 7,
     paddingVertical: 2,
-    backgroundColor: 'white',
   },
   filter: {
     flexDirection: 'row',
@@ -233,7 +224,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     borderRadius: 6,
-    borderColor: 'lightgrey',
     borderWidth: 2,
   },
 });

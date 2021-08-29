@@ -1,16 +1,20 @@
 import React, {useContext} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTheme} from '@react-navigation/native';
+
 import {DeckContext} from '../deck/deck-context';
 import CardView from './card-view';
 
 const CardAdder = ({card, count}) => {
   const {incrementCard, decrementCard} = useContext(DeckContext);
+  const {colors} = useTheme();
+
   return (
-    <View style={styles.listItem}>
-      <Text style={styles.cardName}>{card.name}</Text>
+    <View style={[styles.listItem, {backgroundColor: colors.card}]}>
+      <Text style={[styles.cardName, {color: colors.text}]}>{card.name}</Text>
       <View style={styles.cardContent}>
-        <CardView style={styles.cardView} card={card} />
+        <CardView style={[styles.cardView, {color: colors.text}]} card={card} />
         <View style={styles.counter}>
           <Icon
             name="add"
@@ -20,9 +24,14 @@ const CardAdder = ({card, count}) => {
                 incrementCard(card);
               }
             }}
-            style={styles.button}
+            style={[
+              styles.button,
+              {color: colors.primary, borderColor: colors.border},
+            ]}
           />
-          <Text>{count ? count.toString() : '0'} / 3</Text>
+          <Text style={{color: colors.text}}>
+            {count ? count.toString() : '0'} / 3
+          </Text>
           <Icon
             raised
             name="remove"
@@ -32,7 +41,10 @@ const CardAdder = ({card, count}) => {
                 decrementCard(card);
               }
             }}
-            style={styles.button}
+            style={[
+              styles.button,
+              {color: colors.primary, borderColor: colors.border},
+            ]}
           />
         </View>
       </View>
@@ -44,7 +56,6 @@ const styles = StyleSheet.create({
   listItem: {
     marginTop: 5,
     padding: 7,
-    backgroundColor: 'white',
     flex: 1,
   },
   cardContent: {
@@ -69,7 +80,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     borderRadius: 6,
-    borderColor: 'lightgrey',
     borderWidth: 2,
   },
 });
