@@ -165,7 +165,11 @@ const CardsScreen = () => {
             size={25}
             style={[
               styles.button,
-              {color: colors.primary, borderColor: colors.border},
+              {
+                color: colors.primary,
+                borderColor: colors.border,
+                backgroundColor: colors.card,
+              },
             ]}
             onPress={() => setShowFilter(!showFilter)}
           />

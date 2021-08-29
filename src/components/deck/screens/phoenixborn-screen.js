@@ -164,7 +164,11 @@ const PhoenixBornScreen = ({navigation, route}) => {
         <TextInput
           style={[
             styles.multilineTextInput,
-            {color: colors.text, borderColor: colors.border},
+            {
+              color: colors.text,
+              borderColor: colors.border,
+              backgroundColor: colors.card,
+            },
           ]}
           multiline
           value={description}

@@ -41,7 +41,10 @@ const SelectBox = props => {
         </Pressable>
       </Modal>
       <Pressable
-        style={[styles.button, {borderColor: colors.border}]}
+        style={[
+          styles.button,
+          {borderColor: colors.border, backgroundColor: colors.card},
+        ]}
         onPress={() => setModalVisible(!modalVisible)}>
         <Text style={[styles.dropdownSelectedValue, {color: colors.text}]}>
           {props.value.text}

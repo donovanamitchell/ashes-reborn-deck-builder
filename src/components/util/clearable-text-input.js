@@ -8,7 +8,11 @@ const ClearableTextInput = ({value, style, onChangeText, placeholder}) => {
 
   return (
     <View
-      style={[styles.searchBoxContainer, {borderColor: colors.border}, style]}>
+      style={[
+        styles.searchBoxContainer,
+        {borderColor: colors.border, backgroundColor: colors.card},
+        style,
+      ]}>
       <TextInput
         style={[styles.searchBox, {color: colors.text}]}
         onChangeText={text => onChangeText(text)}

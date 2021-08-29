@@ -44,7 +44,11 @@ const DiceScreen = () => {
                   }}
                   style={[
                     styles.button,
-                    {color: colors.primary, borderColor: colors.border},
+                    {
+                      color: colors.primary,
+                      borderColor: colors.border,
+                      backgroundColor: colors.card,
+                    },
                   ]}
                 />
                 <Text style={{color: colors.text}}>
@@ -61,7 +65,11 @@ const DiceScreen = () => {
                   }}
                   style={[
                     styles.button,
-                    {color: colors.primary, borderColor: colors.border},
+                    {
+                      color: colors.primary,
+                      borderColor: colors.border,
+                      backgroundColor: colors.card,
+                    },
                   ]}
                 />
               </View>

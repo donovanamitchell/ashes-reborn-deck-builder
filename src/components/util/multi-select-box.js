@@ -84,7 +84,10 @@ const MultiSelectBox = props => {
         </Pressable>
       </Modal>
       <Pressable
-        style={[styles.openModalButton, {borderColor: colors.border}]}
+        style={[
+          styles.openModalButton,
+          {borderColor: colors.border, backgroundColor: colors.card},
+        ]}
         onPress={() => setModalVisible(!modalVisible)}>
         <Text style={[styles.dropdownSelectedValue, {color: colors.text}]}>
           {props.value
