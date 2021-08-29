@@ -1,11 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
+
 import CardImage from './card-image';
 import StringWithIcons from '../util/string-with-icons';
-import {useNavigation} from '@react-navigation/native';
 
 const CardView = props => {
   const navigation = useNavigation();
+  const {colors} = useTheme();
+
   return (
     <View style={[styles.cardContent, props.style]}>
       <CardImage
@@ -15,13 +19,17 @@ const CardView = props => {
       />
       <View style={styles.description}>
         {props.card.cost && (
-          <Text>{StringWithIcons(props.card.cost.join(', '), navigation)}</Text>
+          <Text style={{color: colors.text}}>
+            {StringWithIcons(props.card.cost.join(', '), navigation)}
+          </Text>
         )}
-        <Text style={props.style}>
+        <Text style={{color: colors.text}}>
           {StringWithIcons(props.card.text, navigation)}
         </Text>
         {props.card.phoenixborn && (
-          <Text>{props.card.phoenixborn} Unique Card</Text>
+          <Text style={{color: colors.text}}>
+            {props.card.phoenixborn} Unique Card
+          </Text>
         )}
       </View>
     </View>
