@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 const MultiSelectBox = props => {
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [unsavedSelections, setUnsavedSelections] = useState([]);
@@ -71,7 +73,7 @@ const MultiSelectBox = props => {
             />
             <View style={styles.buttonWrapper}>
               <Button
-                title="Done"
+                title={t('common.done')}
                 style={styles.button}
                 color={colors.primary}
                 onPress={() => {

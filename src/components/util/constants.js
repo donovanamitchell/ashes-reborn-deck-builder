@@ -18,6 +18,8 @@ export const DICE_TYPES = [
 
 export const PLAY_FORMATS = ['Standard', 'Tournament'];
 
+export const THEMES = ['dark', 'light'];
+
 export const TOURNAMENT_CHAINED_LIST = [
   'exhortation',
   'massive-growth',

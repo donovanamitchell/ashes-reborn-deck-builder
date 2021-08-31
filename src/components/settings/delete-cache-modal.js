@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, Text, View, Modal, Pressable} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import MultiSelectBox from '../util/multi-select-box';
 
@@ -12,6 +13,7 @@ const DeleteCacheModal = ({
 }) => {
   const [releasesToDelete, setReleasesToDelete] = useState([]);
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   return (
     <Modal
@@ -26,8 +28,7 @@ const DeleteCacheModal = ({
         }}>
         <View style={[styles.modalView, {backgroundColor: colors.card}]}>
           <Text style={{color: colors.text}}>
-            All data for the selected packs, including images, will be deleted
-            from the cache and re-downloaded.
+            {t('settings.cacheModal.warning')}
           </Text>
           <View style={styles.selectBoxView}>
             <MultiSelectBox
@@ -40,7 +41,7 @@ const DeleteCacheModal = ({
             <View style={styles.buttonView}>
               <Button
                 color={colors.primary}
-                title="Delete Data"
+                title={t('settings.cacheModal.deleteButton')}
                 onPress={() => {
                   deleteReleases(releasesToDelete);
                   setReleasesToDelete([]);
@@ -51,7 +52,7 @@ const DeleteCacheModal = ({
             <View style={styles.buttonView}>
               <Button
                 color={colors.primary}
-                title="Cancel"
+                title={t('common.cancelButton')}
                 onPress={() => setModalVisible(!modalVisible)}
               />
             </View>
