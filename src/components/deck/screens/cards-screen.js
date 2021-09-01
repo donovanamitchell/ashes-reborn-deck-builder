@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, FlatList, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import {DeckContext} from '../deck-context';
 import CardFilter from '../../util/card-filter';
@@ -53,6 +54,7 @@ const CardsScreen = () => {
     state.ownedReleases.find(({stub}) => stub === 'ALL_PACKS'),
   );
   const [useOwnedPacks, setUseOwnedPacks] = useState(true);
+  const {t} = useTranslation();
 
   useEffect(() => {
     let iterableCards = Object.entries(cards);
@@ -64,15 +66,18 @@ const CardsScreen = () => {
 
     let errors = [];
     if (newCardCound > 30) {
-      errors.push('There are too many cards in this deck');
+      errors.push(t('errors.cards.tooMany'));
     } else if (newCardCound < 30) {
-      errors.push('There are too few cards in this deck');
+      errors.push(t('errors.cards.tooFew'));
     }
 
     iterableCards.forEach(card => {
       if (card[1].phoenixborn && card[1].phoenixborn !== phoenixBorn) {
         errors.push(
-          `"${card[1].name}" may only be included in ${card[1].phoenixborn} decks`,
+          t('errors.cards.uniqueCard', {
+            cardName: card[1].name,
+            phoenixborn: card[1].phoenixborn,
+          }),
         );
       }
     });
@@ -141,7 +146,7 @@ const CardsScreen = () => {
       <View style={styles.topBar}>
         <Text style={[styles.cardCounter, {color: colors.text}]}>
           {[
-            'Cards: ',
+            t('deck.cards.cardCount'),
             <Text
               key="2"
               style={{
@@ -154,11 +159,11 @@ const CardsScreen = () => {
         <ClearableTextInput
           onChangeText={setSearchText}
           value={searchText}
-          placeholder="Search"
+          placeholder={t('deck.cards.searchPlaceholder')}
         />
         <View style={styles.filter}>
           <Text style={[styles.filterText, {color: colors.text}]}>
-            Filters:
+            {t('deck.cards.filters')}
           </Text>
           <Icon
             name="filter-list"

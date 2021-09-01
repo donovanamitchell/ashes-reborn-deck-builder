@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
 
-// creating a language detection plugin using expo
 // http://i18next.com/docs/ownplugin/#languagedetector
 // const languageDetector = {
 //   type: 'languageDetector',
@@ -33,9 +32,58 @@ i18n
             all: 'All',
             loading: 'Loading...',
             done: 'Done',
+            ok: 'OK',
+            ownedPacks: 'Owned Packs',
+            formats: {
+              standard: 'Standard',
+              tournament: 'Tournament',
+            },
+            types: {
+              ally: 'Ally',
+              actionSpell: 'Action Spell',
+              alterationSpell: 'Alteration Spell',
+              reactionSpell: 'Reaction Spell',
+              readySpell: 'Ready Spell',
+            },
+            dice: {
+              ceremonial: 'Ceremonial',
+              charm: 'Charm',
+              divine: 'Divine',
+              illusion: 'Illusion',
+              natural: 'Natural',
+              sympathy: 'Sympathy',
+              time: 'Time',
+            },
           },
           deck: {
             title: 'New Deck',
+            main: {
+              title: 'Main',
+              name: 'Deck Name:',
+              namePlaceholder: 'Deck Name',
+              phoenixborn: 'Phoenixborn:',
+              description: 'Description:',
+              descriptionPlaceholder: 'Description',
+              format: 'Format:',
+              dice: 'Dice:',
+              firstFive: 'First Five:',
+              cards: 'Cards:',
+            },
+            cards: {
+              title: 'Cards',
+              cardCount: 'Cards: ',
+              searchPlaceholder: 'Search',
+              filters: 'Filters: ',
+              packs: 'Packs: ',
+              type: 'Type:',
+              showCardsSwitch: 'Show Included Cards',
+            },
+            firstFive: {
+              title: 'First Five',
+            },
+            dice: {
+              title: 'Dice',
+            },
           },
           decks: {
             title: 'Decks',
@@ -48,7 +96,18 @@ i18n
           errors: {
             githubIssue:
               'Please create an issue in the ashes-reborn-deck-builder github repository.\n\n{{stacktrace}}',
-            ok: 'OK',
+            cards: {
+              tooMany: 'There are too many cards in this deck',
+              tooFew: 'There are too few cards in this deck',
+              uniqueCard:
+                '"{{cardName}}" may only be included in {{phoenixborn}} decks',
+            },
+            firstFive: {
+              chained: '{{card}} is Chained cannot be in the first five',
+              tooFew: 'There are no copies of {{card}} in this deck',
+              tooMany:
+                'There are too many copies of {{card}} in the first five',
+            },
           },
           settings: {
             title: 'Settings',

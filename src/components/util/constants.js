@@ -16,7 +16,7 @@ export const DICE_TYPES = [
   'time',
 ];
 
-export const PLAY_FORMATS = ['Standard', 'Tournament'];
+export const PLAY_FORMATS = ['standard', 'tournament'];
 
 export const THEMES = ['dark', 'light'];
 

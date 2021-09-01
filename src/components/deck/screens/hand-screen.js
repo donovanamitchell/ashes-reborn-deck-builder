@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import SelectBox from '../../util/select-box';
 import {DeckContext} from '../deck-context';
@@ -18,6 +19,7 @@ const HandScreen = () => {
   } = useContext(DeckContext);
   const [sortedCards, setSortedCards] = useState([]);
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   useEffect(() => {
     let sorted = Object.entries(cards)
@@ -44,10 +46,10 @@ const HandScreen = () => {
         return;
       }
       if (
-        format === 'Tournament' &&
+        format === 'tournament' &&
         TOURNAMENT_CHAINED_LIST.includes(card.stub)
       ) {
-        errors[index] = `${card.name} is Chained cannot be in the first five`;
+        errors[index] = t('errors.firstFive.chained', {card: card.name});
       }
       if (cardHash[card.stub]) {
         cardHash[card.stub].count++;
@@ -58,11 +60,9 @@ const HandScreen = () => {
         };
       }
       if (!cardHash[card.stub].copies) {
-        errors[index] = `There are no copies of ${card.name} in this deck`;
+        errors[index] = t('errors.firstFive.tooFew', {card: card.name});
       } else if (cardHash[card.stub].count > 1) {
-        errors[
-          index
-        ] = `There are too many copies of ${card.name} in the first five`;
+        errors[index] = t('errors.firstFive.tooMany', {card: card.name});
       }
     });
     setFirstFiveErrors(errors);

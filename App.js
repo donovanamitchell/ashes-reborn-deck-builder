@@ -17,7 +17,7 @@ const errorHandler = error => {
   Alert.alert(
     error.name,
     i18n.t('errors.githubIssue', {stacktrace: error.stack}),
-    [{text: i18n.t('errors.ok')}],
+    [{text: i18n.t('common.ok')}],
   );
 };
 

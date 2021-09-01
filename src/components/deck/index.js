@@ -1,6 +1,8 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {AppState} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {useTranslation} from 'react-i18next';
+
 import PhoenixBornScreen from './screens/phoenixborn-screen';
 import CardsScreen from './screens/cards-screen';
 import DiceScreen from './screens/dice-screen';
@@ -12,6 +14,8 @@ import Loading from '../util/loading';
 const IntermediateContextLoader = params => {
   const {setDeck, save} = useContext(DeckContext);
   const [loading, setLoading] = useState(true);
+  const {t} = useTranslation();
+
   useEffect(() => {
     getDeck(params.filename, params.newDeck)
       .then(gottenDeck => {
@@ -44,10 +48,26 @@ const IntermediateContextLoader = params => {
   }
   return (
     <TopNav.Navigator>
-      <TopNav.Screen name="Main" component={PhoenixBornScreen} />
-      <TopNav.Screen name="Cards" component={CardsScreen} />
-      <TopNav.Screen name="First Five" component={HandScreen} />
-      <TopNav.Screen name="Dice" component={DiceScreen} />
+      <TopNav.Screen
+        name="Main"
+        component={PhoenixBornScreen}
+        options={{title: t('deck.main.title')}}
+      />
+      <TopNav.Screen
+        name="Cards"
+        component={CardsScreen}
+        options={{title: t('deck.cards.title')}}
+      />
+      <TopNav.Screen
+        name="First Five"
+        component={HandScreen}
+        options={{title: t('deck.firstFive.title')}}
+      />
+      <TopNav.Screen
+        name="Dice"
+        component={DiceScreen}
+        options={{title: t('deck.dice.title')}}
+      />
     </TopNav.Navigator>
   );
 };

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, useRef} from 'react';
 import {StyleSheet, ScrollView, Text, TextInput, View} from 'react-native';
 import {debounce, sortedIndexBy} from 'lodash';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
@@ -13,10 +14,6 @@ import ErrorsList from './phoenixborn/errors-list';
 import FirstFive from './phoenixborn/first-five';
 import SelectBox from '../../util/select-box';
 import {PLAY_FORMATS} from '../../util/constants';
-
-const playFormatSelections = PLAY_FORMATS.map(format => {
-  return {text: format, value: format};
-});
 
 const PhoenixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
@@ -37,6 +34,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
     setPhoenixborn,
   } = useContext(DeckContext);
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   const [phoenixBornCard, setPhoenixbornCard] = useState({});
   const [phoenixBornCards, setPhoenixbornCards] = useState([]);
@@ -119,11 +117,15 @@ const PhoenixBornScreen = ({navigation, route}) => {
     );
   }
 
+  const playFormatSelections = PLAY_FORMATS.map(value => {
+    return {text: t(`common.formats.${value}`), value: value};
+  });
+
   return (
     <ScrollView style={styles.container}>
       <View key="main" style={[styles.container, styles.editSection]}>
         <Text style={[styles.headerText, {color: colors.text}]}>
-          Deck Name:
+          {t('deck.main.name')}
         </Text>
         <ClearableTextInput
           onChangeText={text => {
@@ -131,12 +133,12 @@ const PhoenixBornScreen = ({navigation, route}) => {
             state.updateDeck(shortenedDeck({name: text}));
             debouncedRef(state.saveDecks);
           }}
-          placeholder="Deck Name"
+          placeholder={t('deck.main.namePlaceholder')}
           placeholderTextColor={colors.border}
           value={name}
         />
         <Text style={[styles.headerText, {color: colors.text}]}>
-          Phoenixborn:
+          {t('deck.main.phoenixborn')}
         </Text>
         <SelectBox
           value={{text: phoenixBorn, value: phoenixBornStub}}
@@ -159,7 +161,7 @@ const PhoenixBornScreen = ({navigation, route}) => {
           />
         )}
         <Text style={[styles.headerText, {color: colors.text}]}>
-          Description:
+          {t('deck.main.description')}
         </Text>
         <TextInput
           style={[
@@ -172,13 +174,15 @@ const PhoenixBornScreen = ({navigation, route}) => {
           ]}
           multiline
           value={description}
-          placeholder="Description"
+          placeholder={t('deck.main.descriptionPlaceholder')}
           placeholderTextColor={colors.border}
           onChangeText={text => setDescription(text)}
         />
-        <Text style={[styles.headerText, {color: colors.text}]}>Format:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>
+          {t('deck.main.format')}
+        </Text>
         <SelectBox
-          value={{text: format, value: format}}
+          value={{text: t(`common.formats.${format}`), value: format}}
           onChangeValue={item => {
             setFormat(item.value);
           }}
@@ -189,13 +193,17 @@ const PhoenixBornScreen = ({navigation, route}) => {
           firstFiveErrors={firstFiveErrors}
           errorColor={colors.notification}
         />
-        <Text style={[styles.headerText, {color: colors.text}]}>Dice:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>
+          {t('deck.main.dice')}
+        </Text>
         <DiceView dice={dice} />
         <Text style={[styles.headerText, {color: colors.text}]}>
-          First Five:
+          {t('deck.main.firstFive')}
         </Text>
         <FirstFive />
-        <Text style={[styles.headerText, {color: colors.text}]}>Cards:</Text>
+        <Text style={[styles.headerText, {color: colors.text}]}>
+          {t('deck.main.cards')}
+        </Text>
         <View style={styles.cardsListContainer}>
           <CardsList
             linkColor={colors.primary}
