@@ -18,7 +18,6 @@ High Priority
   - [ ] Card directory
   - [ ] Rotation bugfix
   - [ ] Card List optimizations
-  - [ ] I18n options
 
 Medium Priority
 - [ ] "Build" Tab? Some way of viewing the list of cards to add to the deck in grid form so that it is easier to constuct a deck (a checklist?).

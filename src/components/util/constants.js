@@ -26,3 +26,5 @@ export const TOURNAMENT_CHAINED_LIST = [
   'river-skald',
   'summon-shining-hydra',
 ];
+
+export const LANGUAGES = ['rb'];

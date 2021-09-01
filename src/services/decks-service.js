@@ -11,7 +11,7 @@ export function initialState(filename) {
     filename: filename,
     firstFive: [],
     firstFiveErrors: [],
-    format: 'Standard',
+    format: 'standard',
     name: '',
     phoenixBorn: null,
     phoenixBornStub: null,

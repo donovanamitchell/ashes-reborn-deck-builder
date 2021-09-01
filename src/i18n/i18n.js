@@ -1,25 +1,24 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
+import {findBestAvailableLanguage} from 'react-native-localize';
+import {LANGUAGES} from '../components/util/constants';
 
-// http://i18next.com/docs/ownplugin/#languagedetector
-// const languageDetector = {
-//   type: 'languageDetector',
-//   async: true, // flags below detection to be async
-//   // detect: callback => {
-//   //   return /*'en'; */ Localization.getLocalizationAsync().then(({ locale }) => {
-//   //     callback(locale);
-//   //   });
-//   // },
-//   // TODO: react-native-localize
-//   detect: callback => {
-//     return 'en';
-//   },
-//   init: () => {},
-//   cacheUserLanguage: () => {},
-// };
+const languageDetector = {
+  type: 'languageDetector',
+  detect: () => {
+    let lang = findBestAvailableLanguage(LANGUAGES);
+    if (lang) {
+      return lang.languageTag;
+    } else {
+      return 'en';
+    }
+  },
+  init: () => {},
+  cacheUserLanguage: () => {},
+};
 
 i18n
-  // .use(languageDetector)
+  .use(languageDetector)
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
