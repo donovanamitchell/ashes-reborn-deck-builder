@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import CardImage from './card-image';
 import StringWithIcons from '../util/string-with-icons';
@@ -9,14 +10,15 @@ import StringWithIcons from '../util/string-with-icons';
 const CardView = props => {
   const navigation = useNavigation();
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   return (
     <View style={[styles.cardContent, props.style]}>
-      <CardImage
-        stub={props.card.stub}
-        name={props.card.name}
-        style={styles.image}
-      />
+      <View style={styles.imageContainer}>
+        <View style={styles.imageResizeToWidth}>
+          <CardImage stub={props.card.stub} name={props.card.name} />
+        </View>
+      </View>
       <View style={styles.description}>
         {props.card.cost && (
           <Text style={{color: colors.text}}>
@@ -28,7 +30,7 @@ const CardView = props => {
         </Text>
         {props.card.phoenixborn && (
           <Text style={{color: colors.text}}>
-            {props.card.phoenixborn} Unique Card
+            {t('cards.uniqueCard', {phoenixborn: props.card.phoenixborn})}
           </Text>
         )}
       </View>
@@ -41,13 +43,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  image: {
+  imageResizeToWidth: {
+    flex: 0,
+    flexDirection: 'row',
+  },
+  imageContainer: {
     alignSelf: 'flex-start',
-    width: '20%',
+    flex: 1,
   },
   description: {
     paddingLeft: 5,
-    width: '80%',
+    flex: 4,
   },
 });
 

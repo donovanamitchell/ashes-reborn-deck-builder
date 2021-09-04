@@ -1,13 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 const Loading = () => {
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   return (
     <View style={styles.container}>
-      <Text style={{color: colors.text}}>Loading...</Text>
+      <Text style={{color: colors.text}}>{t('common.loading')}</Text>
     </View>
   );
 };

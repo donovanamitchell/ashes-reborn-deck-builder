@@ -17,9 +17,6 @@ const CardImage = props => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    flex: 1,
-  },
   imageContainer: {
     flex: 1,
     aspectRatio: 30.0 / 42.0,

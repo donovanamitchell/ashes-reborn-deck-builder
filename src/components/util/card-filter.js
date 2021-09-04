@@ -1,17 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Switch, Text, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+import {camelCase} from 'lodash';
 
 import SelectBox from './select-box';
 import MultiSelectBox from './multi-select-box';
 import {GlobalContext} from '../../store/global-store';
 import {ADDABLE_CARD_TYPES} from './constants';
-
-const CARD_TYPE_DATA = [{text: 'All', value: ''}].concat(
-  ADDABLE_CARD_TYPES.map(type => {
-    return {text: type, value: type};
-  }),
-);
 
 const CardFilter = ({
   cardType,
@@ -23,37 +19,51 @@ const CardFilter = ({
 }) => {
   const {releases} = useContext(GlobalContext);
   const [releaseData, setReleaseData] = useState([]);
+  const [cardTypeData, setCardTypeData] = useState([]);
 
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   useEffect(() => {
     setReleaseData(
       [
-        {text: 'Owned Packs', value: 'OWNED_PACKS'},
-        {text: 'All', value: 'ALL_PACKS'},
+        {text: t('common.ownedPacks'), value: 'OWNED_PACKS'},
+        {text: t('common.all'), value: 'ALL_PACKS'},
       ].concat(
         releases.map(release => {
           return {text: release.name, value: release.stub};
         }),
       ),
     );
-  }, [releases]);
+  }, [releases, t]);
+
+  useEffect(() => {
+    setCardTypeData(
+      [{text: t('common.all'), value: ''}].concat(
+        ADDABLE_CARD_TYPES.map(type => {
+          return {text: t(`common.types.${camelCase(type)}`), value: type};
+        }),
+      ),
+    );
+  }, [t]);
 
   return (
     <View style={[styles.filter, {borderBottomColor: colors.border}]}>
-      <Text style={{color: colors.text}}>Packs</Text>
+      <Text style={{color: colors.text}}>{t('deck.cards.packs')}</Text>
       <MultiSelectBox
         data={releaseData}
         value={packStubs}
         onChangeValue={items => setPackStubs(items)}
       />
-      <Text style={{color: colors.text}}>Type</Text>
+      <Text style={{color: colors.text}}>{t('deck.cards.type')}</Text>
       <SelectBox
-        data={CARD_TYPE_DATA}
+        data={cardTypeData}
         value={cardType}
         onChangeValue={item => setCardType(item)}
       />
-      <Text style={{color: colors.text}}>Show Included Cards</Text>
+      <Text style={{color: colors.text}}>
+        {t('deck.cards.showCardsSwitch')}
+      </Text>
       <Switch
         trackColor={{false: colors.border, true: colors.border}}
         thumbColor={colors.primary}

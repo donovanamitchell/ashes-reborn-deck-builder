@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import {GlobalContext} from '../store/global-store';
 import MultiSelectBox from './util/multi-select-box';
@@ -24,6 +25,7 @@ import {
   setCardsFromReleases,
 } from '../services/cards-service';
 import Loading from './util/loading';
+import {THEMES} from './util/constants';
 
 const SettingsScreen = () => {
   const {
@@ -39,6 +41,7 @@ const SettingsScreen = () => {
     storeImagesInFileSystem,
   } = useContext(GlobalContext);
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -47,13 +50,13 @@ const SettingsScreen = () => {
 
   useEffect(() => {
     setReleaseData(
-      [{text: 'All', value: 'ALL_PACKS'}].concat(
+      [{text: t('common.all'), value: 'ALL_PACKS'}].concat(
         releases.map(release => {
           return {text: release.name, value: release.stub};
         }),
       ),
     );
-  }, [releases]);
+  }, [releases, t]);
 
   useEffect(() => {
     setOwnedReleaseData(
@@ -70,6 +73,7 @@ const SettingsScreen = () => {
     saveSettings({
       ownedReleases: packs,
       storeImagesInFileSystem: storeImagesInFileSystem,
+      theme: theme,
     });
     setOwnedReleases(packs);
   }
@@ -95,12 +99,9 @@ const SettingsScreen = () => {
     <ScrollView
       style={[styles.container, {backgroundColor: colors.background}]}>
       {separator}
+      <Text style={{color: colors.text}}>{t('settings.pleaseDoNotSue')}</Text>
       <Text style={{color: colors.text}}>
-        All images, graphics, textual and game contents © 2015-2021 Plaid Hat
-        Games. All rights reserved.
-      </Text>
-      <Text style={{color: colors.text}}>
-        Please submit any bugs or feature requests to our{' '}
+        {t('settings.issueTracker.part1')}
         <Text
           style={{color: colors.primary}}
           onPress={() =>
@@ -108,19 +109,18 @@ const SettingsScreen = () => {
               'https://github.com/donovanamitchell/ashes-reborn-deck-builder/issues',
             )
           }>
-          Issue Tracker
+          {t('settings.issueTracker.part2')}
         </Text>
-        .
+        {t('settings.issueTracker.part3')}
       </Text>
       <Text style={{color: colors.text}}>
-        Special thanks to the developers of{' '}
+        {t('settings.thanksSkaak.part1')}
         <Text
           style={{color: colors.primary}}
           onPress={() => Linking.openURL('https://ashes.live/')}>
-          Ashes Live
-        </Text>{' '}
-        for graciously allowing the Ashes Reborn Deck Builder to use their API
-        and the Ashes Font.
+          {t('settings.thanksSkaak.part2')}
+        </Text>
+        {t('settings.thanksSkaak.part3')}
       </Text>
       {separator}
       <Modal
@@ -134,7 +134,7 @@ const SettingsScreen = () => {
       </Modal>
       <View style={styles.button}>
         <Button
-          title="Check for New Releases"
+          title={t('settings.newReleasesButton')}
           color={colors.primary}
           onPress={() => {
             setLoading(true);
@@ -147,7 +147,9 @@ const SettingsScreen = () => {
         />
       </View>
       {separator}
-      <Text style={[styles.headerText, {color: colors.text}]}>Owned Packs</Text>
+      <Text style={[styles.headerText, {color: colors.text}]}>
+        {t('settings.ownedPacks')}
+      </Text>
       <View style={styles.button}>
         <MultiSelectBox
           data={releaseData}
@@ -156,28 +158,37 @@ const SettingsScreen = () => {
         />
       </View>
       {separator}
-      <Text style={[styles.headerText, {color: colors.text}]}>Theme</Text>
+      <Text style={[styles.headerText, {color: colors.text}]}>
+        {t('settings.theme')}
+      </Text>
       <View style={styles.button}>
         <SelectBox
-          data={[
-            {text: 'Dark', value: 'dark'},
-            {text: 'Light', value: 'light'},
-          ]}
-          value={{text: theme}}
-          onChangeValue={item => setTheme(item.value)}
+          data={THEMES.map(value => {
+            return {text: t(`settings.themes.${value}`), value: value};
+          })}
+          value={{text: t(`settings.themes.${theme}`)}}
+          onChangeValue={item => {
+            setTheme(item.value);
+            saveSettings({
+              ownedReleases: ownedReleases,
+              storeImagesInFileSystem: storeImagesInFileSystem,
+              theme: item.value,
+            });
+          }}
         />
       </View>
       {separator}
-      <Text style={[styles.headerText, {color: colors.text}]}>Cache</Text>
+      <Text style={[styles.headerText, {color: colors.text}]}>
+        {t('settings.cache')}
+      </Text>
       <Text style={{color: colors.text}}>
-        The card images can either be stored in a cache or document store.
-        Images stored in the cache may be deleted automatically by the system to
-        save storage space. Images in the document store will not be deleted
-        unless the card data is reset.
+        {t('settings.cacheOptionsDescription')}
       </Text>
       <View style={styles.toggleSwitchGroup}>
         <Text style={{color: colors.text}}>
-          {storeImagesInFileSystem ? 'Document Storage' : 'Cache Storage'}
+          {storeImagesInFileSystem
+            ? t('settings.cacheOptions.document')
+            : t('settings.cacheOptions.cache')}
         </Text>
         <Switch
           value={storeImagesInFileSystem}
@@ -188,6 +199,7 @@ const SettingsScreen = () => {
             saveSettings({
               ownedReleases: ownedReleases,
               storeImagesInFileSystem: bool,
+              theme: theme,
             });
           }}
         />
@@ -196,7 +208,7 @@ const SettingsScreen = () => {
       <View style={styles.button}>
         <Button
           color={colors.primary}
-          title="Download All Card Images"
+          title={t('settings.downloadImagesButton')}
           onPress={() => {
             setLoading(true);
             preloadImages(cards.map(({stub}) => stub)).finally(() =>
@@ -214,7 +226,7 @@ const SettingsScreen = () => {
       <View style={styles.button}>
         <Button
           color={colors.primary}
-          title="Reset Card Data"
+          title={t('settings.cacheClearButton')}
           onPress={() => {
             setModalVisible(!modalVisible);
           }}

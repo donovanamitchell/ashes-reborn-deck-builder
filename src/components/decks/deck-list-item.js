@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, Modal, Pressable, View, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import CardImage from '../card/card-image';
+import {useTranslation} from 'react-i18next';
 import {useTheme} from '@react-navigation/native';
+
+import CardImage from '../card/card-image';
 
 const DeckListItem = props => {
   const {colors} = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
+  const {t} = useTranslation();
 
   return (
     <Pressable
@@ -32,12 +35,12 @@ const DeckListItem = props => {
           }}>
           <View style={[styles.modalView, {backgroundColor: colors.card}]}>
             <Text style={{color: colors.text}}>
-              Permanently delete this deck? This action cannot be undone.
+              {t('decks.deleteDeckWarning')}
             </Text>
             <View style={styles.buttonGroup}>
               <View style={styles.buttonView}>
                 <Button
-                  title="Delete Deck"
+                  title={t('decks.deleteDeckButton')}
                   color={colors.primary}
                   onPress={() => {
                     props.onDelete();
@@ -47,7 +50,7 @@ const DeckListItem = props => {
               </View>
               <View style={styles.buttonView}>
                 <Button
-                  title="Cancel"
+                  title={t('common.cancelButton')}
                   color={colors.primary}
                   onPress={() => setModalVisible(!modalVisible)}
                 />
@@ -90,20 +93,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   delete: {
-    width: '10%',
+    flex: 1,
+    textAlign: 'center',
   },
   listItem: {
-    margin: 10,
     padding: 10,
     fontSize: 18,
-    width: '70%',
-    paddingLeft: 5,
+    flex: 4,
   },
   image: {
-    width: '20%',
+    flex: 1,
   },
   container: {
-    flex: 1,
     margin: 10,
     padding: 5,
   },

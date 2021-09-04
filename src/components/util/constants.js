@@ -16,7 +16,9 @@ export const DICE_TYPES = [
   'time',
 ];
 
-export const PLAY_FORMATS = ['Standard', 'Tournament'];
+export const PLAY_FORMATS = ['standard', 'tournament'];
+
+export const THEMES = ['dark', 'light'];
 
 export const TOURNAMENT_CHAINED_LIST = [
   'exhortation',
@@ -24,3 +26,5 @@ export const TOURNAMENT_CHAINED_LIST = [
   'river-skald',
   'summon-shining-hydra',
 ];
+
+export const LANGUAGES = ['rb'];

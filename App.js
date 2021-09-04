@@ -11,12 +11,13 @@ import {setJSExceptionHandler} from 'react-native-exception-handler';
 
 import {GlobalContextProvider} from './src/store/global-store';
 import ModalStack from './src/components/modal-stack';
+import i18n from './src/i18n/i18n';
 
 const errorHandler = error => {
   Alert.alert(
     error.name,
-    `Please create an issue in the ashes-reborn-deck-builder github repository.\n\n${error.stack}`,
-    [{text: 'OK'}],
+    i18n.t('errors.githubIssue', {stacktrace: error.stack}),
+    [{text: i18n.t('common.ok')}],
   );
 };
 

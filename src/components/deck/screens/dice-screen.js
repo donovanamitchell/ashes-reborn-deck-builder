@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTranslation} from 'react-i18next';
 
 import DiceView from '../../dice/dice-view';
 import {DeckContext} from '../deck-context';
@@ -11,6 +12,7 @@ const DiceScreen = () => {
   const {dice, incrementDice, decrementDice} = useContext(DeckContext);
   const [diceCount, setDiceCount] = useState(0);
   const {colors} = useTheme();
+  const {t} = useTranslation();
 
   useEffect(() => {
     setDiceCount(
@@ -31,7 +33,7 @@ const DiceScreen = () => {
           return (
             <View key={diceType} style={styles.diceCounter}>
               <Text style={[styles.diceText, {color: colors.text}]}>
-                {diceType.charAt(0).toUpperCase() + diceType.slice(1)}:
+                {t(`common.dice.${diceType}`)}:
               </Text>
               <View style={styles.counter}>
                 <Icon

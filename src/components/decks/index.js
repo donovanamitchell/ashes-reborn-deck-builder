@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, StyleSheet, FlatList, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import {GlobalContext} from '../../store/global-store';
 import DeckListItem from './deck-list-item';
@@ -21,9 +22,11 @@ const DecksScreen = ({navigation}) => {
     setOwnedReleases,
     setReleases,
     setStoreImagesInFileSystem,
+    setTheme,
   } = useContext(GlobalContext);
   const {colors} = useTheme();
   const [loading, setLoading] = useState(false);
+  const {t} = useTranslation();
 
   useEffect(() => {
     Promise.all([
@@ -35,6 +38,7 @@ const DecksScreen = ({navigation}) => {
       getSettings().then(settings => {
         setOwnedReleases(settings.ownedReleases);
         setStoreImagesInFileSystem(settings.storeImagesInFileSystem);
+        setTheme(settings.theme);
       }),
     ]).finally(() => setLoading(false));
 
@@ -52,7 +56,7 @@ const DecksScreen = ({navigation}) => {
     <View style={styles.container}>
       <Button
         color={colors.primary}
-        title="Settings"
+        title={t('decks.settingsButton')}
         onPress={() => navigation.navigate('Settings')}
       />
       <FlatList
@@ -77,7 +81,7 @@ const DecksScreen = ({navigation}) => {
         keyExtractor={item => item.filename}
       />
       <Button
-        title="New Deck"
+        title={t('decks.createDeckButton')}
         color={colors.primary}
         onPress={() => {
           let newDeck = {
