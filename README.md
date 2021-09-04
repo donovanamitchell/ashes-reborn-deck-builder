@@ -16,8 +16,8 @@ High Priority
 - [ ] Github CI
 - [ ] Release 1.1.0
   - [ ] Card directory
-  - [ ] Rotation bugfix
   - [ ] Card List optimizations
+  - [ ] Cost improvements
 
 Medium Priority
 - [ ] "Build" Tab? Some way of viewing the list of cards to add to the deck in grid form so that it is easier to constuct a deck (a checklist?).

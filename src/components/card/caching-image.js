@@ -17,20 +17,16 @@ const CachingImage = ({resizeMode, stub}) => {
     return (
       <ImageBackground
         style={styles.image}
-        resizeMode={resizeMode || 'center'}
+        resizeMode="contain"
         source={loadingImage}>
-        <Image
-          source={{uri: uri}}
-          style={styles.image}
-          resizeMode={resizeMode || 'center'}
-        />
+        <Image source={{uri: uri}} style={styles.image} resizeMode="contain" />
       </ImageBackground>
     );
   } else {
     return (
       <ImageBackground
         style={styles.image}
-        resizeMode={resizeMode || 'center'}
+        resizeMode="contain"
         source={loadingImage}
       />
     );
@@ -40,6 +36,7 @@ const CachingImage = ({resizeMode, stub}) => {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
+    aspectRatio: 30.0 / 42.0,
   },
 });
 

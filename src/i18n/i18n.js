@@ -54,6 +54,9 @@ i18n
               time: 'Time',
             },
           },
+          cards: {
+            uniqueCard: '{{phoenixborn}} unique card',
+          },
           deck: {
             title: 'New Deck',
             main: {

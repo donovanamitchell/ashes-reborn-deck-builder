@@ -93,20 +93,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   delete: {
-    width: '10%',
+    flex: 1,
+    textAlign: 'center',
   },
   listItem: {
-    margin: 10,
     padding: 10,
     fontSize: 18,
-    width: '70%',
-    paddingLeft: 5,
+    flex: 4,
   },
   image: {
-    width: '20%',
+    flex: 1,
   },
   container: {
-    flex: 1,
     margin: 10,
     padding: 5,
   },
