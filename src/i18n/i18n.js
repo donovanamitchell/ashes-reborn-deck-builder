@@ -32,6 +32,7 @@ i18n
             loading: 'Loading...',
             done: 'Done',
             ok: 'OK',
+            orSeparator: ' or ',
             ownedPacks: 'Owned Packs',
             formats: {
               standard: 'Standard',

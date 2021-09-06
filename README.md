@@ -17,14 +17,14 @@ High Priority
 - [ ] Release 1.1.0
   - [ ] Card directory
   - [ ] Card List optimizations
-  - [ ] Cost improvements
+  - [ ] Add and remove card button size
+  - [ ] Deck text export option
 
 Medium Priority
 - [ ] "Build" Tab? Some way of viewing the list of cards to add to the deck in grid form so that it is easier to constuct a deck (a checklist?).
 - [ ] Automated tests
 - [ ] Life, Spellboard, Battlefield list for Phoenixborn
 - [ ] Required packs list
-- [ ] Deck text export option
 
 Low Priority
 - [ ] Better Tablet support
