@@ -17,7 +17,7 @@ High Priority
 - [ ] Release 1.1.0
   - [ ] Card directory
   - [ ] Card List optimizations
-  - [ ] Add and remove card button size
+  - [ ] Check device sizes
   - [ ] Deck text export option
 
 Medium Priority

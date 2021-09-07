@@ -16,36 +16,38 @@ const CardAdder = ({card, count}) => {
       <View style={styles.cardContent}>
         <CardView style={[styles.cardView, {color: colors.text}]} card={card} />
         <View style={styles.counter}>
-          <Icon
-            name="add"
-            size={15}
-            onPress={() => {
-              if (count < 3 || !count) {
-                incrementCard(card);
-              }
-            }}
-            style={[
-              styles.button,
-              {color: colors.primary, borderColor: colors.border},
-            ]}
-          />
-          <Text style={{color: colors.text}}>
+          <Text style={[styles.counterText, {color: colors.text}]}>
             {count ? count.toString() : '0'} / 3
           </Text>
-          <Icon
-            raised
-            name="remove"
-            size={15}
-            onPress={() => {
-              if (count > 0) {
-                decrementCard(card);
-              }
-            }}
-            style={[
-              styles.button,
-              {color: colors.primary, borderColor: colors.border},
-            ]}
-          />
+          <View style={styles.buttonGroup}>
+            <Icon
+              name="add"
+              size={25}
+              onPress={() => {
+                if (count < 3 || !count) {
+                  incrementCard(card);
+                }
+              }}
+              style={[
+                styles.button,
+                {color: colors.primary, borderColor: colors.border},
+              ]}
+            />
+            <Icon
+              raised
+              name="remove"
+              size={25}
+              onPress={() => {
+                if (count > 0) {
+                  decrementCard(card);
+                }
+              }}
+              style={[
+                styles.button,
+                {color: colors.primary, borderColor: colors.border},
+              ]}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -70,17 +72,22 @@ const styles = StyleSheet.create({
     width: '75%',
   },
   counter: {
-    alignItems: 'baseline',
-    justifyContent: 'space-evenly',
-    flexDirection: 'row',
     textAlign: 'center',
     width: '25%',
+  },
+  counterText: {
+    textAlign: 'center',
   },
   button: {
     textAlign: 'center',
     textAlignVertical: 'center',
     borderRadius: 6,
     borderWidth: 2,
+  },
+  buttonGroup: {
+    alignItems: 'baseline',
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
   },
 });
 
