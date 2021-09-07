@@ -38,7 +38,7 @@ const DiceScreen = () => {
               <View style={styles.counter}>
                 <Icon
                   name="add"
-                  size={15}
+                  size={25}
                   onPress={() => {
                     if (diceCount < 10) {
                       incrementDice(diceType);
@@ -59,7 +59,7 @@ const DiceScreen = () => {
                 <Icon
                   raised
                   name="remove"
-                  size={15}
+                  size={25}
                   onPress={() => {
                     if (dice[diceType] > 0) {
                       decrementDice(diceType);
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   counter: {
-    alignItems: 'baseline',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     textAlign: 'center',
