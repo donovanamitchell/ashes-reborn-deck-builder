@@ -44,6 +44,9 @@ i18n
               alterationSpell: 'Alteration Spell',
               reactionSpell: 'Reaction Spell',
               readySpell: 'Ready Spell',
+              conjuration: 'Conjuration',
+              conjuredAlterationSpell: 'Conjured Alteration Spell',
+              phoenixborn: 'Phoenixborn',
             },
             dice: {
               ceremonial: 'Ceremonial',
@@ -56,6 +59,7 @@ i18n
             },
           },
           cards: {
+            title: 'Cards',
             uniqueCard: '{{phoenixborn}} unique card',
           },
           deck: {

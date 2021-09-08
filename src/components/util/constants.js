@@ -1,7 +1,18 @@
 export const ADDABLE_CARD_TYPES = [
-  'Ally',
   'Action Spell',
+  'Ally',
   'Alteration Spell',
+  'Reaction Spell',
+  'Ready Spell',
+];
+
+export const CARD_TYPES = [
+  'Action Spell',
+  'Ally',
+  'Alteration Spell',
+  'Conjuration',
+  'Conjured Alteration Spell',
+  'Phoenixborn',
   'Reaction Spell',
   'Ready Spell',
 ];
