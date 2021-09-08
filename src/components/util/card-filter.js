@@ -7,10 +7,10 @@ import {camelCase} from 'lodash';
 import SelectBox from './select-box';
 import MultiSelectBox from './multi-select-box';
 import {GlobalContext} from '../../store/global-store';
-import {ADDABLE_CARD_TYPES} from './constants';
 
 const CardFilter = ({
   cardType,
+  cardTypes,
   hideNonDeckCards,
   packStubs,
   setCardType,
@@ -40,12 +40,12 @@ const CardFilter = ({
   useEffect(() => {
     setCardTypeData(
       [{text: t('common.all'), value: ''}].concat(
-        ADDABLE_CARD_TYPES.map(type => {
+        cardTypes.map(type => {
           return {text: t(`common.types.${camelCase(type)}`), value: type};
         }),
       ),
     );
-  }, [t]);
+  }, [cardTypes, t]);
 
   return (
     <View style={[styles.filter, {borderBottomColor: colors.border}]}>
@@ -61,16 +61,20 @@ const CardFilter = ({
         value={cardType}
         onChangeValue={item => setCardType(item)}
       />
-      <Text style={{color: colors.text}}>
-        {t('deck.cards.showCardsSwitch')}
-      </Text>
-      <Switch
-        trackColor={{false: colors.border, true: colors.border}}
-        thumbColor={colors.primary}
-        style={styles.switch}
-        value={hideNonDeckCards}
-        onValueChange={() => setHideNonDeckCards(!hideNonDeckCards)}
-      />
+      {setHideNonDeckCards && (
+        <>
+          <Text style={{color: colors.text}}>
+            {t('deck.cards.showCardsSwitch')}
+          </Text>
+          <Switch
+            trackColor={{false: colors.border, true: colors.border}}
+            thumbColor={colors.primary}
+            style={styles.switch}
+            value={hideNonDeckCards}
+            onValueChange={() => setHideNonDeckCards(!hideNonDeckCards)}
+          />
+        </>
+      )}
     </View>
   );
 };

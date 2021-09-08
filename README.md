@@ -15,8 +15,6 @@ I followed this guide for building and deploying a release https://reactnative.d
 High Priority
 - [ ] Github CI
 - [ ] Release 1.1.0
-  - [ ] Card directory
-  - [ ] Card List optimizations
   - [ ] Check device sizes
   - [ ] Deck text export option
 
