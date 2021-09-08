@@ -1,8 +1,17 @@
 import React, {useState, useEffect, useContext, useRef} from 'react';
-import {StyleSheet, ScrollView, Text, TextInput, View} from 'react-native';
+import {
+  Button,
+  StyleSheet,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {debounce, sortedIndexBy} from 'lodash';
 import {useTheme} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {camelCase} from 'lodash';
 
 import {DeckContext} from '../deck-context';
 import {GlobalContext} from '../../../store/global-store';
@@ -14,6 +23,27 @@ import ErrorsList from './phoenixborn/errors-list';
 import FirstFive from './phoenixborn/first-five';
 import SelectBox from '../../util/select-box';
 import {PLAY_FORMATS} from '../../util/constants';
+
+function exportString(t, name, phoenixBorn, sortedDeckCards, dice) {
+  console.log(name, phoenixBorn, sortedDeckCards, dice);
+  let string = [
+    name,
+    phoenixBorn,
+    Object.entries(dice)
+      .flatMap(die => (die[1] ? `${die[1]} ${t('common.dice')[die[0]]}` : []))
+      .join('\n'),
+    Object.entries(sortedDeckCards)
+      .map(
+        cards =>
+          `${t('common.types')[camelCase(cards[0])]}:\n` +
+          cards[1].map(card => `${card.count} ${card.name}`).join('\n') +
+          '\n',
+      )
+      .join('\n'),
+  ].join('\n\n');
+  console.log(string);
+  return string;
+}
 
 const PhoenixBornScreen = ({navigation, route}) => {
   const state = useContext(GlobalContext);
@@ -212,6 +242,15 @@ const PhoenixBornScreen = ({navigation, route}) => {
             sortedDeckCards={sortedDeckCards}
           />
         </View>
+        <Button
+          title={t('deck.main.copy')}
+          color={colors.primary}
+          onPress={() =>
+            Clipboard.setString(
+              exportString(t, name, phoenixBorn, sortedDeckCards, dice),
+            )
+          }
+        />
       </View>
     </ScrollView>
   );
