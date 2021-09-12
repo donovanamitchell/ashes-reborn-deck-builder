@@ -75,6 +75,7 @@ i18n
               dice: 'Dice:',
               firstFive: 'First Five:',
               cards: 'Cards:',
+              copy: 'Copy Deck Text',
             },
             cards: {
               title: 'Cards',
@@ -166,6 +167,8 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+
+    returnObjects: true,
   });
 
 export default i18n;
