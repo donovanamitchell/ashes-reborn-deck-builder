@@ -38,7 +38,7 @@ const DecksScreen = ({navigation}) => {
       getSettings().then(settings => {
         setOwnedReleases(settings.ownedReleases);
         setStoreImagesInFileSystem(settings.storeImagesInFileSystem);
-        setTheme(settings.theme);
+        setTheme(settings.theme || 'light');
       }),
     ]).finally(() => setLoading(false));
 
