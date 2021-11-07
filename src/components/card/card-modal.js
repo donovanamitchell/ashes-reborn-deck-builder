@@ -25,7 +25,7 @@ const CardModal = ({route, navigation}) => {
       onPress={() => {
         navigation.goBack();
       }}>
-      <CachingImage resizeMode="contain" stub={stub} />
+      <CachingImage stub={stub} />
     </Pressable>
   );
 };
