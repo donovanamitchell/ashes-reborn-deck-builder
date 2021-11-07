@@ -114,11 +114,17 @@ const PhoenixBornScreen = ({navigation, route}) => {
       }
       if (card.conjurations) {
         card.conjurations.forEach(conjuration => {
-          sortedCards.Conjuration.splice(
-            sortedIndexBy(sortedCards.Conjuration, conjuration, x => x.name),
-            0,
+          let index = sortedIndexBy(
+            sortedCards.Conjuration,
             conjuration,
+            x => x.name,
           );
+          if (
+            sortedCards.Conjuration[index] &&
+            sortedCards.Conjuration[index].stub !== conjuration.stub
+          ) {
+            sortedCards.Conjuration.splice(index, 0, conjuration);
+          }
         });
       }
       sortedCards[card.type].splice(
