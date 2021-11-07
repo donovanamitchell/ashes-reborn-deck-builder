@@ -15,8 +15,8 @@ I followed this guide for building and deploying a release https://reactnative.d
 High Priority
 - [ ] Github CI
 - [ ] Release 1.0.7
-  - [ ] Shining Hydra heads not appearing in conjuration list
-  - [ ] Fallen conjuration has too many when Summon book and Rising Horde are used
+  - [x] Shining Hydra heads not appearing in conjuration list
+  - [x] Fallen conjuration has too many when Summon book and Rising Horde are used
   - [x] Image spill on card modal for slim devices
 - [ ] Release 1.1.0
   - [ ] "Build" Tab? Some way of viewing the list of cards to add to the deck in grid form so that it is easier to constuct a deck (a checklist?).

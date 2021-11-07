@@ -120,8 +120,8 @@ const PhoenixBornScreen = ({navigation, route}) => {
             x => x.name,
           );
           if (
-            sortedCards.Conjuration[index] &&
-            sortedCards.Conjuration[index].stub !== conjuration.stub
+            (sortedCards.Conjuration[index] &&
+              sortedCards.Conjuration[index].stub) !== conjuration.stub
           ) {
             sortedCards.Conjuration.splice(index, 0, conjuration);
           }
