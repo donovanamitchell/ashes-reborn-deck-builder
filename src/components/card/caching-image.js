@@ -36,7 +36,7 @@ const CachingImage = ({resizeMode, stub}) => {
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    aspectRatio: 30.0 / 42.0,
+    width: '100%'
   },
 });
 
