@@ -47,16 +47,35 @@ const deckContextWrapper = component => ({
     } else {
       let cardContent = Object.assign({count: 1}, card);
       if (card.conjurations) {
-        cardContent.conjurations = card.conjurations.map(conjuration => {
+        cardContent.conjurations = card.conjurations.flatMap(conjuration => {
           // This feels stupidly hacky.
           let conjurationCard = globalState.cards.find(
             c => c.stub === conjuration.stub,
           );
-          return {
-            stub: conjuration.stub,
-            name: conjuration.name,
-            count: (conjurationCard && conjurationCard.copies) || 0,
-          };
+          let conjurations = [
+            {
+              stub: conjuration.stub,
+              name: conjuration.name,
+              count: (conjurationCard && conjurationCard.copies) || 0,
+            },
+          ];
+
+          if (conjurationCard.conjurations) {
+            conjurationCard.conjurations.forEach(conjuredConjuration => {
+              let conjuredConjurationCard = globalState.cards.find(
+                c => c.stub === conjuredConjuration.stub,
+              );
+              conjurations.push({
+                stub: conjuredConjuration.stub,
+                name: conjuredConjuration.name,
+                count:
+                  (conjuredConjurationCard && conjuredConjurationCard.copies) ||
+                  0,
+              });
+            });
+          }
+
+          return conjurations;
         });
       }
       initialDeckState.cards[card.stub] = cardContent;
